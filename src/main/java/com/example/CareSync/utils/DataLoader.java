@@ -1,7 +1,7 @@
-package com.example.CareSync.utils;
+package com.example.caresync.utils;
 
-import com.example.CareSync.entities.Patient;
-import com.example.CareSync.repository.PatientRepository;
+import com.example.caresync.entities.Patient;
+import com.example.caresync.repository.PatientRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

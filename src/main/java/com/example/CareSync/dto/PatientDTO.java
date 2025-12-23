@@ -1,4 +1,4 @@
-package com.example.CareSync.dto;
+package com.example.caresync.dto;
 
 public class PatientDTO {
     private Long id;

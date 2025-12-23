@@ -1,10 +1,10 @@
-package com.example.CareSync;
+package com.example.caresync;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CareSyncMedicalERPApplicationTests {
+class caresyncMedicalERPApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,8 +1,8 @@
-package com.example.CareSync.service;
+package com.example.caresync.service;
 
-import com.example.CareSync.dto.PatientDTO;
-import com.example.CareSync.entities.Patient;
-import com.example.CareSync.repository.PatientRepository;
+import com.example.caresync.dto.PatientDTO;
+import com.example.caresync.entities.Patient;
+import com.example.caresync.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

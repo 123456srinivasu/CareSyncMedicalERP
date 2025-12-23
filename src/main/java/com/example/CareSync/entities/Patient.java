@@ -1,4 +1,4 @@
-package com.example.CareSync.entities;
+package com.example.caresync.entities;
 
 import jakarta.persistence.Table;
 

@@ -1,6 +1,6 @@
-package com.example.CareSync.repository;
+package com.example.caresync.repository;
 
-import com.example.CareSync.entities.Patient;
+import com.example.caresync.entities.Patient;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

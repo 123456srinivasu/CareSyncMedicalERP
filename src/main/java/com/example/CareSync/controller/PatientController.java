@@ -1,7 +1,7 @@
-package com.example.CareSync.controller;
+package com.example.caresync.controller;
 
-import com.example.CareSync.dto.PatientDTO;
-import com.example.CareSync.service.PatientService;
+import com.example.caresync.dto.PatientDTO;
+import com.example.caresync.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
