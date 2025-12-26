@@ -1,12 +1,27 @@
 package com.medical.caresync.entities;
 
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tbl_patient")
 public class Patient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TBL_PATIENT_ID")
     private Long tblPatientId;
+
+    @Column(name = "FIRST_NM")
     private String firstNm;
+
+    @Column(name = "LAST_NM")
     private String lastNm;
+
+    @Column(name = "AGE")
     private Integer age;
+
+    @Column(name = "MOBILE_NUMBER")
     private String mobileNumber;
 
     public Patient() {
