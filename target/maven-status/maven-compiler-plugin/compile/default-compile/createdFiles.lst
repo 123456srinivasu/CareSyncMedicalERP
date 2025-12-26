@@ -18,6 +18,7 @@ com\medical\caresync\controller\IrregularPatientsController.class
 com\medical\caresync\controller\MoneyAdjustController.class
 com\medical\caresync\controller\UserPatientSearchController.class
 com\medical\caresync\controller\PrintReportController.class
+org\example\Main.class
 com\medical\caresync\repository\PatientRepository.class
 com\medical\caresync\controller\TvrDonationsController.class
 com\medical\caresync\controller\PatientTelemedicineConsultationController.class
