@@ -26,6 +26,11 @@ public class PatientService {
         return result;
     }
 
+    public org.springframework.data.domain.Page<PatientDTO> getPatientsPage(int page, int size) {
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
+        return patientRepository.findAll(pageable).map(this::mapToDTO);
+    }
+
     private PatientDTO mapToDTO(Patient p) {
         return new PatientDTO(p.getTblPatientId(), p.getFirstNm(), p.getLastNm(), p.getAge(), p.getMobileNumber());
     }

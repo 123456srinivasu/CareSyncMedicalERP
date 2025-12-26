@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/patients")
@@ -21,7 +22,12 @@ public class PatientController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<PatientDTO>> getAllPatients() {
+	public ResponseEntity<?> getAllPatients(
+			@RequestParam(required = false) Integer page,
+			@RequestParam(required = false) Integer size) {
+		if (page != null && size != null) {
+			return ResponseEntity.ok(patientService.getPatientsPage(page, size));
+		}
 		List<PatientDTO> patients = patientService.getAllPatients();
 		return ResponseEntity.ok(patients);
 	}
