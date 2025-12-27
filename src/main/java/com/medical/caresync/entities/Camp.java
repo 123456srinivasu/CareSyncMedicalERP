@@ -2,9 +2,10 @@ package com.medical.caresync.entities;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "tbl_camp")
-public class TblCamp {
+public class Camp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

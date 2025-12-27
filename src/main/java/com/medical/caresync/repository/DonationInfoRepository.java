@@ -1,6 +1,6 @@
 package com.medical.caresync.repository;
 
-import com.medical.caresync.entities.TblDonationInfo;
+import com.medical.caresync.entities.DonationInfo;
 import com.medical.caresync.dto.AssetDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface DonationInfoRepository extends JpaRepository<TblDonationInfo, Integer> {
+public interface DonationInfoRepository extends JpaRepository<DonationInfo, Integer> {
 
     @Query("SELECT new com.medical.caresync.dto.AssetDTO(d.assetName, SUM(d.quantity), SUM(d.amountDonated)) " +
-           "FROM TblDonationInfo d " +
+           "FROM DonationInfo d " +
            "WHERE d.donationDt BETWEEN :startDate AND :endDate " +
            "AND d.tblCamp.tblCampId = :campId " +
            "AND d.asset = true " +

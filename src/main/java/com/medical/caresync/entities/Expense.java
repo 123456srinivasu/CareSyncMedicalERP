@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tbl_expense")
-public class TblExpense {
+public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class TblExpense {
 
     @ManyToOne
     @JoinColumn(name = "tbl_camp_id")
-    private TblCamp tblCamp;
+    private Camp tblCamp;
 
     @Column(name = "asset")
     private Boolean asset;
@@ -42,8 +42,8 @@ public class TblExpense {
     public void setAmount(Double amount) { this.amount = amount; }
     public Date getExpenseDt() { return expenseDt; }
     public void setExpenseDt(Date expenseDt) { this.expenseDt = expenseDt; }
-    public TblCamp getTblCamp() { return tblCamp; }
-    public void setTblCamp(TblCamp tblCamp) { this.tblCamp = tblCamp; }
+    public Camp getTblCamp() { return tblCamp; }
+    public void setTblCamp(Camp tblCamp) { this.tblCamp = tblCamp; }
     public Boolean getAsset() { return asset; }
     public void setAsset(Boolean asset) { this.asset = asset; }
 }
