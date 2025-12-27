@@ -4,6 +4,8 @@ import com.medical.caresync.entities.Amount;
 import com.medical.caresync.repository.AmountRepository;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +22,11 @@ public class AmountService {
         return amountRepository.findAll();
     }
 
-    public Optional<Amount> getAmountByComponentName(String componentName) {
-        return amountRepository.findByComponentName(componentName);
+    public Page<Amount> getAllAmounts(Pageable pageable) {
+        return amountRepository.findAll(pageable);
     }
+
+
 
     public Amount saveAmount(Amount amount) {
         return amountRepository.save(amount);

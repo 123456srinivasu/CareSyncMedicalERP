@@ -5,7 +5,7 @@ import com.medical.caresync.service.AmountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/amount")
@@ -18,15 +18,10 @@ public class AmountController {
     }
 
     @GetMapping
-    public List<Amount> getAllAmounts() {
-        return amountService.getAllAmounts();
-    }
-
-    @GetMapping("/{componentName}")
-    public ResponseEntity<Amount> getAmountByComponentName(@PathVariable String componentName) {
-        return amountService.getAmountByComponentName(componentName)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public org.springframework.data.domain.Page<Amount> getAllAmounts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return amountService.getAllAmounts(org.springframework.data.domain.PageRequest.of(page, size));
     }
 
     @PostMapping
@@ -38,9 +33,15 @@ public class AmountController {
     public ResponseEntity<Amount> updateAmount(@PathVariable Long id, @RequestBody Amount amountDetails) {
         return amountService.getAmountById(id)
                 .map(amount -> {
-                    amount.setComponentName(amountDetails.getComponentName());
                     amount.setAmount(amountDetails.getAmount());
-                    amount.setDescription(amountDetails.getDescription());
+                    amount.setDueAmount(amountDetails.getDueAmount());
+                    amount.setDiscountAmount(amountDetails.getDiscountAmount());
+                    amount.setInsulinAmount(amountDetails.getInsulinAmount());
+                    amount.setConsultationType(amountDetails.getConsultationType());
+                    amount.setInsulinDiscountAmount(amountDetails.getInsulinDiscountAmount()); 
+                    amount.setPayAtNextCamp(amountDetails.getPayAtNextCamp());
+
+                    amount.calculateFinalAmount(); 
                     return ResponseEntity.ok(amountService.saveAmount(amount));
                 })
                 .orElse(ResponseEntity.notFound().build());
