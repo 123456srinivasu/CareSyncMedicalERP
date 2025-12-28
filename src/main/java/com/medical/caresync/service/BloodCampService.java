@@ -1,7 +1,13 @@
 package com.medical.caresync.service;
 
+import com.medical.caresync.dto.BloodCampDTO;
+import com.medical.caresync.entities.BloodCamp;
+import com.medical.caresync.repository.BloodCampRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,13 +1,12 @@
 package com.medical.caresync.repository;
 
-import com.medical.caresync.entities.BloodCamp;
+import com.medical.caresync.entities.BloodCampResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
-public interface BloodCampRepository extends JpaRepository<BloodCamp, Integer> {
-    Page<BloodCamp> findByCampId(Integer campId, Pageable pageable);
+public interface BloodCampResultRepository extends JpaRepository<BloodCampResult, Integer> {
+    Page<BloodCampResult> findByCampId(Integer campId, Pageable pageable);
 }
