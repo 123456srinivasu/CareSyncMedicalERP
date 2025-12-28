@@ -1,0 +1,90 @@
+package com.medical.caresync.service;
+
+import com.medical.caresync.repository.CampIrregularPatientsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class CampIrregularPatientsService {
+
+ @Autowired
+	private CampIrregularPatientsRepository campIrregularPatientsRepository;
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+	public List<CampIrregularPatientsDTO> getIrregularPatients(Integer campId) {
+		List<Object[]> results = campIrregularPatientsRepository.findIrregularPatientsFullData(campId, campId);
+		List<CampIrregularPatientsDTO> dtos = new ArrayList<>();
+		
+		for (Object[] result : results) {
+			CampIrregularPatientsDTO dto = new CampIrregularPatientsDTO();
+			
+			String name = (String) result[0];
+			Long id = ((Number) result[1]).longValue();
+			Long patientsCamps = ((Number) result[2]).longValue();
+			Long totalCamps = ((Number) result[4]).longValue(); // Adjusted index based on join columns
+            /*
+             * Logic check: 
+             * select * from (temp1) inner join (temp2)
+             * temp1: patientName (0), TBL_PATIENT_ID (1), patientsCamps (2)
+             * temp2: totalCamps (0 of temp2, so 3 of result)
+             * 
+             * So totalCamps is likely at index 3.
+             */
+            totalCamps = ((Number) result[3]).longValue();
+			
+			dto.setId(id);
+			dto.setPatientName(name);
+			dto.setPatientsCamps(patientsCamps);
+			dto.setTotalCamps(totalCamps);
+			
+			dto.setAttendedCamps(getConsultationDates(id, campId));
+			dto.setMissedCamps(getMissedCamps(id, campId));
+			
+			dtos.add(dto);
+		}
+		return dtos;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Date> getConsultationDates(Long patientId, Integer campId) {
+		return entityManager.createNativeQuery("select pc.DATE_OF_VISIT from tbl_patient_consultation pc "
+				+ "join tbl_patient p on pc.TBL_PATIENT_ID = p.TBL_PATIENT_ID "
+				+ "join tbl_camp_details cd on cd.tbl_camp_details_id =  pc.tbl_camp_details_id "
+				+ "join tbl_camp c on c.tbl_camp_id  = cd.TBL_CAMP_ID "
+				+ "where p.TBL_PATIENT_ID = ?1 and pc.DATE_OF_VISIT >= DATE(NOW() - INTERVAL 6 MONTH) "
+				+ "and c.TBL_CAMP_ID = ?2 ")
+				.setParameter(1, patientId)
+				.setParameter(2, campId)
+				.getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	private List<Date> getMissedCamps(Long patientId, Integer campId) {
+		List<Date> allCampDates = entityManager.createNativeQuery("select cd.CAMP_START_DT from tbl_camp_details cd "
+				+ "join tbl_camp c on c.tbl_camp_id  = cd.TBL_CAMP_ID "
+				+ "where c.TBL_CAMP_ID = ?1 and cd.CAMP_START_DT >= DATE(NOW() - INTERVAL 6 MONTH) "
+				+ "and cd.CAMP_START_DT >= (select enrollment_dt from tbl_patient where tbl_patient_id = ?2)")
+				.setParameter(1, campId)
+				.setParameter(2, patientId)
+				.getResultList();
+		
+		List<Date> attendedDates = getConsultationDates(patientId, campId);
+		
+		List<Date> missed = new ArrayList<>();
+		for (Date d : allCampDates) {
+			boolean attended = false;
+			for (Date ad : attendedDates) {
+				if (d.compareTo(ad) == 0) { 
+					attended = true;
+					break;
+				}
+			}
+			if (!attended) {
+				missed.add(d);
+			}
+		}
+		return missed;
+	}
+}
