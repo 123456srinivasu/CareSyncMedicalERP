@@ -1,0 +1,36 @@
+package com.medical.caresync.dto;
+
+import java.util.List;
+
+public class CampMedicinesReportSummaryDTO {
+    
+    private Integer totalPatients;
+    private Integer totalMedicines;
+    private List<CampMedicinesReportDTO> patientMedications;
+    public CampMedicinesReportSummaryDTO() {
+    }
+    public CampMedicinesReportSummaryDTO(Integer totalPatients, Integer totalMedicines,
+                                         List<CampMedicinesReportDTO> patientMedications) {
+        this.totalPatients = totalPatients;
+        this.totalMedicines = totalMedicines;
+        this.patientMedications = patientMedications;
+    }
+    public Integer getTotalPatients() {
+        return totalPatients;
+    }
+    public void setTotalPatients(Integer totalPatients) {
+        this.totalPatients = totalPatients;
+    }
+    public Integer getTotalMedicines() {
+        return totalMedicines;
+    }
+    public void setTotalMedicines(Integer totalMedicines) {
+        this.totalMedicines = totalMedicines;
+    }
+    public List<CampMedicinesReportDTO> getPatientMedications() {
+        return patientMedications;
+    }
+    public void setPatientMedications(List<CampMedicinesReportDTO> patientMedications) {
+        this.patientMedications = patientMedications;
+    }
+}

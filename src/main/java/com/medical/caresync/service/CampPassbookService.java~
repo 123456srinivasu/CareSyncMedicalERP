@@ -1,0 +1,76 @@
+package com.medical.caresync.service;
+
+import com.medical.caresync.repository.CampPassbookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.medical.caresync.dto.CampPassbookDTO;
+import com.medicalERP.result.CampPassbook;
+import com.medicalERP.repository.CampPassbookRepository;
+
+
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class CampPassbookService {
+
+    @Autowired
+    private CampPassbookRepository campPassbookRepository;
+    public CampPassbookDTO saveCampPassbook(CampPassbookDTO dto) {
+        CampPassbook entity = new CampPassbook();
+        if (dto.getId() != null) {
+            entity = campPassbookRepository.findById(dto.getId()).orElse(new CampPassbook());
+        } else {
+            entity.setCreationTs(new Timestamp(System.currentTimeMillis()));
+        }
+        
+        mapDtoToEntity(dto, entity);
+        entity.setLastUpdateTs(new Timestamp(System.currentTimeMillis()));
+        
+        CampPassbook savedEntity = campPassbookRepository.save(entity);
+        return mapEntityToDto(savedEntity);
+    }
+    public List<CampPassbookDTO> getPassbookByCampId(Integer campId) {
+        return campPassbookRepository.findByCampId(campId).stream()
+                .map(this::mapEntityToDto)
+                .collect(Collectors.toList());
+    }
+    
+    public void deleteCampPassbook(Long id) {
+        campPassbookRepository.deleteById(id);
+    }
+    private void mapDtoToEntity(CampPassbookDTO dto, CampPassbook entity) {
+        // ID is handled in save logic
+        entity.setCampId(dto.getCampId());
+        entity.setDate(dto.getDate());
+        entity.setPersonNm(dto.getPersonNm());
+        entity.setReason(dto.getReason());
+        entity.setStatusCd(dto.getStatusCd());
+        entity.setCreditAmt(dto.getCreditAmt() != null ? dto.getCreditAmt() : 0.0);
+        entity.setDebitAmt(dto.getDebitAmt() != null ? dto.getDebitAmt() : 0.0);
+        entity.setAmount(dto.getAmount());
+        entity.setCreationUserId(dto.getCreationUserId());
+        entity.setLastUpdateUserId(dto.getLastUpdateUserId());
+    }
+    private CampPassbookDTO mapEntityToDto(CampPassbook entity) {
+        CampPassbookDTO dto = new CampPassbookDTO();
+        dto.setId(entity.getId());
+        dto.setCampId(entity.getCampId());
+        dto.setDate(entity.getDate());
+        dto.setPersonNm(entity.getPersonNm());
+        dto.setReason(entity.getReason());
+        dto.setCreditAmt(entity.getCreditAmt());
+        dto.setDebitAmt(entity.getDebitAmt());
+        dto.setStatusCd(entity.getStatusCd());
+        dto.setAmount(entity.getAmount());
+        dto.setCreationUserId(entity.getCreationUserId());
+        dto.setLastUpdateUserId(entity.getLastUpdateUserId());
+        return dto;
+    }
+
+}
