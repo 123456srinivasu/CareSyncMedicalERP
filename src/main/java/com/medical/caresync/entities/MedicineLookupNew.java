@@ -19,7 +19,7 @@ public class MedicineLookupNew implements Serializable {
     @Column(name = "medication_id")
     private Long medicationId;
 
-    @Column(name = "medication_code", length = 50, nullable = false, unique = true)
+    @Column(name = "medication_code", length = 50, nullable = false, unique = false)
     private String medicationCode;
 
     @Column(name = "medication_name", length = 150, nullable = false)
