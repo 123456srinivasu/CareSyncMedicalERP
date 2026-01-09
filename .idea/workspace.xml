@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="98e64a12-08e0-4354-8a86-a44812c164fd" name="Changes" comment="latest changes on 9jan">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/CampLocationsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/CampPlansController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/CampRunStaffController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/CampRunsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/CampScheduleTemplatesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/CampUsersController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/DistrictLookupController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/MandalLookupController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/RoleController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/StateLookupController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/UsersController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampLocations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampPlans.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampRunStaff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampRunStaffId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampRuns.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampScheduleTemplates.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/CampUsers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/DistrictLookup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/MandalLookup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/StateLookup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/Users.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/CampLocationsRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/CampPlansRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/CampRunStaffRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/CampRunsRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/CampScheduleTemplatesRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/CampUsersRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/DistrictLookupRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/MandalLookupRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/RoleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/StateLookupRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/UsersRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampLocationsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampPlansService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampRunStaffService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampRunsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampScheduleTemplatesService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampUsersService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/DistrictLookupService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/MandalLookupService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/RoleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/StateLookupService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/UsersService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-24VFOGOW.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-2BKVXSQW.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-2CWRHJPA.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-2I6SBZF5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-2YNNYGVR.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-3YGUWUUY.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-4EEPYAPW.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-4KPI3YCU.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-4UGXQIUE.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-4WXE7PZR.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-6ZHJYAD5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-AFDQ4Q54.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-AMV4JGWQ.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-ASMSF7PH.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-DFYNJMLI.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-E4SL4NQR.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-EKI2H7PE.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-FCEVLUZ6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-FUEWWTXM.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-GUUMU3XC.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-HV5MXW2Z.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-KGMYUK7M.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-KPYUGE5J.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-LA77VLWS.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-LFEU5XLQ.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-LHV7NZRZ.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-MD2C6Y27.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-NMIQV5RM.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-NQGTOHWB.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-O424JL4V.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-OL24BMNB.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-OW6OVGSE.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-QVN7KUYO.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-S4ZXMNS3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-S7Q4GOIM.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-TKQ2UNUU.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-TW4MKDRA.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-UDDS3WJM.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-UYWRF2MB.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-VOFFEUUW.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-WYG7746N.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-Z364KTRN.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/chunk-ZY62NGXY.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/main-J3MRECTI.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/main-WH75SETG.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/media/primeicons-4GST5W3O.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/media/primeicons-DHQU4SEP.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/media/primeicons-GEFHGEHP.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/media/primeicons-P53SE5CV.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/media/primeicons-RSSEDYLY.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/polyfills-B6TNHZQ6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/browser/styles-LYUS5YJA.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/CareSyncMedicalERPApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/AdminSettingsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/AmountController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/AssetReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/AssetsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/BloodCampController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampDiagnosisReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampInvoicesController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampIrregularPatientsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampMedicinesAdjustmentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampMedicinesAdjustmentController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampMedicinesReportController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampMedicinesReportController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampPassbookController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampPassbookController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampPatientsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampsInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CampsInfoController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CancerCampController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CancerCampResultController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CancerRegistrationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CardiologyController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CashManagementController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CashManagementReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CreateCampController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/CreateCampController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DashboardController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DashboardForVolunteersController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DeniedController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DiabetesController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DiagnosisReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DietCounsellingController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DonationsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/DonationsReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ErrorController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ExpensesController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ExpensesReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/GreenChannelConsultationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ImportDataController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/IncomeExpenseReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/InvoiceDetailsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/InvoicesController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/IrregularPatientsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/MainDashboardController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ManageLabsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/MasterLookupController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/MedicinesController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/MedicinesReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/MoneyAdjustController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PageUnderConstructionController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientAmountController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientCampController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientCampEditController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientCashierController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientConsultationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientDiscountController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientInsulinController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientMaternityDetailsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientMedicalProcessController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientPharmacyController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientSearchController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientSetupController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientTelemedicineConsultationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientTelemedicineController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientTelemedicineDashboardController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PatientTelemedicineMeetingController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PaymentDetailsByPatientController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PharmaLookupController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PharmaLookupReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PrintFormController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PrintQueueController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PrintReportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/PurchaseOrdersController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ReportsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/SearchPatientsForTiffaController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/TelemedicineController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/TiffaScanPatientsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/TvrDonationsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/UserDashboardController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/UserEditController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/UserPatientSearchController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/UserSetupController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/VaccinationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/VendorController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/VeterinaryPatientsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/VeterinaryRegistrationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/ViewPassbookController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/WarehouseInventoryController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/WarehouseToCompanyController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/controller/WarehouseToStockController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/dto/PatientDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/entities/Patient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/repository/PatientRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/medical/caresync/service/PatientService.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;manohar922&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/123456srinivasu/CareSyncMedicalERP.git&quot;,
+    &quot;accountId&quot;: &quot;9ff88bc9-6ca6-49ce-ad31-dab9b7222efb&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="37naBjEMEQbppnbJVd16Ncqf0fX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.care-sync-medical-erp [clean,install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.CareSyncMedicalERPApplication.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Merging feature/manohara",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/RailnfoTech_projects/CareSyncMedicalERP",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="CareSyncMedicalERPApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="care-sync-medical-erp" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.medical.caresync.CareSyncMedicalERPApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.138" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.138" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="98e64a12-08e0-4354-8a86-a44812c164fd" name="Changes" comment="" />
+      <created>1767541157459</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1767541157459</updated>
+      <workItem from="1767541159060" duration="507000" />
+      <workItem from="1767541723804" duration="22562000" />
+      <workItem from="1767881987523" duration="8199000" />
+    </task>
+    <task id="LOCAL-00001" summary="latest changes">
+      <option name="closed" value="true" />
+      <created>1767541423187</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1767541423187</updated>
+    </task>
+    <task id="LOCAL-00002" summary="latest changes on 9jan">
+      <option name="closed" value="true" />
+      <created>1767958795455</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1767958795455</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="latest changes" />
+    <MESSAGE value="latest changes on 9jan" />
+    <option name="LAST_COMMIT_MESSAGE" value="latest changes on 9jan" />
+  </component>
+</project>
