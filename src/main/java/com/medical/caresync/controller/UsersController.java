@@ -64,7 +64,7 @@ public class UsersController {
     }
 
     @GetMapping("/role/id/{roleId}")
-    public ResponseEntity<List<Users>> getUsersByRoleId(@PathVariable Integer roleId) {
+    public ResponseEntity<List<Users>> getUsersByRoleId(@PathVariable Long roleId) {
         return ResponseEntity.ok(usersService.getUsersByRoleId(roleId));
     }
 

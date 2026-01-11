@@ -3,6 +3,8 @@ package com.medical.caresync.entities;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users") // Explicitly mapping to 'users' table as per request
@@ -36,6 +38,15 @@ public class Users implements Serializable {
     @Column(name = "is_temporary")
     private Boolean isTemporary = false;
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Set<UserRoles> userRoles = new HashSet<>();
+
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -47,6 +58,8 @@ public class Users implements Serializable {
 
     @Column(name = "updated_by", length = 150)
     private String updatedBy;
+
+
 
     @PrePersist
     protected void onCreate() {
@@ -161,5 +174,13 @@ public class Users implements Serializable {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public Set<UserRoles> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRoles> userRoles) {
+        this.userRoles = userRoles;
     }
 }

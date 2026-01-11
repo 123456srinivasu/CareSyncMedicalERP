@@ -61,12 +61,12 @@ public class UsersService {
 
     @Transactional(readOnly = true)
     public List<Users> getUsersByRoleName(String roleName) {
-        return usersRepository.findByRole_RoleName(roleName);
+        return usersRepository.findUsersByRoleName(roleName);
     }
 
     @Transactional(readOnly = true)
-    public List<Users> getUsersByRoleId(Integer roleId) {
-        return usersRepository.findByRole_RoleId(roleId);
+    public List<Users> getUsersByRoleId(Long roleId) {
+        return usersRepository.findUsersByRoleId(roleId);
     }
 
     public Users deactivateUser(Long id) {

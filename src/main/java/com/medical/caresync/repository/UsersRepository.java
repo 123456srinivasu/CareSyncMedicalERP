@@ -2,6 +2,8 @@ package com.medical.caresync.repository;
 
 import com.medical.caresync.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,7 +12,21 @@ import java.util.List;
 public interface UsersRepository extends JpaRepository<Users, Long> {
     List<Users> findByIsActive(Boolean isActive);
 
-    List<Users> findByRole_RoleName(String roleName);
+    @Query("""
+        SELECT DISTINCT u
+        FROM Users u
+        JOIN u.userRoles ur
+        JOIN ur.role r
+        WHERE r.roleId = :roleId
+    """)
+    List<Users> findUsersByRoleId(@Param("roleId") Long roleId);
 
-    List<Users> findByRole_RoleId(Integer roleId);
+    @Query("""
+        SELECT DISTINCT u
+        FROM Users u
+        JOIN u.userRoles ur
+        JOIN ur.role r
+        WHERE r.roleName = :roleName
+    """)
+    List<Users> findUsersByRoleName(@Param("roleName") String roleName);
 }
