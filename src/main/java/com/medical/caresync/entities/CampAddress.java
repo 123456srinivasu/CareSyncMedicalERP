@@ -1,5 +1,6 @@
 package com.medical.caresync.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class CampAddress {
     @Column(name = "camp_address_id")
     private Long campAddressId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "camp_id", nullable = false)
     private Camps camp;

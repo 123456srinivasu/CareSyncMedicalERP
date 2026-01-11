@@ -62,6 +62,7 @@ public class Camps implements Serializable {
     @JsonIgnore
     private List<CampMedicineStockSummary> campMedicineStockSummaries;
 
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "camp",
             cascade = CascadeType.ALL,
