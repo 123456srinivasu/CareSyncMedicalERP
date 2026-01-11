@@ -25,8 +25,8 @@ public class DonationInfo {
     private Date donationDt;
 
     @ManyToOne
-    @JoinColumn(name = "tbl_camp_id")
-    private Camp tblCamp;
+    @JoinColumn(name = "camp_id")
+    private Camps tblCamp;
 
     @Column(name = "asset")
     private Boolean asset;
@@ -42,8 +42,15 @@ public class DonationInfo {
     public void setAmountDonated(Double amountDonated) { this.amountDonated = amountDonated; }
     public Date getDonationDt() { return donationDt; }
     public void setDonationDt(Date donationDt) { this.donationDt = donationDt; }
-    public Camp getTblCamp() { return tblCamp; }
-    public void setTblCamp(Camp tblCamp) { this.tblCamp = tblCamp; }
+
+    public Camps getTblCamp() {
+        return tblCamp;
+    }
+
+    public void setTblCamp(Camps tblCamp) {
+        this.tblCamp = tblCamp;
+    }
+
     public Boolean getAsset() { return asset; }
     public void setAsset(Boolean asset) { this.asset = asset; }
 }

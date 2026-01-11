@@ -12,7 +12,7 @@ public class MandalLookup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MANDAL_LOOKUP_ID")
-    private Integer mandalLookupId;
+    private Long mandalLookupId;
 
     @Column(name = "MANDAL_NAME", nullable = false, length = 30)
     private String mandalName;
@@ -21,13 +21,19 @@ public class MandalLookup implements Serializable {
     @JoinColumn(name = "DISTRICT_LOOKUP_ID", nullable = false)
     private DistrictLookup districtLookup;
 
-    // Getters and Setters
+    public MandalLookup() {
+    }
 
-    public Integer getMandalLookupId() {
+    public MandalLookup(Long mandalLookupId) {
+        this.mandalLookupId = mandalLookupId;
+    }
+
+
+    public Long getMandalLookupId() {
         return mandalLookupId;
     }
 
-    public void setMandalLookupId(Integer mandalLookupId) {
+    public void setMandalLookupId(Long mandalLookupId) {
         this.mandalLookupId = mandalLookupId;
     }
 

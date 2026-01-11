@@ -15,7 +15,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
     @Query("SELECT new com.medical.caresync.dto.AssetDTO(e.assetName, SUM(e.quantity), SUM(e.amount)) " +
            "FROM Expense e " +
            "WHERE e.expenseDt BETWEEN :startDate AND :endDate " +
-           "AND e.tblCamp.tblCampId = :campId " +
+           "AND e.tblCamp.campId = :campId " +
            "AND e.asset = true " +
            "GROUP BY e.assetName")
     List<AssetDTO> findAssetsFromExpenses(@Param("startDate") Date startDate, 
