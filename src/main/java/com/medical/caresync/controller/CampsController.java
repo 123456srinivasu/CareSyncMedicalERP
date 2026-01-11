@@ -1,7 +1,11 @@
 package com.medical.caresync.controller;
 
+import com.medical.caresync.dto.CampsDTO;
 import com.medical.caresync.entities.Camps;
 import com.medical.caresync.service.CampsService;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/camps")
 public class CampsController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CampsController.class);
 
     @Autowired
     private CampsService service;
@@ -34,9 +40,14 @@ public class CampsController {
     }
 
     @PostMapping
-    public ResponseEntity<Camps> createCamp(@RequestBody Camps camp) {
-        Camps createdCamp = service.createCamp(camp);
-        return ResponseEntity.ok(createdCamp);
+    public ResponseEntity<Camps> createCamp(@Valid @RequestBody CampsDTO camp) {
+        try {
+            Camps createdCamp = service.createCamp(camp);
+            return ResponseEntity.ok(createdCamp);
+        }catch (Exception e) {
+            LOGGER.error("Exception while creatig=ng a camp", e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PutMapping("/{id}")

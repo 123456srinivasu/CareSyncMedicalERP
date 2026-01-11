@@ -16,7 +16,7 @@ public interface DonationInfoRepository extends JpaRepository<DonationInfo, Inte
     @Query("SELECT new com.medical.caresync.dto.AssetDTO(d.assetName, SUM(d.quantity), SUM(d.amountDonated)) " +
            "FROM DonationInfo d " +
            "WHERE d.donationDt BETWEEN :startDate AND :endDate " +
-           "AND d.tblCamp.tblCampId = :campId " +
+           "AND d.tblCamp.campId = :campId " +
            "AND d.asset = true " +
            "GROUP BY d.assetName")
     List<AssetDTO> findAssetsFromDonations(@Param("startDate") Date startDate, 

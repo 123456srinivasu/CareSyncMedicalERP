@@ -14,7 +14,7 @@ public class DistrictLookup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DISTRICT_LOOKUP_ID")
-    private Integer districtLookupId;
+    private Long districtLookupId;
 
     @Column(name = "DISTRICT_NAME", nullable = false, length = 30)
     private String districtName;
@@ -27,13 +27,20 @@ public class DistrictLookup implements Serializable {
     @JsonIgnore
     private List<MandalLookup> mandals;
 
+    public DistrictLookup() {
+    }
+
+    public DistrictLookup(Long districtLookupId) {
+        this.districtLookupId = districtLookupId;
+    }
+
     // Getters and Setters
 
-    public Integer getDistrictLookupId() {
+    public Long getDistrictLookupId() {
         return districtLookupId;
     }
 
-    public void setDistrictLookupId(Integer districtLookupId) {
+    public void setDistrictLookupId(Long districtLookupId) {
         this.districtLookupId = districtLookupId;
     }
 

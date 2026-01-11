@@ -29,4 +29,23 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
         WHERE r.roleName = :roleName
     """)
     List<Users> findUsersByRoleName(@Param("roleName") String roleName);
+
+    @Query("""
+        SELECT DISTINCT u
+        FROM Users u
+        JOIN u.userRoles ur
+        JOIN ur.role r
+        WHERE r.roleId = :roleId and u.isActive = true
+    """
+    )
+    List<Users> findActiveUsersByRoleId(@Param("roleId") Long roleId);
+
+    @Query("""
+        SELECT DISTINCT u
+        FROM Users u
+        WHERE u.isActive = true
+    """
+    )
+    List<Users> findActiveUsers();
+
 }

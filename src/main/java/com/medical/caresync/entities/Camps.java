@@ -40,15 +40,38 @@ public class Camps implements Serializable {
     private Timestamp createdAt;
 
     @Column(name = "camp_establishment_year", length = 4)
-    private String campEstablishmentYear;
+    private int campEstablishmentYear;
 
     @Column(name = "CAMP_CODE", length = 10)
     private String campCode;
+
+    @Column(name = "organizer_name")
+    private String organizerName;
+
+    @Column(name = "organizer_email")
+    private String organizerEmail;
+
+    @Column(name = "organizer_phone")
+    private String organizerPhone;
+
+    @Column(name = "medicine_responsibility")
+    private String medicineResponsibility;
 
     @OneToMany(mappedBy = "camps", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("camp-summaries")
     @JsonIgnore
     private List<CampMedicineStockSummary> campMedicineStockSummaries;
+
+    @JsonManagedReference
+    @OneToMany(
+            mappedBy = "camp",
+            cascade = CascadeType.ALL,
+            orphanRemoval = false
+    )
+    private List<CampAddress> campAddresses;
+
+    @OneToMany(mappedBy = "camps", fetch = FetchType.LAZY)
+    private List<CampScheduleTemplates> schedules;
 
     public Camps() {
     }
@@ -117,11 +140,11 @@ public class Camps implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public String getCampEstablishmentYear() {
+    public int getCampEstablishmentYear() {
         return campEstablishmentYear;
     }
 
-    public void setCampEstablishmentYear(String campEstablishmentYear) {
+    public void setCampEstablishmentYear(int campEstablishmentYear) {
         this.campEstablishmentYear = campEstablishmentYear;
     }
 
@@ -133,12 +156,60 @@ public class Camps implements Serializable {
         this.campCode = campCode;
     }
 
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
+    }
+
+    public String getOrganizerEmail() {
+        return organizerEmail;
+    }
+
+    public void setOrganizerEmail(String organizerEmail) {
+        this.organizerEmail = organizerEmail;
+    }
+
+    public String getOrganizerPhone() {
+        return organizerPhone;
+    }
+
+    public void setOrganizerPhone(String organizerPhone) {
+        this.organizerPhone = organizerPhone;
+    }
+
+    public String getMedicineResponsibility() {
+        return medicineResponsibility;
+    }
+
+    public void setMedicineResponsibility(String medicineResponsibility) {
+        this.medicineResponsibility = medicineResponsibility;
+    }
+
     public List<CampMedicineStockSummary> getCampMedicineStockSummaries() {
         return campMedicineStockSummaries;
     }
 
     public void setCampMedicineStockSummaries(List<CampMedicineStockSummary> campMedicineStockSummaries) {
         this.campMedicineStockSummaries = campMedicineStockSummaries;
+    }
+
+    public List<CampAddress> getCampAddresses() {
+        return campAddresses;
+    }
+
+    public void setCampAddresses(List<CampAddress> campAddresses) {
+        this.campAddresses = campAddresses;
+    }
+
+    public List<CampScheduleTemplates> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<CampScheduleTemplates> schedules) {
+        this.schedules = schedules;
     }
 }
 

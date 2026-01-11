@@ -76,4 +76,18 @@ public class UsersService {
             return usersRepository.save(users);
         }).orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
+
+    private List<Users> getUsers(boolean active, Long roleId) {
+       if(active) {
+           if(roleId == null) {
+               return usersRepository.findActiveUsers();
+           } else {
+               return usersRepository.findUsersByRoleId(roleId);
+           }
+       } else {
+           return usersRepository.findAll();
+       }
+    }
+
+
 }
