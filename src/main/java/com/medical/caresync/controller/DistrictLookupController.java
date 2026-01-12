@@ -31,19 +31,19 @@ public class DistrictLookupController {
     }
 
     @GetMapping("/by-state/{stateId}")
-    public ResponseEntity<List<DistrictLookup>> getDistrictsByStateId(@PathVariable Integer stateId) {
+    public ResponseEntity<List<DistrictLookup>> getDistrictsByStateId(@PathVariable Long stateId) {
         return ResponseEntity.ok(districtLookupService.getDistrictsByStateId(stateId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DistrictLookup> getDistrictById(@PathVariable Integer id) {
+    public ResponseEntity<DistrictLookup> getDistrictById(@PathVariable Long id) {
         return districtLookupService.getDistrictById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DistrictLookup> updateDistrict(@PathVariable Integer id,
+    public ResponseEntity<DistrictLookup> updateDistrict(@PathVariable Long id,
             @RequestBody DistrictLookup districtLookup) {
         try {
             DistrictLookup updatedDistrict = districtLookupService.updateDistrict(id, districtLookup);
@@ -54,7 +54,7 @@ public class DistrictLookupController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDistrict(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteDistrict(@PathVariable Long id) {
         districtLookupService.deleteDistrict(id);
         return ResponseEntity.noContent().build();
     }

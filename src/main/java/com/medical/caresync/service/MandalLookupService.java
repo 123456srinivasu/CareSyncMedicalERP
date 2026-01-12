@@ -30,16 +30,16 @@ public class MandalLookupService {
     }
 
     @Transactional(readOnly = true)
-    public List<MandalLookup> getMandalsByDistrictId(Integer districtId) {
+    public List<MandalLookup> getMandalsByDistrictId(Long districtId) {
         return mandalLookupRepository.findByDistrictLookup_DistrictLookupId(districtId);
     }
 
     @Transactional(readOnly = true)
-    public Optional<MandalLookup> getMandalById(Integer id) {
+    public Optional<MandalLookup> getMandalById(Long id) {
         return mandalLookupRepository.findById(id);
     }
 
-    public MandalLookup updateMandal(Integer id, MandalLookup mandalDetails) {
+    public MandalLookup updateMandal(Long id, MandalLookup mandalDetails) {
         return mandalLookupRepository.findById(id).map(mandal -> {
             mandal.setMandalName(mandalDetails.getMandalName());
             if (mandalDetails.getDistrictLookup() != null) {
@@ -49,7 +49,7 @@ public class MandalLookupService {
         }).orElseThrow(() -> new RuntimeException("Mandal not found with id " + id));
     }
 
-    public void deleteMandal(Integer id) {
+    public void deleteMandal(Long id) {
         mandalLookupRepository.deleteById(id);
     }
 }

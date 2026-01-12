@@ -11,5 +11,15 @@ public class PatientAddressDTO {
     private Long districtId;
     private Long mandalId;
     private String postalCode;
-    // Getters and setters
+    private String villageName;
+
+    private LookupDTO state;
+    private LookupDTO district;
+    private LookupDTO mandal;
+
+    @Data
+    public static class LookupDTO {
+        private Long id;
+        private String name;
+    }
 }

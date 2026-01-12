@@ -26,8 +26,12 @@ public class PatientAddress extends BaseEntity {
     @Column(name = "FULL_ADDRESS", nullable = false, length = 255)
     private String addressLine;
 
+
     @Column(name = "CITY", nullable = false, length = 100)
     private String city;
+
+    @Column(name = "VILLAGE_NAME", length = 100)
+    private String villageName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STATE_LOOKUP_ID", nullable = false)

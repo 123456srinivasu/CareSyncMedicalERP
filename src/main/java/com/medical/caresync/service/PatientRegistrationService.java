@@ -8,6 +8,12 @@ import com.medical.caresync.repository.PatientRegistrationRepository;
 import com.medical.caresync.repository.PatientAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.medical.caresync.entities.StateLookup;
+import com.medical.caresync.entities.DistrictLookup;
+import com.medical.caresync.entities.MandalLookup;
+import com.medical.caresync.repository.StateLookupRepository;
+import com.medical.caresync.repository.DistrictLookupRepository;
+import com.medical.caresync.repository.MandalLookupRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +25,13 @@ public class PatientRegistrationService {
     private PatientRegistrationRepository patientRegistrationRepository;
     @Autowired
     private PatientAddressRepository patientAddressRepository;
+
+    @Autowired
+    private StateLookupRepository stateLookupRepository;
+    @Autowired
+    private DistrictLookupRepository districtLookupRepository;
+    @Autowired
+    private MandalLookupRepository mandalLookupRepository;
 
     public PatientRegistrationDTO create(PatientRegistrationDTO dto) {
         PatientRegistration entity = toEntity(dto);
@@ -127,9 +140,28 @@ public class PatientRegistrationService {
         dto.setAddressId(entity.getAddressId());
         dto.setAddressLine(entity.getAddressLine());
         dto.setCity(entity.getCity());
-        dto.setStateId(entity.getState() != null ? entity.getState().getStateLookupId() : null);
-        dto.setDistrictId(entity.getDistrict() != null ? entity.getDistrict().getDistrictLookupId() : null);
-        dto.setMandalId(entity.getMandal() != null ? entity.getMandal().getMandalLookupId() : null);
+        dto.setVillageName(entity.getVillageName());
+        if (entity.getState() != null) {
+            dto.setStateId(entity.getState().getStateLookupId() != null ? entity.getState().getStateLookupId().longValue() : null);
+            PatientAddressDTO.LookupDTO stateDto = new PatientAddressDTO.LookupDTO();
+            stateDto.setId(entity.getState().getStateLookupId() != null ? entity.getState().getStateLookupId().longValue() : null);
+            stateDto.setName(entity.getState().getStateName());
+            dto.setState(stateDto);
+        }
+        if (entity.getDistrict() != null) {
+            dto.setDistrictId(entity.getDistrict().getDistrictLookupId() != null ? entity.getDistrict().getDistrictLookupId().longValue() : null);
+            PatientAddressDTO.LookupDTO districtDto = new PatientAddressDTO.LookupDTO();
+            districtDto.setId(entity.getDistrict().getDistrictLookupId() != null ? entity.getDistrict().getDistrictLookupId().longValue() : null);
+            districtDto.setName(entity.getDistrict().getDistrictName());
+            dto.setDistrict(districtDto);
+        }
+        if (entity.getMandal() != null) {
+            dto.setMandalId(entity.getMandal().getMandalLookupId() != null ? entity.getMandal().getMandalLookupId().longValue() : null);
+            PatientAddressDTO.LookupDTO mandalDto = new PatientAddressDTO.LookupDTO();
+            mandalDto.setId(entity.getMandal().getMandalLookupId() != null ? entity.getMandal().getMandalLookupId().longValue() : null);
+            mandalDto.setName(entity.getMandal().getMandalName());
+            dto.setMandal(mandalDto);
+        }
         dto.setPostalCode(entity.getPostalCode());
         return dto;
     }
@@ -139,7 +171,20 @@ public class PatientRegistrationService {
         entity.setAddressId(dto.getAddressId());
         entity.setAddressLine(dto.getAddressLine());
         entity.setCity(dto.getCity());
-        // Set state, district, mandal by id if needed
+        entity.setVillageName(dto.getVillageName());
+        // Set state, district, mandal by id if provided
+        if (dto.getStateId() != null) {
+            StateLookup state = stateLookupRepository.findById(dto.getStateId()).orElse(null);
+            entity.setState(state);
+        }
+        if (dto.getDistrictId() != null) {
+            DistrictLookup district = districtLookupRepository.findById(dto.getDistrictId()).orElse(null);
+            entity.setDistrict(district);
+        }
+        if (dto.getMandalId() != null) {
+            MandalLookup mandal = mandalLookupRepository.findById(dto.getMandalId()).orElse(null);
+            entity.setMandal(mandal);
+        }
         entity.setPostalCode(dto.getPostalCode());
         return entity;
     }

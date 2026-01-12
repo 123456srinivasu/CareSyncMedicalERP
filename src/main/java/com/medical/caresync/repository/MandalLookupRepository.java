@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MandalLookupRepository extends JpaRepository<MandalLookup, Integer> {
-    List<MandalLookup> findByDistrictLookup_DistrictLookupId(Integer districtId);
+public interface MandalLookupRepository extends JpaRepository<MandalLookup, Long> {
+    List<MandalLookup> findByDistrictLookup_DistrictLookupId(Long districtId);
 }

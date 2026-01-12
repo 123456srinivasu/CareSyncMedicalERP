@@ -31,14 +31,14 @@ public class StateLookupController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StateLookup> getStateById(@PathVariable Integer id) {
+    public ResponseEntity<StateLookup> getStateById(@PathVariable Long id) {
         return stateLookupService.getStateById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StateLookup> updateState(@PathVariable Integer id, @RequestBody StateLookup stateLookup) {
+    public ResponseEntity<StateLookup> updateState(@PathVariable Long id, @RequestBody StateLookup stateLookup) {
         try {
             StateLookup updatedState = stateLookupService.updateState(id, stateLookup);
             return ResponseEntity.ok(updatedState);
@@ -48,7 +48,7 @@ public class StateLookupController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteState(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteState(@PathVariable Long id) {
         stateLookupService.deleteState(id);
         return ResponseEntity.noContent().build();
     }

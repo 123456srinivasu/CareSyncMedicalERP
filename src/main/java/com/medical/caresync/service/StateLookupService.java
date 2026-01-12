@@ -30,11 +30,11 @@ public class StateLookupService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<StateLookup> getStateById(Integer id) {
+    public Optional<StateLookup> getStateById(Long id) {
         return stateLookupRepository.findById(id);
     }
 
-    public StateLookup updateState(Integer id, StateLookup stateDetails) {
+    public StateLookup updateState(Long id, StateLookup stateDetails) {
         return stateLookupRepository.findById(id).map(state -> {
             state.setStateName(stateDetails.getStateName());
             state.setStateCd(stateDetails.getStateCd());
@@ -42,7 +42,7 @@ public class StateLookupService {
         }).orElseThrow(() -> new RuntimeException("State not found with id " + id));
     }
 
-    public void deleteState(Integer id) {
+    public void deleteState(Long id) {
         stateLookupRepository.deleteById(id);
     }
 }
