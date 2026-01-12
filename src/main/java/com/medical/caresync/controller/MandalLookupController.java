@@ -31,19 +31,19 @@ public class MandalLookupController {
     }
 
     @GetMapping("/by-district/{districtId}")
-    public ResponseEntity<List<MandalLookup>> getMandalsByDistrictId(@PathVariable Long districtId) {
+    public ResponseEntity<List<MandalLookup>> getMandalsByDistrictId(@PathVariable Integer districtId) {
         return ResponseEntity.ok(mandalLookupService.getMandalsByDistrictId(districtId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MandalLookup> getMandalById(@PathVariable Long id) {
+    public ResponseEntity<MandalLookup> getMandalById(@PathVariable Integer id) {
         return mandalLookupService.getMandalById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MandalLookup> updateMandal(@PathVariable Long id, @RequestBody MandalLookup mandalLookup) {
+    public ResponseEntity<MandalLookup> updateMandal(@PathVariable Integer id, @RequestBody MandalLookup mandalLookup) {
         try {
             MandalLookup updatedMandal = mandalLookupService.updateMandal(id, mandalLookup);
             return ResponseEntity.ok(updatedMandal);
@@ -53,7 +53,7 @@ public class MandalLookupController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMandal(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteMandal(@PathVariable Integer id) {
         mandalLookupService.deleteMandal(id);
         return ResponseEntity.noContent().build();
     }

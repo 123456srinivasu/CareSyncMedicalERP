@@ -7,9 +7,9 @@ public class PatientAddressDTO {
     private Long addressId;
     private String addressLine;
     private String city;
-    private Long stateId;
-    private Long districtId;
-    private Long mandalId;
+    private Integer stateId;
+    private Integer districtId;
+    private Integer mandalId;
     private String postalCode;
     private String villageName;
 
@@ -19,7 +19,7 @@ public class PatientAddressDTO {
 
     @Data
     public static class LookupDTO {
-        private Long id;
+        private Integer id;
         private String name;
     }
 }

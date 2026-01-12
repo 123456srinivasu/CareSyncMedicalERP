@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DistrictLookupRepository extends JpaRepository<DistrictLookup, Long> {
-    List<DistrictLookup> findByStateLookup_StateLookupId(Long stateId);
+public interface DistrictLookupRepository extends JpaRepository<DistrictLookup, Integer> {
+    List<DistrictLookup> findByStateLookup_StateLookupId(Integer stateId);
 }

@@ -36,16 +36,16 @@ public class DistrictLookupService {
     }
 
     @Transactional(readOnly = true)
-    public List<DistrictLookup> getDistrictsByStateId(Long stateId) {
+    public List<DistrictLookup> getDistrictsByStateId(Integer stateId) {
         return districtLookupRepository.findByStateLookup_StateLookupId(stateId);
     }
 
     @Transactional(readOnly = true)
-    public Optional<DistrictLookup> getDistrictById(Long id) {
+    public Optional<DistrictLookup> getDistrictById(Integer id) {
         return districtLookupRepository.findById(id);
     }
 
-    public DistrictLookup updateDistrict(Long id, DistrictLookup districtDetails) {
+    public DistrictLookup updateDistrict(Integer id, DistrictLookup districtDetails) {
         return districtLookupRepository.findById(id).map(district -> {
             district.setDistrictName(districtDetails.getDistrictName());
             if (districtDetails.getStateLookup() != null) {
@@ -55,7 +55,7 @@ public class DistrictLookupService {
         }).orElseThrow(() -> new RuntimeException("District not found with id " + id));
     }
 
-    public void deleteDistrict(Long id) {
+    public void deleteDistrict(Integer id) {
         districtLookupRepository.deleteById(id);
     }
 }
