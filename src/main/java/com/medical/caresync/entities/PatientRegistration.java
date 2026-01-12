@@ -51,8 +51,9 @@ public class PatientRegistration extends BaseEntity {
     @Column(name = "MARITAL_STATUS")
     private String maritalStatus;
 
-    @Column(name = "PATIENT_IMAGE")
-    private String patientImage;
+    @Lob
+    @Column(name = "PATIENT_IMAGE", columnDefinition = "LONGBLOB")
+    private byte[] patientImage;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id")

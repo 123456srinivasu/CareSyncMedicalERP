@@ -1,5 +1,8 @@
-
 package com.medical.caresync.controller;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import com.medical.caresync.dto.PatientRegistrationDTO;
 import com.medical.caresync.service.PatientRegistrationService;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/patient-registrations")
+@RequestMapping("/api/patient-registration")
 @Tag(name = "Patient Registration", description = "APIs for Patient Registration management")
 public class PatientRegistrationController {
     @Autowired
@@ -70,4 +73,15 @@ public class PatientRegistrationController {
             @RequestParam(required = false) String mobileNumber) {
         return ResponseEntity.ok(patientRegistrationService.searchByFields(id, name, mrNumber, mobileNumber));
     }
+
+    @Operation(summary = "Create a new patient registration with image upload")
+    @PostMapping("/with-image")
+    public ResponseEntity<PatientRegistrationDTO> createWithImage(
+            @RequestPart("patient") PatientRegistrationDTO dto,
+            @RequestPart("image") MultipartFile image) throws IOException {
+        dto.setPatientImage(image.getBytes());
+        return ResponseEntity.ok(dto.getTblPatientId() != null ? patientRegistrationService.update(dto.getTblPatientId(), dto) :  patientRegistrationService.create(dto));
+    }
+
+
 }

@@ -17,8 +17,6 @@ public class PatientRegistrationDTO {
     private String gender;
     private String bloodGroup;
     private String maritalStatus;
-    private String patientImage;
+    private byte[] patientImage;
     private List<PatientAddressDTO> patientAddressesList;
-
-    // Getters and setters
 }
