@@ -12,11 +12,11 @@ public class AddressDTO {
     @NotNull
     private String city;
     @NotNull
-    private Long stateId;
+    private Integer stateId;
     @NotNull
-    private Long districtId;
+    private Integer districtId;
     @NotNull
-    private Long mandalId;
+    private Integer mandalId;
 
     private String postalCode;
 
@@ -40,27 +40,27 @@ public class AddressDTO {
         this.addressLine2 = addressLine2;
     }
 
-    public Long getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
-    public void setStateId(Long stateId) {
+    public void setStateId(Integer stateId) {
         this.stateId = stateId;
     }
 
-    public Long getDistrictId() {
+    public Integer getDistrictId() {
         return districtId;
     }
 
-    public void setDistrictId(Long districtId) {
+    public void setDistrictId(Integer districtId) {
         this.districtId = districtId;
     }
 
-    public Long getMandalId() {
+    public Integer getMandalId() {
         return mandalId;
     }
 
-    public void setMandalId(Long mandalId) {
+    public void setMandalId(Integer mandalId) {
         this.mandalId = mandalId;
     }
 

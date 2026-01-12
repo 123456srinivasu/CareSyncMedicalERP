@@ -14,7 +14,7 @@ public class StateLookup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "STATE_LOOKUP_ID")
-    private Long stateLookupId;
+    private Integer stateLookupId;
 
     @Column(name = "STATE_NAME", nullable = false, length = 30)
     private String stateName;
@@ -29,15 +29,15 @@ public class StateLookup implements Serializable {
     public StateLookup() {
     }
 
-    public StateLookup(Long stateLookupId) {
+    public StateLookup(Integer stateLookupId) {
         this.stateLookupId = stateLookupId;
     }
 
-    public Long getStateLookupId() {
+    public Integer getStateLookupId() {
         return stateLookupId;
     }
 
-    public void setStateLookupId(Long stateLookupId) {
+    public void setStateLookupId(Integer stateLookupId) {
         this.stateLookupId = stateLookupId;
     }
 
