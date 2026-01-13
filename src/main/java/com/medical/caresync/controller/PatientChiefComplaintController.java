@@ -15,17 +15,6 @@ public class PatientChiefComplaintController {
     @Autowired
     PatientChiefComplaintService service;
 
-    // SAVE or UPDATE
-    @PutMapping("/by-consultation")
-    public ResponseEntity<PatientChiefComplaintDTO> saveOrUpdate(
-            @RequestParam Long patientConsultationId,
-            @RequestBody PatientChiefComplaintDTO dto) {
-
-        return ResponseEntity.ok(
-                service.saveOrUpdateByConsultationId(patientConsultationId, dto)
-        );
-    }
-
     @PostMapping
     public ResponseEntity<PatientChiefComplaintDTO> create(
             @RequestBody PatientChiefComplaintDTO dto) {

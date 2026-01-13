@@ -2,15 +2,12 @@ package com.medical.caresync.service;
 
 import com.medical.caresync.dto.PatientChiefComplaintDTO;
 import com.medical.caresync.entities.PatientChiefComplaint;
-import com.medical.caresync.entities.PatientConsultation;
 import com.medical.caresync.repository.PatientChiefComplaintRepository;
-import com.medical.caresync.repository.PatientConsultationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,34 +15,6 @@ public class PatientChiefComplaintService {
 
     @Autowired
     PatientChiefComplaintRepository repository;
-
-    @Autowired
-    PatientConsultationRepository consultationRepository;
-
-    public PatientChiefComplaintDTO saveOrUpdateByConsultationId(
-            Long patientConsultationId,
-            PatientChiefComplaintDTO dto) {
-
-        PatientConsultation consultation =
-                consultationRepository.findById(patientConsultationId)
-                        .orElseThrow(() -> new RuntimeException("Consultation not found"));
-
-        PatientChiefComplaint patientChiefComplaint =
-                repository.findTopByPatientConsultation_PatientConsultationIdOrderByCreationTsDesc(patientConsultationId)
-                        .orElse(null);
-
-        PatientChiefComplaint entity = dtoToEntity(dto);
-        entity.setPatientConsultation(consultation);
-
-        if(Objects.nonNull(patientChiefComplaint)) {
-            entity.setChiefComplaintId(patientChiefComplaint.getChiefComplaintId());
-            entity.setLastUpdateTs(LocalDateTime.now());
-        } else {
-            entity.setCreationTs(LocalDateTime.now());
-        }
-
-        return entityToDto(repository.save(entity));
-    }
 
     public PatientChiefComplaintDTO create(PatientChiefComplaintDTO dto) {
         PatientChiefComplaint entity = dtoToEntity(dto);
@@ -131,7 +100,6 @@ public class PatientChiefComplaintService {
         entity.setHyefBlurredVision(dto.getHyefBlurredVision());
         entity.setHyefChestPain(dto.getHyefChestPain());
         entity.setHyefShortnessOfBreath(dto.getHyefShortnessOfBreath());
-        entity.setCreationUserId("Patient_Consultation");
 
         return entity;
     }

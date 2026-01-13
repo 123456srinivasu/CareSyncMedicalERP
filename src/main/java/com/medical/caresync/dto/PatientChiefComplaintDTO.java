@@ -53,8 +53,6 @@ public class PatientChiefComplaintDTO {
     private LocalDateTime creationTs;
     private LocalDateTime lastUpdateTs;
 
-    private Long patientConsultationId;
-
     public Long getChiefComplaintId() {
         return chiefComplaintId;
     }
@@ -365,13 +363,5 @@ public class PatientChiefComplaintDTO {
 
     public void setLastUpdateTs(LocalDateTime lastUpdateTs) {
         this.lastUpdateTs = lastUpdateTs;
-    }
-
-    public Long getPatientConsultationId() {
-        return patientConsultationId;
-    }
-
-    public void setPatientConsultationId(Long patientConsultationId) {
-        this.patientConsultationId = patientConsultationId;
     }
 }
