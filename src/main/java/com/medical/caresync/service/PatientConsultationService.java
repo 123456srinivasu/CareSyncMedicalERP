@@ -27,13 +27,13 @@ public class PatientConsultationService {
 
     private PatientConsultationDTO convertToDTO(PatientConsultation patientConsultation) {
         PatientConsultationDTO dto = new PatientConsultationDTO();
-        dto.setId(patientConsultation.getId());
+        dto.setId(patientConsultation.getPatientConsultationId());
         return dto;
     }
 
     private PatientConsultation convertToEntity(PatientConsultationDTO dto) {
         PatientConsultation patientConsultation = new PatientConsultation();
-        patientConsultation.setId(dto.getId());
+        patientConsultation.setPatientConsultationId(dto.getId());
         return patientConsultation;
     }
 }
