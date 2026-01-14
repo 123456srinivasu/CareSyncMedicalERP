@@ -10,5 +10,4 @@ import java.util.List;
 public interface CampScheduleTemplatesRepository extends JpaRepository<CampScheduleTemplates, Long> {
     List<CampScheduleTemplates> findByCamps_CampId(Long campId);
 
-    List<CampScheduleTemplates> findByLocation_LocationId(Long locationId);
 }

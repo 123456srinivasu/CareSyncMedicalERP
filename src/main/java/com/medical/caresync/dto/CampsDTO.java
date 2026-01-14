@@ -2,6 +2,8 @@ package com.medical.caresync.dto;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 public class CampsDTO {
     @NotNull
     private String campName;
@@ -21,6 +23,8 @@ public class CampsDTO {
     private AddressDTO shippingAddress;
     @NotNull
     private CampScheduleTemplateDTO campScheduleTemplate;
+
+    private List<Long> campUserIds;
 
     public String getCampName() {
         return campName;
@@ -108,5 +112,13 @@ public class CampsDTO {
 
     public void setCampScheduleTemplate(CampScheduleTemplateDTO campScheduleTemplate) {
         this.campScheduleTemplate = campScheduleTemplate;
+    }
+
+    public List<Long> getCampUserIds() {
+        return campUserIds;
+    }
+
+    public void setCampUserIds(List<Long> campUserIds) {
+        this.campUserIds = campUserIds;
     }
 }

@@ -13,6 +13,7 @@ public class AddressDTO {
     private String city;
     @NotNull
     private Integer stateId;
+
     @NotNull
     private Integer districtId;
     @NotNull

@@ -1,8 +1,15 @@
 package com.medical.caresync.service;
 
+import com.medical.caresync.dto.PageResponse;
+import com.medical.caresync.dto.UsersResponseDTO;
 import com.medical.caresync.entities.Users;
+import com.medical.caresync.repository.UserSpecification;
 import com.medical.caresync.repository.UsersRepository;
+import com.medical.caresync.util.PageMapper;
+import com.medical.caresync.util.UsersUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,17 +84,11 @@ public class UsersService {
         }).orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
 
-    private List<Users> getUsers(boolean active, Long roleId) {
-       if(active) {
-           if(roleId == null) {
-               return usersRepository.findActiveUsers();
-           } else {
-               return usersRepository.findUsersByRoleId(roleId);
-           }
-       } else {
-           return usersRepository.findAll();
-       }
+    public PageResponse<UsersResponseDTO> getUsers(
+            Boolean active, Long roleId, String roleName, Pageable pageable) {
+        Page<Users> page = usersRepository.findAll(
+                UserSpecification.withFilters(active, roleId, roleName), pageable);
+        return PageMapper.mapToPageResponse(page, UsersUtil::mapToUserResponse );
     }
-
 
 }

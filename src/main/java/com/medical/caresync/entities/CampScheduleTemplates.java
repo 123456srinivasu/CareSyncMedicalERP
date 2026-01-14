@@ -1,5 +1,6 @@
 package com.medical.caresync.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,13 +16,10 @@ public class CampScheduleTemplates implements Serializable {
     @Column(name = "template_id")
     private Long templateId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "camp_id", nullable = false)
     private Camps camps;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
-    private CampLocations location;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "day_of_week", nullable = false)
@@ -103,13 +101,6 @@ public class CampScheduleTemplates implements Serializable {
         this.camps = camps;
     }
 
-    public CampLocations getLocation() {
-        return location;
-    }
-
-    public void setLocation(CampLocations location) {
-        this.location = location;
-    }
 
     public DayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;

@@ -29,10 +29,7 @@ public class CampUsersController {
         return ResponseEntity.ok(service.getAllCampUsers());
     }
 
-    @GetMapping("/camp/{campId}")
-    public ResponseEntity<List<CampUsers>> getCampUsersByCampId(@PathVariable Long campId) {
-        return ResponseEntity.ok(service.getCampUsersByCampId(campId));
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<CampUsers> getCampUserById(@PathVariable Long id) {

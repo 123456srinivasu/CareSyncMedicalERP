@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "camps")
@@ -64,13 +66,23 @@ public class Camps implements Serializable {
 
     @JsonManagedReference
     @OneToMany(
+            mappedBy = "camps",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<CampUsers> campUsers = new HashSet<>();
+
+    @JsonManagedReference
+    @OneToMany(
             mappedBy = "camp",
             cascade = CascadeType.ALL,
             orphanRemoval = false
     )
     private List<CampAddress> campAddresses;
 
-    @OneToMany(mappedBy = "camps", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "camps", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CampScheduleTemplates> schedules;
 
     public Camps() {
@@ -210,6 +222,14 @@ public class Camps implements Serializable {
 
     public void setSchedules(List<CampScheduleTemplates> schedules) {
         this.schedules = schedules;
+    }
+
+    public Set<CampUsers> getCampUsers() {
+        return campUsers;
+    }
+
+    public void setCampUsers(Set<CampUsers> campUsers) {
+        this.campUsers = campUsers;
     }
 }
 

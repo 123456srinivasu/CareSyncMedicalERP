@@ -1,5 +1,6 @@
 package com.medical.caresync.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -44,6 +45,7 @@ public class Users implements Serializable {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    @JsonIgnore
     private Set<UserRoles> userRoles = new HashSet<>();
 
 
@@ -59,6 +61,14 @@ public class Users implements Serializable {
     @Column(name = "updated_by", length = 150)
     private String updatedBy;
 
+    @Column(name =  "FIRST_NAME")
+    private String firstName;
+
+    @Column(name = "LAST_NAME")
+    private String lastName;
+
+    @Column(name = "MIDDLE_NAME")
+    private String middleName;
 
 
     @PrePersist
@@ -182,5 +192,29 @@ public class Users implements Serializable {
 
     public void setUserRoles(Set<UserRoles> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 }

@@ -1,5 +1,6 @@
 package com.medical.caresync.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class CampUsers implements Serializable {
     @Column(name = "camp_user_id")
     private Long campUserId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "camp_id", nullable = false)
     private Camps camps;
@@ -22,10 +24,6 @@ public class CampUsers implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Users users;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private CampLocations location;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -65,13 +63,6 @@ public class CampUsers implements Serializable {
         this.users = users;
     }
 
-    public CampLocations getLocation() {
-        return location;
-    }
-
-    public void setLocation(CampLocations location) {
-        this.location = location;
-    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
