@@ -1,5 +1,6 @@
 package com.medical.caresync.controller;
 
+import com.medical.caresync.dto.CampRunPlanningSaveRequestDTO;
 import com.medical.caresync.dto.CampRunPlanningViewDTO;
 import com.medical.caresync.entities.CampRuns;
 import com.medical.caresync.exceptions.BadRequestException;
@@ -23,8 +24,15 @@ public class CampRunsController {
     }
 
     @GetMapping("/planning")
-   public ResponseEntity<?> getCampRunPlanning(@RequestParam(name = "campId", required = true) Long campId) {
+   public ResponseEntity<CampRunPlanningViewDTO> getCampRunPlanning(@RequestParam(name = "campId", required = true) Long campId) {
         CampRunPlanningViewDTO campPlanningDetails = service.getCampPlanningDetails(campId);
         return ResponseEntity.ok(campPlanningDetails);
+    }
+
+    @PostMapping("/camp-runs/planning")
+    public ResponseEntity<CampRunPlanningViewDTO> save(@RequestBody CampRunPlanningSaveRequestDTO request) {
+        CampRunPlanningViewDTO campRunPlanningViewDTO = service.saveOrUpdateCampRun(request);
+        return ResponseEntity.ok(campRunPlanningViewDTO);
+
     }
 }

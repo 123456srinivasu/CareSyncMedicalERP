@@ -1,5 +1,6 @@
 package com.medical.caresync.service;
 
+import com.medical.caresync.dto.CampRunPlanningSaveRequestDTO;
 import com.medical.caresync.dto.CampRunPlanningViewDTO;
 import com.medical.caresync.dto.UsersResponseDTO;
 import com.medical.caresync.entities.*;
@@ -7,6 +8,7 @@ import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.exceptions.BusinessRuleViolationException;
 import com.medical.caresync.repository.CampRunsRepository;
 import com.medical.caresync.repository.CampsRepository;
+import com.medical.caresync.repository.UsersRepository;
 import com.medical.caresync.util.CampRunStatus;
 import com.medical.caresync.util.CampScheduleUtil;
 import com.medical.caresync.util.UsersUtil;
@@ -27,6 +29,8 @@ public class CampRunsService {
 
     @Autowired
     private CampsRepository campsRepository;
+    @Autowired
+    private UsersRepository usersRepository;
 
     public CampRunPlanningViewDTO getCampPlanningDetails(Long campId){
 
@@ -35,23 +39,9 @@ public class CampRunsService {
         if(campRunDetail.isPresent()){
             CampRuns campRuns = campRunDetail.get();
             if(campRuns.getStatus().equals(CampRunStatus.STARTED)){
-                throw new BusinessRuleViolationException("Camp is already running, no modifications are allowed now");
+                throw new BusinessRuleViolationException("Camp is already running, no modifications are allowed at this time");
             }
-            CampRunPlanningViewDTO campRunPlanningViewDTO = new CampRunPlanningViewDTO();
-            campRunPlanningViewDTO.setCampRunStatus(CampRunStatus.PLANNED);
-            campRunPlanningViewDTO.setCampId(campRuns.getCamps().getCampId());
-            campRunPlanningViewDTO.setCampRunId(campRuns.getCampRunId());
-            campRunPlanningViewDTO.setOrganizerName(campRuns.getOrganizerName());
-            campRunPlanningViewDTO.setOrganizerEmail(campRuns.getOrganizerEmail());
-            campRunPlanningViewDTO.setOrganizerPhone(campRuns.getOrganizerPhone());
-            campRunPlanningViewDTO.setPlannedDate(campRuns.getPlannedDate());
-            campRunPlanningViewDTO.setActualStartDate(campRuns.getActualDate());
-            List<UsersResponseDTO> campRunUsers = campRuns.getCampRunUsers().stream().map(CampRunStaff::getUsers)
-                    .map(UsersUtil::mapToUserResponse)
-                    .toList();
-            campRunPlanningViewDTO.setCampRunUsers(campRunUsers);
-            campRunPlanningViewDTO.setCampMedicineStockSummaries(campRuns.getCamps().getCampMedicineStockSummaries());
-            return campRunPlanningViewDTO;
+            return getCampRunPlanningViewDTO(campRuns);
         } else {
             Optional<Camps> campById = campsRepository.findById(campId);
             if(campById.isPresent()){
@@ -79,7 +69,60 @@ public class CampRunsService {
             }
         }
 
+    }
 
+    private static CampRunPlanningViewDTO getCampRunPlanningViewDTO(CampRuns campRuns) {
+        CampRunPlanningViewDTO campRunPlanningViewDTO = new CampRunPlanningViewDTO();
+        campRunPlanningViewDTO.setCampRunStatus(CampRunStatus.PLANNED);
+        campRunPlanningViewDTO.setCampId(campRuns.getCamps().getCampId());
+        campRunPlanningViewDTO.setCampRunId(campRuns.getCampRunId());
+        campRunPlanningViewDTO.setOrganizerName(campRuns.getOrganizerName());
+        campRunPlanningViewDTO.setOrganizerEmail(campRuns.getOrganizerEmail());
+        campRunPlanningViewDTO.setOrganizerPhone(campRuns.getOrganizerPhone());
+        campRunPlanningViewDTO.setPlannedDate(campRuns.getPlannedDate());
+        campRunPlanningViewDTO.setActualStartDate(campRuns.getActualDate());
+        List<UsersResponseDTO> campRunUsers = campRuns.getCampRunUsers().stream().map(CampRunStaff::getUsers)
+                .map(UsersUtil::mapToUserResponse)
+                .toList();
+        campRunPlanningViewDTO.setCampRunUsers(campRunUsers);
+        campRunPlanningViewDTO.setCampMedicineStockSummaries(campRuns.getCamps().getCampMedicineStockSummaries());
+        return campRunPlanningViewDTO;
+    }
 
+    public CampRunPlanningViewDTO saveOrUpdateCampRun(CampRunPlanningSaveRequestDTO request) {
+        CampRuns campRun;
+        boolean isNew = false;
+        if (request.getCampRunId() == null || request.getCampRunId() == 0) {
+            campRun = new CampRuns();
+            Camps camp = campsRepository.findById(request.getCampId())
+                    .orElseThrow(() -> new BadRequestException("Camp not found"));
+            campRun.setCamps(camp);
+            campRun.setCampAddress(camp.getCampAddresses().stream().filter(campAddress -> campAddress.getValidTo() == null && AddressType.LOCATION.equals(campAddress.getAddressType())).findFirst().get());
+            campRun.setStatus(CampRunStatus.PLANNED);
+        } else {
+            campRun = repository.findById(request.getCampRunId())
+                    .orElseThrow(() -> new BadRequestException("CampRun not found"));
+            if (campRun.getStatus() != CampRunStatus.PLANNED) {
+                throw new BadRequestException("Camp is not in Planned State " +campRun.getCampRunId());
+            }
+        }
+        campRun.setPlannedDate(request.getPlannedDate());
+        campRun.setOrganizerName(request.getOrganizerName());
+        campRun.setOrganizerEmail(request.getOrganizerEmail());
+        campRun.setOrganizerPhone(request.getOrganizerPhone());
+        campRun.getCampRunUsers().clear();
+        List<CampRunStaff> staffList = request.getCampRunUsers().stream()
+                .map(u -> {
+                    Users user = usersRepository.findById(u)
+                            .orElseThrow(() -> new BadRequestException("User not found: " + u));
+                    CampRunStaff staff = new CampRunStaff();
+                    staff.setCampRuns(campRun);
+                    staff.setUsers(user);
+                    return staff;
+                })
+                .toList();
+        campRun.getCampRunUsers().addAll(staffList);
+        repository.save(campRun);
+        return getCampRunPlanningViewDTO(campRun);
     }
 }

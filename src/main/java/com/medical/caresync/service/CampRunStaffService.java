@@ -21,9 +21,6 @@ public class CampRunStaffService {
     }
 
     public CampRunStaff assignStaff(CampRunStaff staff) {
-        if (staff.getId() == null) {
-            staff.setId(new CampRunStaffId(staff.getCampRuns().getCampRunId(), staff.getUsers().getUserId()));
-        }
         return repository.save(staff);
     }
 

@@ -5,22 +5,27 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "camp_run_staff")
+@Table(
+        name = "camp_run_staff",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"camp_run_id", "user_id"})
+        }
+)
 public class CampRunStaff implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private CampRunStaffId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "camp_run_staff_id")
+     private Long campRunStaffId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("campRunId")
-    @JoinColumn(name = "camp_run_id")
+    @JoinColumn(name = "camp_run_id", nullable = false)
     private CampRuns campRuns;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private Users users;
 
     @Column(name = "assigned_at", insertable = false, updatable = false)
@@ -28,12 +33,13 @@ public class CampRunStaff implements Serializable {
 
     // Getters and Setters
 
-    public CampRunStaffId getId() {
-        return id;
+
+    public Long getCampRunStaffId() {
+        return campRunStaffId;
     }
 
-    public void setId(CampRunStaffId id) {
-        this.id = id;
+    public void setCampRunStaffId(Long campRunStaffId) {
+        this.campRunStaffId = campRunStaffId;
     }
 
     public CampRuns getCampRuns() {
