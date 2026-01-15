@@ -3,12 +3,16 @@ package com.medical.caresync.service;
 import com.medical.caresync.dto.ErrorResponse;
 import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.exceptions.BusinessRuleViolationException;
+import com.medical.caresync.exceptions.CampRunValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,6 +31,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("BAD_REQUEST", ex.getMessage()));
+    }
+
+    @ExceptionHandler(CampRunValidationException.class)
+    public ResponseEntity<Map<String, Object>> handleCampRunValidation(
+            CampRunValidationException ex) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        body.put("errors", ex.getErrors());
+
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(Exception.class)

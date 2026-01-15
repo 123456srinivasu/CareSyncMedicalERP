@@ -3,20 +3,26 @@ package com.medical.caresync.service;
 import com.medical.caresync.dto.CampRunPlanningSaveRequestDTO;
 import com.medical.caresync.dto.CampRunPlanningViewDTO;
 import com.medical.caresync.dto.UsersResponseDTO;
+import com.medical.caresync.dto.ValidationError;
 import com.medical.caresync.entities.*;
 import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.exceptions.BusinessRuleViolationException;
+import com.medical.caresync.exceptions.CampRunValidationException;
 import com.medical.caresync.repository.CampRunsRepository;
 import com.medical.caresync.repository.CampsRepository;
 import com.medical.caresync.repository.UsersRepository;
 import com.medical.caresync.util.CampRunStatus;
 import com.medical.caresync.util.CampScheduleUtil;
 import com.medical.caresync.util.UsersUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,5 +130,107 @@ public class CampRunsService {
         campRun.getCampRunUsers().addAll(staffList);
         repository.save(campRun);
         return getCampRunPlanningViewDTO(campRun);
+    }
+
+    public void startCampRun(Long campId, Long campRunId) {
+        Camps camp = campsRepository.findById(campId)
+                .orElseThrow(() -> new BusinessRuleViolationException("Camp not found with Id "+ campId));
+        Optional<CampRuns> existingRun = repository.findById(campRunId);
+        CampRuns campRun = null;
+        if (existingRun.isPresent()) {
+            campRun = existingRun.get();
+
+            if (campRun.getStatus() == CampRunStatus.STARTED) {
+                throw new BusinessRuleViolationException("Camp is already running");
+            }
+            validateBeforeStart(campRun);
+            markStarted(campRun);
+        }else {
+            campRun = new CampRuns();
+            campRun.setCamps(camp);
+            campRun.setCampAddress(camp.getCampAddresses().stream().filter(campAddress -> campAddress.getValidTo() == null && AddressType.LOCATION.equals(campAddress.getAddressType())).findFirst().get());
+            campRun.setStatus(CampRunStatus.PLANNED);
+            Optional<CampScheduleTemplates> campScheduleOpt = camp.getSchedules().stream().filter(CampScheduleTemplates::getIsActive).findFirst();
+            if (campScheduleOpt.isPresent()) {
+                campRun.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleOpt.get()
+                        , LocalDate.now()));
+            } else {
+                campRun.setPlannedDate(LocalDate.now());
+            }
+            campRun.setOrganizerName(camp.getOrganizerName());
+            campRun.setOrganizerEmail(camp.getOrganizerEmail());
+            campRun.setOrganizerPhone(camp.getOrganizerPhone());
+            campRun.getCampRunUsers().clear();
+            List<CampRunStaff> staffList = new ArrayList<>();
+            for(CampUsers campUser: camp.getCampUsers()){
+                CampRunStaff staff = new CampRunStaff();
+                staff.setCampRuns(campRun);
+                staff.setUsers(campUser.getUsers());
+                staffList.add(staff);
+            }
+            campRun.getCampRunUsers().addAll(staffList);
+            validateBeforeStart(campRun);
+            markStarted(campRun);
+        }
+        repository.save(campRun);
+    }
+
+    private void validateBeforeStart(CampRuns campRun) {
+        List<ValidationError> errors = new ArrayList<>();
+        boolean hasDoctor = campRun.getCampRunUsers().stream()
+                .anyMatch(CampRunStaff::isDoctor);
+
+        if (!hasDoctor) {
+            errors.add(new ValidationError(
+                    "users",
+                    "At least one doctor must be assigned"
+            ));
+        }
+        boolean hasVolunteer = campRun.getCampRunUsers().stream()
+                .anyMatch(CampRunStaff::isVolunteer);
+
+        if (!hasVolunteer) {
+            errors.add(new ValidationError(
+                    "users",
+                    "At least one volunteer must be assigned"
+            ));
+        }
+        if (CollectionUtils.isEmpty(campRun.getCamps().getCampMedicineStockSummaries())) {
+            errors.add(new ValidationError(
+                    "medicineStock",
+                    "Medicine stock must be planned"
+            ));
+        }
+        if (!errors.isEmpty()) {
+            throw new CampRunValidationException(errors);
+        }
+    }
+
+    private void markStarted(CampRuns campRun) {
+        campRun.setStatus(CampRunStatus.STARTED);
+        campRun.setActualDate(LocalDate.now());
+        //campRun.setStartedBy("ADMIN"); // TODO - set once user module is implemented with logged in User ID
+    }
+
+    public void stopCamp(Long campId, Long campRunId) {
+        Optional<CampRuns> campRun = repository.findById(campRunId);
+        if (campRun.isPresent()) {
+            CampRuns campRuns = campRun.get();
+            markStopped(campRuns);
+            repository.save(campRuns);
+        } else {
+            List<ValidationError> errors = new ArrayList<>();
+            errors.add(new ValidationError(
+                    "campRun",
+                    "Camp Run Id not found"
+            ));
+            throw new CampRunValidationException(errors);
+        }
+    }
+
+    private void markStopped(CampRuns campRun) {
+        campRun.setStatus(CampRunStatus.CLOSED);
+        campRun.setClosedBy("ADMIN"); // TODO - set once user module is implemented with logged in User ID
+        campRun.setClosedAt(LocalDateTime.now());
     }
 }

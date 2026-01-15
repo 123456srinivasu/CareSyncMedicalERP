@@ -6,6 +6,7 @@ import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.repository.CampSpecification;
 import com.medical.caresync.repository.CampsRepository;
 import com.medical.caresync.repository.UsersRepository;
+import com.medical.caresync.util.CampRunStatus;
 import com.medical.caresync.util.CampScheduleUtil;
 import com.medical.caresync.util.PageMapper;
 import com.medical.caresync.util.UsersUtil;
@@ -217,6 +218,7 @@ public class CampsService {
                 , AddressType.SHIPPING));
         campsListDTO.setCampReadyToStart(hasDoctors(camps.getCampUsers()) && hasVolunteers(camps.getCampUsers())
                 && hasMedicineStock(camps.getCampMedicineStockSummaries()));
+        campsListDTO.setCampRunning(camps.getCampRuns().stream().anyMatch(campRuns -> CampRunStatus.STARTED.equals(campRuns.getStatus())));
         return campsListDTO;
     }
 

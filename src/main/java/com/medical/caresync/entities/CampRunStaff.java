@@ -3,6 +3,7 @@ package com.medical.caresync.entities;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(
@@ -64,5 +65,23 @@ public class CampRunStaff implements Serializable {
 
     public void setAssignedAt(LocalDateTime assignedAt) {
         this.assignedAt = assignedAt;
+    }
+
+    public boolean isDoctor(){
+        if(this.users == null)
+            return false;
+        Optional<UserRoles> isDoctor = this.getUsers().getUserRoles().stream()
+                .filter(userRole -> "DOCTOR".equalsIgnoreCase(userRole.getRole().getRoleName()))
+                .findFirst();
+        return isDoctor.isPresent();
+    }
+
+    public boolean isVolunteer(){
+        if(this.users == null)
+            return false;
+        Optional<UserRoles> isVolunteer = this.getUsers().getUserRoles().stream()
+                .filter(userRole -> "VOLUNTEER".equalsIgnoreCase(userRole.getRole().getRoleName()))
+                .findFirst();
+        return isVolunteer.isPresent();
     }
 }

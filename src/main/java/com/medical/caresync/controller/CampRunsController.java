@@ -35,4 +35,18 @@ public class CampRunsController {
         return ResponseEntity.ok(campRunPlanningViewDTO);
 
     }
+
+    @PostMapping("{campId}/{campRunId}/start")
+    public ResponseEntity<Void> startCampRun(@PathVariable Long campId
+            , @PathVariable Long campRunId) {
+        service.startCampRun(campId, campRunId);
+        return ResponseEntity.noContent().build(); // 204
+    }
+
+    @PostMapping("{campId}/{campRunId}/stop")
+    public ResponseEntity<Void> stopCampRun(@PathVariable Long campId
+            , @PathVariable Long campRunId) {
+        service.stopCamp(campId, campRunId);
+        return ResponseEntity.noContent().build(); // 204
+    }
 }

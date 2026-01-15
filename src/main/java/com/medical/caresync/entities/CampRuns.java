@@ -69,6 +69,12 @@ public class CampRuns implements Serializable {
     @Column(name = "created_by", length = 45)
     private String createdBy;
 
+    @Column(name = "closed_by")
+    private String closedBy;
+
+    @Column(name = "closed_at")
+    private LocalDateTime closedAt;
+
     // Getters and Setters
 
     public Long getCampRunId() {
@@ -169,5 +175,25 @@ public class CampRuns implements Serializable {
 
     public void setCampRunUsers(List<CampRunStaff> campRunUsers) {
         this.campRunUsers = campRunUsers;
+    }
+
+    public String getStartedBy() {
+        return startedBy;
+    }
+
+    public String getClosedBy() {
+        return closedBy;
+    }
+
+    public void setClosedBy(String closedBy) {
+        this.closedBy = closedBy;
+    }
+
+    public LocalDateTime getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(LocalDateTime closedAt) {
+        this.closedAt = closedAt;
     }
 }
