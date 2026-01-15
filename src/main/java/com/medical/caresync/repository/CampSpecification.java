@@ -37,7 +37,8 @@ public class CampSpecification {
                     cb.equal(
                             campAddressJoin.get("addressType"),
                             AddressType.LOCATION
-                    )
+                    ),
+                    cb.isNull(campAddressJoin.get("validTo"))
             );
 
             Join<CampAddress, Address> addressJoin =

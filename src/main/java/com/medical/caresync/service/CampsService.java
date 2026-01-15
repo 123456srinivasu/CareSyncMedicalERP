@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -202,8 +203,7 @@ public class CampsService {
         campsListDTO.setCampCode(camps.getCampCode());
         campsListDTO.setOrganizerName(camps.getOrganizerName());
         campsListDTO.setOrganizerPhone(camps.getOrganizerPhone());
-
-        Optional<CampScheduleTemplates> campScheduleOpt = camps.getSchedules().stream().filter(schedule -> schedule.getIsActive()).findFirst();
+        Optional<CampScheduleTemplates> campScheduleOpt = camps.getSchedules().stream().filter(CampScheduleTemplates::getIsActive).findFirst();
         if(campScheduleOpt.isPresent()){
         campsListDTO.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleOpt.get()
                 , LocalDate.now()));
@@ -211,21 +211,19 @@ public class CampsService {
             campsListDTO.setPlannedDate(LocalDate.now());
         }
         campsListDTO.setActive(camps.getIsActive());
-        Optional<CampAddress> locationAddressOptional = camps.getCampAddresses().stream().filter(campAddress -> AddressType.LOCATION.equals(campAddress.getAddressType()))
-                .findFirst();
-        if(locationAddressOptional.isPresent()){
-            AddressResponseDTO locationAddress =  mapToAddressResponseDTO(locationAddressOptional.get().getAddress());
-            campsListDTO.setLocationAddress(locationAddress);
-        }
-
-        Optional<CampAddress> shippingAddressOptional = camps.getCampAddresses().stream().filter(campAddress -> AddressType.SHIPPING.equals(campAddress.getAddressType()))
-                .findFirst();
-        if(shippingAddressOptional.isPresent()){
-            AddressResponseDTO shippingAddress =  mapToAddressResponseDTO(shippingAddressOptional.get().getAddress());
-            campsListDTO.setShippingAddress(shippingAddress);
-        }
-
+        campsListDTO.setLocationAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
+                , AddressType.LOCATION));
+        campsListDTO.setShippingAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
+                , AddressType.SHIPPING));
+        campsListDTO.setCampReadyToStart(hasDoctors(camps.getCampUsers()) && hasVolunteers(camps.getCampUsers())
+                && hasMedicineStock(camps.getCampMedicineStockSummaries()));
         return campsListDTO;
+    }
+
+    private AddressResponseDTO getAddressResponseDTOByAddressType(List<CampAddress> campAddresses, AddressType addressType) {
+        Optional<CampAddress> addressOptional = campAddresses.stream().filter(campAddress -> addressType.equals(campAddress.getAddressType()))
+                .findFirst();
+        return addressOptional.map(campAddress -> mapToAddressResponseDTO(campAddress.getAddress())).orElse(null);
     }
 
     private AddressResponseDTO mapToAddressResponseDTO(Address address) {
@@ -241,6 +239,24 @@ public class CampsService {
         addressResponseDTO.setStateId(address.getState().getStateLookupId());
         addressResponseDTO.setStateName(address.getState().getStateName());
         return addressResponseDTO;
+    }
+
+    private boolean hasDoctors(Set<CampUsers> campUsers){
+        if(CollectionUtils.isEmpty(campUsers))
+            return false;
+        return campUsers.stream().anyMatch(CampUsers::isDoctor);
+    }
+
+    private boolean hasVolunteers(Set<CampUsers> campUsers) {
+        if(CollectionUtils.isEmpty(campUsers))
+            return false;
+        return campUsers.stream().anyMatch(CampUsers::isVolunteer);
+    }
+
+    private boolean hasMedicineStock(List<CampMedicineStockSummary> campMedicineStockSummary) {
+        if(CollectionUtils.isEmpty(campMedicineStockSummary))
+            return false;
+        return true;
     }
 
 

@@ -85,6 +85,10 @@ public class Camps implements Serializable {
     @OneToMany(mappedBy = "camps", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CampScheduleTemplates> schedules;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "camps",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CampRuns> campRuns;
+
     public Camps() {
     }
 
@@ -230,6 +234,14 @@ public class Camps implements Serializable {
 
     public void setCampUsers(Set<CampUsers> campUsers) {
         this.campUsers = campUsers;
+    }
+
+    public List<CampRuns> getCampRuns() {
+        return campRuns;
+    }
+
+    public void setCampRuns(List<CampRuns> campRuns) {
+        this.campRuns = campRuns;
     }
 }
 

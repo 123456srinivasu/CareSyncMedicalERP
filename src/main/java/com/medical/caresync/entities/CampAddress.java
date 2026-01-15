@@ -35,9 +35,10 @@ public class CampAddress {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    @Column(nullable = false)
+    @Column(name = "valid_from", nullable = false)
     private LocalDate validFrom = LocalDate.now();
 
+    @Column(name = "valid_to", nullable = true)
     private LocalDate validTo;
 
     public Long getCampAddressId() {

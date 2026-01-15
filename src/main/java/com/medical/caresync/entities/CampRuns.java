@@ -1,9 +1,13 @@
 package com.medical.caresync.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.medical.caresync.util.CampRunStatus;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "camp_runs")
@@ -16,18 +20,18 @@ public class CampRuns implements Serializable {
     @Column(name = "camp_run_id")
     private Long campRunId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "camp_id", nullable = false)
     private Camps camps;
 
-    // As camp_location_versions schema was not provided, mapping as ID for now.
-    // If table exists, update to @ManyToOne
-    @Column(name = "location_version_id", nullable = false)
-    private Long locationVersionId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id")
-    private CampPlans campPlans;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "camp_address_id",
+            nullable = false,
+            unique = true
+    )
+    private CampAddress campAddress;
 
     @Column(name = "planned_date", nullable = false)
     private LocalDate plannedDate;
@@ -39,19 +43,31 @@ public class CampRuns implements Serializable {
     @Column(name = "status", nullable = false)
     private CampRunStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "started_by")
-    private Users startedBy;
+    @Column(name = "started_by",  nullable = false)
+    private String startedBy;
+
+    @Column(name = "organizer_name")
+    private String organizerName;
+
+    @Column(name = "organizer_email")
+    private String organizerEmail;
+
+    @Column(name = "organizer_phone")
+    private String organizerPhone;
+
+    @OneToMany(
+            mappedBy = "campRuns",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<CampRunStaff> campRunUsers = new ArrayList<>();
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "created_by", length = 45)
     private String createdBy;
-
-    public enum CampRunStatus {
-        PLANNED, STARTED, CLOSED, CANCELLED
-    }
 
     // Getters and Setters
 
@@ -69,22 +85,6 @@ public class CampRuns implements Serializable {
 
     public void setCamps(Camps camps) {
         this.camps = camps;
-    }
-
-    public Long getLocationVersionId() {
-        return locationVersionId;
-    }
-
-    public void setLocationVersionId(Long locationVersionId) {
-        this.locationVersionId = locationVersionId;
-    }
-
-    public CampPlans getCampPlans() {
-        return campPlans;
-    }
-
-    public void setCampPlans(CampPlans campPlans) {
-        this.campPlans = campPlans;
     }
 
     public LocalDate getPlannedDate() {
@@ -111,14 +111,6 @@ public class CampRuns implements Serializable {
         this.status = status;
     }
 
-    public Users getStartedBy() {
-        return startedBy;
-    }
-
-    public void setStartedBy(Users startedBy) {
-        this.startedBy = startedBy;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -133,5 +125,49 @@ public class CampRuns implements Serializable {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public CampAddress getCampAddress() {
+        return campAddress;
+    }
+
+    public void setCampAddress(CampAddress campAddress) {
+        this.campAddress = campAddress;
+    }
+
+    public void setStartedBy(String startedBy) {
+        this.startedBy = startedBy;
+    }
+
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
+    }
+
+    public String getOrganizerEmail() {
+        return organizerEmail;
+    }
+
+    public void setOrganizerEmail(String organizerEmail) {
+        this.organizerEmail = organizerEmail;
+    }
+
+    public String getOrganizerPhone() {
+        return organizerPhone;
+    }
+
+    public void setOrganizerPhone(String organizerPhone) {
+        this.organizerPhone = organizerPhone;
+    }
+
+    public List<CampRunStaff> getCampRunUsers() {
+        return campRunUsers;
+    }
+
+    public void setCampRunUsers(List<CampRunStaff> campRunUsers) {
+        this.campRunUsers = campRunUsers;
     }
 }

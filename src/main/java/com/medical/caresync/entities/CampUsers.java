@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name = "camp_users")
@@ -94,5 +95,23 @@ public class CampUsers implements Serializable {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public boolean isDoctor(){
+        if(this.users == null)
+            return false;
+        Optional<UserRoles> isDoctor = this.getUsers().getUserRoles().stream()
+                .filter(userRole -> "DOCTOR".equalsIgnoreCase(userRole.getRole().getRoleName()))
+                .findFirst();
+        return isDoctor.isPresent();
+    }
+
+    public boolean isVolunteer(){
+        if(this.users == null)
+            return false;
+        Optional<UserRoles> isVolunteer = this.getUsers().getUserRoles().stream()
+                .filter(userRole -> "VOLUNTEER".equalsIgnoreCase(userRole.getRole().getRoleName()))
+                .findFirst();
+        return isVolunteer.isPresent();
     }
 }
