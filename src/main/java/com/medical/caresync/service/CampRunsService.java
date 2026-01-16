@@ -92,6 +92,7 @@ public class CampRunsService {
                 .toList();
         campRunPlanningViewDTO.setCampRunUsers(campRunUsers);
         campRunPlanningViewDTO.setCampMedicineStockSummaries(campRuns.getCamps().getCampMedicineStockSummaries());
+        campRunPlanningViewDTO.setCampReadyToStart(campRuns.isCampReadyToStart());
         return campRunPlanningViewDTO;
     }
 
@@ -116,6 +117,7 @@ public class CampRunsService {
         campRun.setOrganizerName(request.getOrganizerName());
         campRun.setOrganizerEmail(request.getOrganizerEmail());
         campRun.setOrganizerPhone(request.getOrganizerPhone());
+        campRun.setCampReadyToStart(request.isCampReadyToStart());
         campRun.getCampRunUsers().clear();
         List<CampRunStaff> staffList = request.getCampRunUsers().stream()
                 .map(u -> {

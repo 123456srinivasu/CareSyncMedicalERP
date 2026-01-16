@@ -75,6 +75,9 @@ public class CampRuns implements Serializable {
     @Column(name = "closed_at")
     private LocalDateTime closedAt;
 
+    @Column(name = "is_camp_ready_to_start")
+    private boolean isCampReadyToStart;
+
     // Getters and Setters
 
     public Long getCampRunId() {
@@ -195,5 +198,13 @@ public class CampRuns implements Serializable {
 
     public void setClosedAt(LocalDateTime closedAt) {
         this.closedAt = closedAt;
+    }
+
+    public boolean isCampReadyToStart() {
+        return isCampReadyToStart;
+    }
+
+    public void setCampReadyToStart(boolean campReadyToStart) {
+        isCampReadyToStart = campReadyToStart;
     }
 }

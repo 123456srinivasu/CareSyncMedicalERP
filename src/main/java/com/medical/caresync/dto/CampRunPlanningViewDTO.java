@@ -18,6 +18,7 @@ public class CampRunPlanningViewDTO {
     private LocalDate plannedDate;
     private LocalDate actualStartDate;
     private CampRunStatus campRunStatus;
+    private boolean isCampReadyToStart;
 
     public Long getCampRunId() {
         return campRunId;
@@ -97,5 +98,13 @@ public class CampRunPlanningViewDTO {
 
     public void setCampRunStatus(CampRunStatus campRunStatus) {
         this.campRunStatus = campRunStatus;
+    }
+
+    public boolean isCampReadyToStart() {
+        return isCampReadyToStart;
+    }
+
+    public void setCampReadyToStart(boolean campReadyToStart) {
+        isCampReadyToStart = campReadyToStart;
     }
 }

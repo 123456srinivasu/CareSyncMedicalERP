@@ -197,27 +197,18 @@ public class CampsService {
     }
 
     private CampsListDTO mapToCampListDTO(Camps camps) {
-
         CampsListDTO campsListDTO = new CampsListDTO();
         campsListDTO.setCampId(camps.getCampId());
         campsListDTO.setCampName(camps.getCampName());
         campsListDTO.setCampCode(camps.getCampCode());
         campsListDTO.setOrganizerName(camps.getOrganizerName());
         campsListDTO.setOrganizerPhone(camps.getOrganizerPhone());
-        Optional<CampScheduleTemplates> campScheduleOpt = camps.getSchedules().stream().filter(CampScheduleTemplates::getIsActive).findFirst();
-        if(campScheduleOpt.isPresent()){
-        campsListDTO.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleOpt.get()
-                , LocalDate.now()));
-       } else {
-            campsListDTO.setPlannedDate(LocalDate.now());
-        }
+        setPlaningDateAndReadyState(camps, campsListDTO);
         campsListDTO.setActive(camps.getIsActive());
         campsListDTO.setLocationAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
                 , AddressType.LOCATION));
         campsListDTO.setShippingAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
                 , AddressType.SHIPPING));
-        campsListDTO.setCampReadyToStart(hasDoctors(camps.getCampUsers()) && hasVolunteers(camps.getCampUsers())
-                && hasMedicineStock(camps.getCampMedicineStockSummaries()));
         campsListDTO.setCampRunning(camps.getCampRuns().stream().anyMatch(campRuns -> CampRunStatus.STARTED.equals(campRuns.getStatus())));
         return campsListDTO;
     }
@@ -226,6 +217,30 @@ public class CampsService {
         Optional<CampAddress> addressOptional = campAddresses.stream().filter(campAddress -> addressType.equals(campAddress.getAddressType()))
                 .findFirst();
         return addressOptional.map(campAddress -> mapToAddressResponseDTO(campAddress.getAddress())).orElse(null);
+    }
+
+    private void setPlaningDateAndReadyState(Camps camp, CampsListDTO campsListDTO) {
+        Optional<CampRuns> activeRunOpt = camp.getCampRuns()
+                .stream()
+                .filter(cr -> cr.getStatus() == CampRunStatus.PLANNED
+                        || cr.getStatus() == CampRunStatus.STARTED)
+                .min((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+
+        if (activeRunOpt.isPresent()) {
+            CampRuns run = activeRunOpt.get();
+            if (run.getStatus() == CampRunStatus.PLANNED) {
+                campsListDTO.setPlannedDate(run.getPlannedDate());
+                campsListDTO.setCampReadyToStart(run.isCampReadyToStart());
+            } else {
+                campsListDTO.setPlannedDate(run.getActualDate());
+                campsListDTO.setCampReadyToStart(run.isCampReadyToStart());
+            }
+        } else {
+            Optional<CampScheduleTemplates> campScheduleOpt = camp.getSchedules().stream().filter(CampScheduleTemplates::getIsActive).findFirst();
+            campScheduleOpt.ifPresentOrElse(campScheduleTemplates -> campsListDTO.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleTemplates
+                    , LocalDate.now())), () -> campsListDTO.setPlannedDate(LocalDate.now()));
+            campsListDTO.setCampReadyToStart(false);
+        }
     }
 
     private AddressResponseDTO mapToAddressResponseDTO(Address address) {

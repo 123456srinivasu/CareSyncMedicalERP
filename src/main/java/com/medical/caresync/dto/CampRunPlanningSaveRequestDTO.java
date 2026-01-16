@@ -12,6 +12,7 @@ public class CampRunPlanningSaveRequestDTO {
     private String organizerEmail;
     private String organizerPhone;
     private List<Long> campRunUsers;
+    private boolean isCampReadyToStart;
 
     public Long getCampId() {
         return campId;
@@ -67,5 +68,13 @@ public class CampRunPlanningSaveRequestDTO {
 
     public void setCampRunUsers(List<Long> campRunUsers) {
         this.campRunUsers = campRunUsers;
+    }
+
+    public boolean isCampReadyToStart() {
+        return isCampReadyToStart;
+    }
+
+    public void setCampReadyToStart(boolean campReadyToStart) {
+        isCampReadyToStart = campReadyToStart;
     }
 }
