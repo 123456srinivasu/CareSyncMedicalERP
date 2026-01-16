@@ -46,6 +46,7 @@ public class MedicineStock implements Serializable {
     @JsonBackReference("invoice-stocks")
     private Invoice invoice;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "camp_id", nullable = false, 
                 foreignKey = @ForeignKey(name = "fk_stock_camp"))

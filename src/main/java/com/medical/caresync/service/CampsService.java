@@ -203,7 +203,8 @@ public class CampsService {
         campsListDTO.setCampCode(camps.getCampCode());
         campsListDTO.setOrganizerName(camps.getOrganizerName());
         campsListDTO.setOrganizerPhone(camps.getOrganizerPhone());
-        setPlaningDateAndReadyState(camps, campsListDTO);
+        campsListDTO.setOrganizerEmail(camps.getOrganizerEmail());
+        setCampRunData(camps, campsListDTO);
         campsListDTO.setActive(camps.getIsActive());
         campsListDTO.setLocationAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
                 , AddressType.LOCATION));
@@ -219,7 +220,7 @@ public class CampsService {
         return addressOptional.map(campAddress -> mapToAddressResponseDTO(campAddress.getAddress())).orElse(null);
     }
 
-    private void setPlaningDateAndReadyState(Camps camp, CampsListDTO campsListDTO) {
+    private void setCampRunData(Camps camp, CampsListDTO campsListDTO) {
         Optional<CampRuns> activeRunOpt = camp.getCampRuns()
                 .stream()
                 .filter(cr -> cr.getStatus() == CampRunStatus.PLANNED
@@ -235,6 +236,9 @@ public class CampsService {
                 campsListDTO.setPlannedDate(run.getActualDate());
                 campsListDTO.setCampReadyToStart(run.isCampReadyToStart());
             }
+            campsListDTO.setOrganizerPhone(run.getOrganizerPhone());
+            campsListDTO.setOrganizerName(run.getOrganizerName());
+            campsListDTO.setOrganizerEmail(run.getOrganizerEmail());
         } else {
             Optional<CampScheduleTemplates> campScheduleOpt = camp.getSchedules().stream().filter(CampScheduleTemplates::getIsActive).findFirst();
             campScheduleOpt.ifPresentOrElse(campScheduleTemplates -> campsListDTO.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleTemplates

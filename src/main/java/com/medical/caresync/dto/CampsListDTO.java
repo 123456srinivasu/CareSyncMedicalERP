@@ -10,6 +10,7 @@ public class CampsListDTO {
     private String campCode;
     private String organizerName;
     private String organizerPhone;
+    private String organizerEmail;
     private String location;
     private boolean active;
     private LocalDate plannedDate;
@@ -116,5 +117,13 @@ public class CampsListDTO {
 
     public void setCampReadyToStart(boolean campReadyToStart) {
         isCampReadyToStart = campReadyToStart;
+    }
+
+    public String getOrganizerEmail() {
+        return organizerEmail;
+    }
+
+    public void setOrganizerEmail(String organizerEmail) {
+        this.organizerEmail = organizerEmail;
     }
 }

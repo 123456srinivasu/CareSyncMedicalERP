@@ -49,6 +49,7 @@ public class MedicineLookupNew implements Serializable {
     @Column(name = "updated_by", length = 150)
     private String updatedBy;
 
+
     @OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("medication-stocks")
     private List<MedicineStock> medicineStocks;
