@@ -1,6 +1,7 @@
 package com.medical.caresync.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.medical.caresync.util.CampRunStatus;
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -26,11 +27,7 @@ public class CampRuns implements Serializable {
     private Camps camps;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-            name = "camp_address_id",
-            nullable = false,
-            unique = true
-    )
+    @JoinColumn(name = "camp_address_id", nullable = false, unique = true)
     private CampAddress campAddress;
 
     @Column(name = "planned_date", nullable = false)
@@ -43,7 +40,7 @@ public class CampRuns implements Serializable {
     @Column(name = "status", nullable = false)
     private CampRunStatus status;
 
-    @Column(name = "started_by",  nullable = false)
+    @Column(name = "started_by", nullable = false)
     private String startedBy;
 
     @Column(name = "organizer_name")
@@ -55,12 +52,8 @@ public class CampRuns implements Serializable {
     @Column(name = "organizer_phone")
     private String organizerPhone;
 
-    @OneToMany(
-            mappedBy = "campRuns",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "campRuns", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<CampRunStaff> campRunUsers = new ArrayList<>();
 
     @Column(name = "created_at", insertable = false, updatable = false)
