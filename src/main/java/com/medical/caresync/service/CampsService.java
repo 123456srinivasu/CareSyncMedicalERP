@@ -229,6 +229,7 @@ public class CampsService {
 
         if (activeRunOpt.isPresent()) {
             CampRuns run = activeRunOpt.get();
+            campsListDTO.setCampRunId(run.getCampRunId());
             if (run.getStatus() == CampRunStatus.PLANNED) {
                 campsListDTO.setPlannedDate(run.getPlannedDate());
                 campsListDTO.setCampReadyToStart(run.isCampReadyToStart());

@@ -6,6 +6,7 @@ import java.util.Date;
 public class CampsListDTO {
 
     private Long campId;
+    private Long campRunId;
     private String campName;
     private String campCode;
     private String organizerName;
@@ -125,5 +126,13 @@ public class CampsListDTO {
 
     public void setOrganizerEmail(String organizerEmail) {
         this.organizerEmail = organizerEmail;
+    }
+
+    public Long getCampRunId() {
+        return campRunId;
+    }
+
+    public void setCampRunId(Long campRunId) {
+        this.campRunId = campRunId;
     }
 }
