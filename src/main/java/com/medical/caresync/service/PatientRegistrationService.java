@@ -6,6 +6,9 @@ import com.medical.caresync.entities.Patient;
 import com.medical.caresync.entities.PatientAddress;
 import com.medical.caresync.repository.PatientRegistrationRepository;
 import com.medical.caresync.repository.PatientAddressRepository;
+import com.medical.caresync.repository.PatientCampRepository;
+import com.medical.caresync.entities.PatientCamp;
+import com.medical.caresync.dto.PatientCampDTO;
 import com.medical.caresync.util.PatientSpecs;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import com.medical.caresync.repository.DistrictLookupRepository;
 import com.medical.caresync.repository.MandalLookupRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +40,9 @@ public class PatientRegistrationService {
     @Autowired
     private MandalLookupRepository mandalLookupRepository;
 
+    @Autowired
+    private PatientCampRepository patientCampRepository;
+
     public PatientRegistrationDTO create(PatientRegistrationDTO dto) {
         Patient entity = toEntity(dto);
         // Generate unique MR number if not set
@@ -46,6 +53,16 @@ public class PatientRegistrationService {
         }
         entity.setActive(true);
         Patient saved = patientRegistrationRepository.save(entity);
+
+        // Save PatientCamp if camp details are present
+        if (dto.getPatientCamps() != null && !dto.getPatientCamps().isEmpty()) {
+            for (PatientCampDTO campDTO : dto.getPatientCamps()) {
+                PatientCamp camp = toPatientCampEntity(campDTO);
+                camp.setPatientId(saved.getTblPatientId());
+                camp.setPatient(saved);
+                patientCampRepository.save(camp);
+            }
+        }
         return toDTO(saved);
     }
 
@@ -65,7 +82,27 @@ public class PatientRegistrationService {
         entity.setPatientImage(dto.getPatientImage());
         entity.setPatientAddressesList(dto.getPatientAddressesList().stream().map(this::toAddressEntity).collect(Collectors.toList()));
         Patient saved = patientRegistrationRepository.save(entity);
+
+        // Update PatientCamp if camp details are present
+        if (dto.getPatientCamps() != null && !dto.getPatientCamps().isEmpty()) {
+            for (PatientCampDTO campDTO : dto.getPatientCamps()) {
+                PatientCamp camp = toPatientCampEntity(campDTO);
+                camp.setPatientId(saved.getTblPatientId());
+                camp.setPatient(saved);
+                patientCampRepository.save(camp);
+            }
+        }
         return toDTO(saved);
+    }
+    // Helper to map PatientCampDTO to PatientCamp entity
+    private PatientCamp toPatientCampEntity(PatientCampDTO dto) {
+        PatientCamp entity = new PatientCamp();
+        entity.setId(dto.getId());
+        entity.setPatientId(dto.getPatientId());
+        entity.setCampId(dto.getCampId());
+        entity.setCampDate(dto.getCampDate());
+        entity.setStatus(true);
+        return entity;
     }
 
     @Transactional
@@ -97,6 +134,11 @@ public class PatientRegistrationService {
         dto.setMaritalStatus(entity.getMaritalStatus());
         dto.setPatientImage(entity.getPatientImage());
         dto.setPatientAddressesList(entity.getPatientAddressesList().stream().map(this::toAddressDTO).collect(Collectors.toList()));
+        dto.setPatientCamps(
+                entity.getPatientCamps() != null
+                        ? entity.getPatientCamps().stream().map(this::toPatientCampDTO).collect(Collectors.toList())
+                        : new ArrayList<>()
+        );
         return dto;
     }
 
@@ -116,6 +158,20 @@ public class PatientRegistrationService {
         entity.setPatientImage(dto.getPatientImage());
         entity.setPatientAddressesList(dto.getPatientAddressesList().stream().map(this::toAddressEntity).collect(Collectors.toList()));
         return entity;
+    }
+
+    private PatientCampDTO toPatientCampDTO(PatientCamp entity) {
+        PatientCampDTO dto = new PatientCampDTO();
+        dto.setId(entity.getId());
+        dto.setPatientId(entity.getPatientId());
+        dto.setCampId(entity.getCampId());
+        dto.setCampDate(entity.getCampDate());
+        dto.setStatus(entity.getStatus());
+        dto.setCreateBy(entity.getCreatedBy());
+        dto.setCreateDate(entity.getCreatedAt());
+        dto.setUpdateBy(entity.getCreatedBy());
+        dto.setUpdateDate(entity.getUpdatedAt());
+        return dto;
     }
 
     private PatientAddressDTO toAddressDTO(PatientAddress entity) {

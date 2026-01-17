@@ -1,13 +1,11 @@
 package com.medical.caresync.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "tbl_patient")
@@ -66,6 +64,7 @@ public class Patient extends BaseEntity {
     @JoinColumn(name = "TBL_PATIENT_ID")
     private List<PatientAddress> patientAddressesList;
 
-    
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PatientCamp> patientCamps;
 
 }

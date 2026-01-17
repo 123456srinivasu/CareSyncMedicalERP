@@ -19,4 +19,5 @@ public class PatientRegistrationDTO {
     private String maritalStatus;
     private byte[] patientImage;
     private List<PatientAddressDTO> patientAddressesList;
+    private List<PatientCampDTO> patientCamps;
 }
