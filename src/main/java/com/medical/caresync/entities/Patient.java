@@ -1,77 +1,71 @@
 package com.medical.caresync.entities;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.time.LocalDate;
+import java.util.List;
+@Data
 @Entity
 @Table(name = "tbl_patient")
-public class Patient {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class Patient extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TBL_PATIENT_ID")
     private Long tblPatientId;
 
-    @Column(name = "FIRST_NM")
+
+    @Column(name = "MR_NUMBER", unique = true, nullable = false)
+    private String mrNumber;
+
+    @Column(name = "FIRST_NAME")
     private String firstNm;
 
-    @Column(name = "LAST_NM")
+    @Column(name = "LAST_NAME")
     private String lastNm;
+
+    @Column(name = "FATHER_NAME")
+    private String fatherName;
 
     @Column(name = "AGE")
     private Integer age;
 
+    @Column(name = "WEIGHT")
+    private Double weight;
+
     @Column(name = "MOBILE_NUMBER")
     private String mobileNumber;
 
-    public Patient() {
-    }
+    @Column(name = "GENDER")
+    private String gender;
 
-    public Patient(Long tblPatientId, String firstNm, String lastNm, Integer age, String mobileNumber) {
-        this.tblPatientId = tblPatientId;
-        this.firstNm = firstNm;
-        this.lastNm = lastNm;
-        this.age = age;
-        this.mobileNumber = mobileNumber;
-    }
+    @Column(name = "BLOOD_GROUP")
+    private String bloodGroup;
 
-    public Long getTblPatientId() {
-        return tblPatientId;
-    }
+    @Column(name = "MARITAL_STATUS")
+    private String maritalStatus;
 
-    public void setTblPatientId(Long tblPatientId) {
-        this.tblPatientId = tblPatientId;
-    }
+    @Column(name = "DOB")
+    private LocalDate dob;
 
-    public String getFirstNm() {
-        return firstNm;
-    }
+    @Lob
+    @Column(name = "PATIENT_IMAGE", columnDefinition = "LONGBLOB")
+    private byte[] patientImage;
 
-    public void setFirstNm(String firstNm) {
-        this.firstNm = firstNm;
-    }
+    @Column(name = "IS_ACTIVE", nullable = false)
+    private Boolean active;
 
-    public String getLastNm() {
-        return lastNm;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TBL_PATIENT_ID")
+    private List<PatientAddress> patientAddressesList;
 
-    public void setLastNm(String lastNm) {
-        this.lastNm = lastNm;
-    }
+    
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
 }

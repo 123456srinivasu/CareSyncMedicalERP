@@ -2,10 +2,12 @@ package com.medical.caresync.service;
 
 import com.medical.caresync.dto.PatientRegistrationDTO;
 import com.medical.caresync.dto.PatientAddressDTO;
-import com.medical.caresync.entities.PatientRegistration;
+import com.medical.caresync.entities.Patient;
 import com.medical.caresync.entities.PatientAddress;
 import com.medical.caresync.repository.PatientRegistrationRepository;
 import com.medical.caresync.repository.PatientAddressRepository;
+import com.medical.caresync.util.PatientSpecs;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.medical.caresync.entities.StateLookup;
@@ -14,13 +16,14 @@ import com.medical.caresync.entities.MandalLookup;
 import com.medical.caresync.repository.StateLookupRepository;
 import com.medical.caresync.repository.DistrictLookupRepository;
 import com.medical.caresync.repository.MandalLookupRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PatientRegistrationService {
+
     @Autowired
     private PatientRegistrationRepository patientRegistrationRepository;
     @Autowired
@@ -34,22 +37,24 @@ public class PatientRegistrationService {
     private MandalLookupRepository mandalLookupRepository;
 
     public PatientRegistrationDTO create(PatientRegistrationDTO dto) {
-        PatientRegistration entity = toEntity(dto);
+        Patient entity = toEntity(dto);
         // Generate unique MR number if not set
         if (entity.getMrNumber() == null || entity.getMrNumber().isEmpty()) {
             String prefix = "MR" + java.time.LocalDate.now().getYear();
             long count = patientRegistrationRepository.count() + 1;
             entity.setMrNumber(prefix + String.format("%03d", count));
         }
-        PatientRegistration saved = patientRegistrationRepository.save(entity);
+        entity.setActive(true);
+        Patient saved = patientRegistrationRepository.save(entity);
         return toDTO(saved);
     }
 
     public PatientRegistrationDTO update(Long id, PatientRegistrationDTO dto) {
-        PatientRegistration entity = patientRegistrationRepository.findById(id).orElseThrow();
+        Patient entity = patientRegistrationRepository.
+                findOne(PatientSpecs.isActive().and(PatientSpecs.hasId(id))).orElseThrow(() -> new EntityNotFoundException("Active patient not found"));
         // update fields
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
+        entity.setFirstNm(dto.getFirstName());
+        entity.setLastNm(dto.getLastName());
         entity.setFatherName(dto.getFatherName());
         entity.setAge(dto.getAge());
         entity.setWeight(dto.getWeight());
@@ -59,52 +64,30 @@ public class PatientRegistrationService {
         entity.setMaritalStatus(dto.getMaritalStatus());
         entity.setPatientImage(dto.getPatientImage());
         entity.setPatientAddressesList(dto.getPatientAddressesList().stream().map(this::toAddressEntity).collect(Collectors.toList()));
-        PatientRegistration saved = patientRegistrationRepository.save(entity);
+        Patient saved = patientRegistrationRepository.save(entity);
         return toDTO(saved);
     }
 
+    @Transactional
     public void delete(Long id) {
-        patientRegistrationRepository.deleteById(id);
+        patientRegistrationRepository.softDeleteById(id);
     }
 
     public PatientRegistrationDTO getById(Long id) {
-        return patientRegistrationRepository.findById(id).map(this::toDTO).orElse(null);
+        return patientRegistrationRepository.findOne(PatientSpecs.isActive().and(PatientSpecs.hasId(id))).map(this::toDTO).orElse(null);
     }
 
     public List<PatientRegistrationDTO> getAll() {
-        return patientRegistrationRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    public List<PatientRegistrationDTO> searchByName(String name) {
-        return patientRegistrationRepository.findByFirstNameContainingIgnoreCase(name).stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    public List<PatientRegistrationDTO> searchByFields(Long id, String name, String mrNumber, String mobileNumber) {
-        // If all params are null, return all
-        if (id == null && (name == null || name.isEmpty()) && (mrNumber == null || mrNumber.isEmpty()) && (mobileNumber == null || mobileNumber.isEmpty())) {
-            return getAll();
-        }
-        return patientRegistrationRepository
-            .findByFirstNameContainingIgnoreCaseOrMrNumberOrMobileNumberOrTblPatientId(
-                name != null ? name : "",
-                mrNumber,
-                mobileNumber,
-                id
-            )
-            .stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    public List<PatientRegistrationDTO> searchByMobileNumber(String mobileNumber) {
-        return patientRegistrationRepository.findByMobileNumber(mobileNumber).stream().map(this::toDTO).collect(Collectors.toList());
+        return patientRegistrationRepository.findAll(PatientSpecs.isActive()).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     // Mapping helpers
-    private PatientRegistrationDTO toDTO(PatientRegistration entity) {
+    private PatientRegistrationDTO toDTO(Patient entity) {
         PatientRegistrationDTO dto = new PatientRegistrationDTO();
         dto.setTblPatientId(entity.getTblPatientId());
         dto.setMrNumber(entity.getMrNumber());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
+        dto.setFirstName(entity.getFirstNm());
+        dto.setLastName(entity.getLastNm());
         dto.setFatherName(entity.getFatherName());
         dto.setAge(entity.getAge());
         dto.setWeight(entity.getWeight());
@@ -117,12 +100,12 @@ public class PatientRegistrationService {
         return dto;
     }
 
-    private PatientRegistration toEntity(PatientRegistrationDTO dto) {
-        PatientRegistration entity = new PatientRegistration();
+    private Patient toEntity(PatientRegistrationDTO dto) {
+        Patient entity = new Patient();
         entity.setTblPatientId(dto.getTblPatientId());
         entity.setMrNumber(dto.getMrNumber());
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
+        entity.setFirstNm(dto.getFirstName());
+        entity.setLastNm(dto.getLastName());
         entity.setFatherName(dto.getFatherName());
         entity.setAge(dto.getAge());
         entity.setWeight(dto.getWeight());
@@ -188,4 +171,19 @@ public class PatientRegistrationService {
         entity.setPostalCode(dto.getPostalCode());
         return entity;
     }
+
+    public List<PatientRegistrationDTO> searchPatients(String searchPatient) {
+
+        if (searchPatient == null || searchPatient.trim().isEmpty()) {
+            return getAll();
+        }
+
+        return patientRegistrationRepository
+                .findAll(PatientSpecs.isActive()
+                                .and(PatientSpecs.searchPatient(searchPatient)))
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
