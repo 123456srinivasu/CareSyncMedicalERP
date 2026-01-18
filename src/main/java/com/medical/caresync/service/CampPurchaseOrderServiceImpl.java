@@ -225,8 +225,29 @@ public class CampPurchaseOrderServiceImpl implements CampPurchaseOrderService {
     }
 
     @Override
+    public List<CampPurchaseOrderResponseDTO> getPurchaseOrdersBySupplierIdWithFilters(Long supplierId, Long campId,
+            String status) {
+        List<CampPurchaseOrder> purchaseOrders = purchaseOrderRepository.findBySupplierIdWithFilters(supplierId, campId,
+                status);
+        return purchaseOrders.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CampPurchaseOrderResponseDTO.OrderLineDTO> getOrderLinesByOrderId(Long purchaseOrderId) {
+        CampPurchaseOrder purchaseOrder = purchaseOrderRepository.findById(purchaseOrderId)
+                .orElseThrow(() -> new BadRequestException("Purchase order not found with ID: " + purchaseOrderId));
+
+        return purchaseOrder.getOrderLines().stream()
+                .map(this::mapToOrderLineDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public void deletePurchaseOrder(Long purchaseOrderId) {
+
         if (!purchaseOrderRepository.existsById(purchaseOrderId)) {
             throw new BadRequestException("Purchase order not found with ID: " + purchaseOrderId);
         }

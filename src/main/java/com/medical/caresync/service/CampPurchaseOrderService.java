@@ -22,5 +22,10 @@ public interface CampPurchaseOrderService {
 
     List<CampPurchaseOrderResponseDTO> getPurchaseOrdersBySupplierId(Long supplierId);
 
+    List<CampPurchaseOrderResponseDTO> getPurchaseOrdersBySupplierIdWithFilters(Long supplierId, Long campId,
+            String status);
+
+    List<CampPurchaseOrderResponseDTO.OrderLineDTO> getOrderLinesByOrderId(Long purchaseOrderId);
+
     void deletePurchaseOrder(Long purchaseOrderId);
 }

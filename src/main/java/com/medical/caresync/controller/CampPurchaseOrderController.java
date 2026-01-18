@@ -90,8 +90,39 @@ public class CampPurchaseOrderController {
         }
     }
 
+    @GetMapping("/{id}/order-lines")
+    public ResponseEntity<?> getOrderLinesByOrderId(@PathVariable Long id) {
+        try {
+            List<CampPurchaseOrderResponseDTO.OrderLineDTO> orderLines = campPurchaseOrderService
+                    .getOrderLinesByOrderId(id);
+            return ResponseEntity.ok(orderLines);
+        } catch (BadRequestException ex) {
+            LOGGER.error("Purchase order not found", ex);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("Exception while fetching order lines", e);
+            return ResponseEntity.internalServerError().body(Map.of("error", "Internal server error"));
+        }
+    }
+
+    @GetMapping("/supplier/{supplierId}")
+    public ResponseEntity<?> getPurchaseOrdersBySupplierId(
+            @PathVariable Long supplierId,
+            @RequestParam(required = false) Long campId,
+            @RequestParam(required = false) String status) {
+        try {
+            List<CampPurchaseOrderResponseDTO> purchaseOrders = campPurchaseOrderService
+                    .getPurchaseOrdersBySupplierIdWithFilters(supplierId, campId, status);
+            return ResponseEntity.ok(purchaseOrders);
+        } catch (Exception e) {
+            LOGGER.error("Exception while fetching purchase orders for supplier", e);
+            return ResponseEntity.internalServerError().body(Map.of("error", "Internal server error"));
+        }
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllPurchaseOrders(
+
             @RequestParam(required = false) Long campId,
             @RequestParam(required = false) Long supplierId) {
         try {
