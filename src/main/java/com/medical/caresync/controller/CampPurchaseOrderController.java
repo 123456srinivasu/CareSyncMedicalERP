@@ -2,6 +2,7 @@ package com.medical.caresync.controller;
 
 import com.medical.caresync.dto.CampPurchaseOrderRequestDTO;
 import com.medical.caresync.dto.CampPurchaseOrderResponseDTO;
+import com.medical.caresync.dto.SupplierOrderReviewDTO;
 import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.service.CampPurchaseOrderService;
 import jakarta.validation.Valid;
@@ -55,6 +56,22 @@ public class CampPurchaseOrderController {
             return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
         } catch (Exception e) {
             LOGGER.error("Exception while updating purchase order", e);
+            return ResponseEntity.internalServerError().body(Map.of("error", "Internal server error"));
+        }
+    }
+
+    @PutMapping("/{id}/review")
+    public ResponseEntity<?> reviewPurchaseOrder(
+            @PathVariable Long id,
+            @Valid @RequestBody SupplierOrderReviewDTO reviewDTO) {
+        try {
+            CampPurchaseOrderResponseDTO reviewedOrder = campPurchaseOrderService.reviewPurchaseOrder(id, reviewDTO);
+            return ResponseEntity.ok(reviewedOrder);
+        } catch (BadRequestException ex) {
+            LOGGER.error("Invalid request while reviewing purchase order", ex);
+            return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("Exception while reviewing purchase order", e);
             return ResponseEntity.internalServerError().body(Map.of("error", "Internal server error"));
         }
     }

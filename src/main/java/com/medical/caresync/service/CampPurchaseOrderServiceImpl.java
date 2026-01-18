@@ -2,6 +2,7 @@ package com.medical.caresync.service;
 
 import com.medical.caresync.dto.CampPurchaseOrderRequestDTO;
 import com.medical.caresync.dto.CampPurchaseOrderResponseDTO;
+import com.medical.caresync.dto.SupplierOrderReviewDTO;
 import com.medical.caresync.entities.*;
 import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.repository.*;
@@ -124,6 +125,72 @@ public class CampPurchaseOrderServiceImpl implements CampPurchaseOrderService {
 
         CampPurchaseOrder updatedOrder = purchaseOrderRepository.save(purchaseOrder);
         return mapToResponseDTO(updatedOrder);
+    }
+
+    @Override
+    @Transactional
+    public CampPurchaseOrderResponseDTO reviewPurchaseOrder(Long purchaseOrderId, SupplierOrderReviewDTO reviewDTO) {
+        CampPurchaseOrder purchaseOrder = purchaseOrderRepository.findById(purchaseOrderId)
+                .orElseThrow(() -> new BadRequestException("Purchase order not found with ID: " + purchaseOrderId));
+
+        // Update order-level fields
+        purchaseOrder.setRemarks(reviewDTO.getRemarks());
+        purchaseOrder.setReviewedAt(new Timestamp(System.currentTimeMillis()));
+
+        // Track overall approval status
+        boolean allApproved = true;
+        boolean anyApproved = false;
+        boolean anyRejected = false;
+
+        // Update order lines
+        for (SupplierOrderReviewDTO.OrderLineReviewDTO lineReview : reviewDTO.getOrderLines()) {
+            CampPurchaseOrderLine orderLine = orderLineRepository.findById(lineReview.getOrderLineId())
+                    .orElseThrow(() -> new BadRequestException(
+                            "Order line not found with ID: " + lineReview.getOrderLineId()));
+
+            // Verify this line belongs to the purchase order
+            if (!orderLine.getPurchaseOrder().getPurchaseOrderId().equals(purchaseOrderId)) {
+                throw new BadRequestException("Order line " + lineReview.getOrderLineId()
+                        + " does not belong to purchase order " + purchaseOrderId);
+            }
+
+            // Update line fields
+            orderLine.setApprovedQuantity(lineReview.getApprovedQuantity());
+            orderLine.setApprovedUnitPrice(lineReview.getApprovedUnitPrice());
+            orderLine.setLineStatus(lineReview.getLineStatus());
+            orderLine.setSupplierComment(lineReview.getSupplierComment());
+
+            // Track status for overall order status calculation
+            if ("APPROVED".equals(lineReview.getLineStatus())) {
+                anyApproved = true;
+                if (lineReview.getApprovedQuantity() < orderLine.getRequestedQuantity()) {
+                    allApproved = false; // Partial approval
+                }
+            } else if ("REJECTED".equals(lineReview.getLineStatus())) {
+                anyRejected = true;
+                allApproved = false;
+            } else if ("PARTIAL".equals(lineReview.getLineStatus())) {
+                anyApproved = true;
+                allApproved = false;
+            }
+
+            orderLineRepository.save(orderLine);
+        }
+
+        // Calculate overall order status
+        String orderStatus;
+        if (allApproved && anyApproved) {
+            orderStatus = "ACCEPTED";
+        } else if (!anyApproved && anyRejected) {
+            orderStatus = "REJECTED";
+        } else {
+            orderStatus = "PARTIALLY_ACCEPTED";
+        }
+
+        purchaseOrder.setOrderStatus(orderStatus);
+        CampPurchaseOrder savedOrder = purchaseOrderRepository.save(purchaseOrder);
+
+        return mapToResponseDTO(savedOrder);
     }
 
     @Override
