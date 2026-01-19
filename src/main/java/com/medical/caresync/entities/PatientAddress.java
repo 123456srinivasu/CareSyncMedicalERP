@@ -10,7 +10,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tbl_patient-address")
+@Table(name = "patient_address")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

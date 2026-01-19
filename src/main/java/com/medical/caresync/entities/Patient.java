@@ -8,7 +8,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "tbl_patient")
+@Table(name = "patient")
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
