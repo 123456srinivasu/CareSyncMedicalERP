@@ -1,26 +1,38 @@
 package com.medical.caresync.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "patient_camp")
-public class PatientCamp {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PatientCamp extends  BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Add fields here
+    @Column(name = "patient_id")
+    private Long patientId;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "camp_id")
+    private Long campId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "camp_date")
+    private LocalDate campDate;
+
+    @Column(name = "status")
+    private Boolean status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", insertable = false, updatable = false)
+    private Patient patient;
 }

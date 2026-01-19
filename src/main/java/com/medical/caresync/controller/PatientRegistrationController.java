@@ -52,26 +52,11 @@ public class PatientRegistrationController {
         return ResponseEntity.ok(patientRegistrationService.getAll());
     }
 
-    @Operation(summary = "Search patient registrations by name")
-    @GetMapping("/search/by-name")
-    public ResponseEntity<List<PatientRegistrationDTO>> searchByName(@RequestParam String name) {
-        return ResponseEntity.ok(patientRegistrationService.searchByName(name));
-    }
-
-    @Operation(summary = "Search patient registrations by mobile number")
-    @GetMapping("/search/by-mobile")
-    public ResponseEntity<List<PatientRegistrationDTO>> searchByMobile(@RequestParam String mobileNumber) {
-        return ResponseEntity.ok(patientRegistrationService.searchByMobileNumber(mobileNumber));
-    }
-
-    @Operation(summary = "Search patient registrations by id, name, MR number, or mobile number")
-    @GetMapping("/search/by-fields")
-    public ResponseEntity<List<PatientRegistrationDTO>> searchByFields(
-            @RequestParam(required = false) Long id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String mrNumber,
-            @RequestParam(required = false) String mobileNumber) {
-        return ResponseEntity.ok(patientRegistrationService.searchByFields(id, name, mrNumber, mobileNumber));
+    @Operation(summary = "Search patient registrations by name, MR number, or mobile number")
+    @GetMapping("/search")
+    public ResponseEntity<List<PatientRegistrationDTO>> searchPatients(
+            @RequestParam String searchPatient) {
+        return ResponseEntity.ok(patientRegistrationService.searchPatients(searchPatient));
     }
 
     @Operation(summary = "Create a new patient registration with image upload")
@@ -82,6 +67,4 @@ public class PatientRegistrationController {
         dto.setPatientImage(image.getBytes());
         return ResponseEntity.ok(dto.getTblPatientId() != null ? patientRegistrationService.update(dto.getTblPatientId(), dto) :  patientRegistrationService.create(dto));
     }
-
-
 }
