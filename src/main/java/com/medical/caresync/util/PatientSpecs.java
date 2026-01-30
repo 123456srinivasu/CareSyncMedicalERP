@@ -28,15 +28,21 @@ public class PatientSpecs {
 
     public static Specification<Patient> searchPatient(String value) {
         return (root, query, cb) -> {
-            String pattern = "%" + value.toLowerCase() + "%";
-
-            return cb.or(
-                    cb.like(cb.lower(root.get("firstNm")), pattern),
-                    cb.like(cb.lower(root.get("lastNm")), pattern),
-                    cb.like(cb.lower(root.get("mrNumber")), pattern),
-                    cb.like(root.get("mobileNumber"), pattern),
-                    cb.like(root.get("tblPatientId"), pattern)
+            // Strict match for MR Number and Mobile Number
+            var predicate = cb.or(
+                    cb.equal(root.get("mrNumber"), value),
+                    cb.equal(root.get("mobileNumber"), value)
             );
+
+            // strict match for Patient ID if the input is a number
+            try {
+                Long id = Long.parseLong(value);
+                predicate = cb.or(predicate, cb.equal(root.get("tblPatientId"), id));
+            } catch (NumberFormatException ignored) {
+                // Not a number, so it can't be an ID. Ignore.
+            }
+
+            return predicate;
         };
     }
 
