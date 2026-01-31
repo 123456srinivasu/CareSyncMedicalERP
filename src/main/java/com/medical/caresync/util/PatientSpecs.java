@@ -28,14 +28,13 @@ public class PatientSpecs {
 
     public static Specification<Patient> searchPatient(String value) {
         return (root, query, cb) -> {
-            String pattern = "%" + value.toLowerCase() + "%";
-
+            String likePattern = "%" + value.toLowerCase() + "%";
             return cb.or(
-                    cb.like(cb.lower(root.get("firstNm")), pattern),
-                    cb.like(cb.lower(root.get("lastNm")), pattern),
-                    cb.like(cb.lower(root.get("mrNumber")), pattern),
-                    cb.like(root.get("mobileNumber"), pattern),
-                    cb.like(root.get("tblPatientId"), pattern)
+                    cb.like(cb.lower(root.get("mrNumber")), likePattern),
+                    cb.like(cb.lower(root.get("mobileNumber")), likePattern),
+                    cb.like(root.get("tblPatientId").as(String.class), likePattern),
+                    cb.like(cb.lower(root.get("firstNm")), likePattern),
+                    cb.like(cb.lower(root.get("lastNm")), likePattern)
             );
         };
     }

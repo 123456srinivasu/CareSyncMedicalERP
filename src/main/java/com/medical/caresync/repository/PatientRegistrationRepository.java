@@ -16,4 +16,6 @@ public interface PatientRegistrationRepository extends JpaRepository<Patient, Lo
     @Modifying
     @Query("UPDATE Patient p SET p.active = false WHERE p.tblPatientId = :id AND p.active = true")
     void softDeleteById(@Param("id") Long id);
+
+    Patient findByMrNumber(String mrNumber);
 }

@@ -55,7 +55,7 @@ public class PatientRegistrationController {
     @Operation(summary = "Search patient registrations by name, MR number, or mobile number")
     @GetMapping("/search")
     public ResponseEntity<List<PatientRegistrationDTO>> searchPatients(
-            @RequestParam String searchPatient) {
+            @RequestParam("searchPatient") String searchPatient) {
         return ResponseEntity.ok(patientRegistrationService.searchPatients(searchPatient));
     }
 
@@ -64,7 +64,8 @@ public class PatientRegistrationController {
     public ResponseEntity<PatientRegistrationDTO> createWithImage(
             @RequestPart("patient") PatientRegistrationDTO dto,
             @RequestPart("image") MultipartFile image) throws IOException {
-        dto.setPatientImage(image.getBytes());
-        return ResponseEntity.ok(dto.getTblPatientId() != null ? patientRegistrationService.update(dto.getTblPatientId(), dto) :  patientRegistrationService.create(dto));
+        return null;
+        //dto.setPatientImage(image.getBytes());
+       // return ResponseEntity.ok(dto.getTblPatientId() != null ? patientRegistrationService.update(dto.getTblPatientId(), dto) :  );
     }
 }

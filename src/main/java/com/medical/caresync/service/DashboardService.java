@@ -1,39 +1,41 @@
 package com.medical.caresync.service;
 
-import com.medical.caresync.dto.DashboardDTO;
-import com.medical.caresync.entities.Dashboard;
-import com.medical.caresync.repository.DashboardRepository;
+import com.medical.caresync.dto.DashboardSummaryDTO;
+import com.medical.caresync.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
 
     @Autowired
-    private DashboardRepository dashboardRepository;
+    private CampsRepository campsRepository;
 
-    public List<DashboardDTO> getAllDashboards() {
-        return dashboardRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
+    @Autowired
+    private PatientRegistrationRepository patientRegistrationRepository;
 
-    public DashboardDTO createDashboard(DashboardDTO dashboardDTO) {
-        Dashboard dashboard = convertToEntity(dashboardDTO);
-        dashboard = dashboardRepository.save(dashboard);
-        return convertToDTO(dashboard);
-    }
+    @Autowired
+    private MedicineLookupNewRepository medicineLookupNewRepository;
 
-    private DashboardDTO convertToDTO(Dashboard dashboard) {
-        DashboardDTO dto = new DashboardDTO();
-        dto.setId(dashboard.getId());
-        return dto;
-    }
+    @Autowired
+    private UsersRepository usersRepository;
 
-    private Dashboard convertToEntity(DashboardDTO dto) {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setId(dto.getId());
-        return dashboard;
+    @Autowired
+    private PatientDiscountRepository patientDiscountRepository;
+
+    @Autowired
+    private CampDiagnosisReportRepository campDiagnosisReportRepository;
+
+    public DashboardSummaryDTO getSummary() {
+        DashboardSummaryDTO summary = new DashboardSummaryDTO();
+
+        summary.setCampsCount(campsRepository.count());
+        summary.setPatientsCount(patientRegistrationRepository.count());
+        summary.setMedicinesCount(medicineLookupNewRepository.count());
+        summary.setDoctorsCount(usersRepository.findUsersByRoleName("DOCTOR").size());
+        summary.setDiscountsCount(patientDiscountRepository.count());
+        summary.setIllnessCount(campDiagnosisReportRepository.countDistinctDiagnosis());
+
+        return summary;
     }
 }

@@ -15,4 +15,7 @@ public interface CampDiagnosisReportRepository extends JpaRepository<CampDiagnos
            "WHERE r.diagnosis LIKE %:diagnosis% " +
            "AND (:campId IS NULL OR r.campDetail.tblCamp.tblCampId = :campId)")
     List<CampDiagnosisReportDTO> findByDiagnosis(@Param("diagnosis") String diagnosis, @Param("campId") Integer campId);
+
+    @Query("SELECT COUNT(DISTINCT r.diagnosis) FROM CampDiagnosisReport r")
+    Long countDistinctDiagnosis();
 }
