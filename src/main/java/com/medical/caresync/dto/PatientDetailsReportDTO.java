@@ -1,0 +1,20 @@
+package com.medical.caresync.dto;
+
+import lombok.Data;
+import java.util.List;
+
+@Data
+public class PatientDetailsReportDTO {
+    private Long tblPatientId;
+    private String mrNumber;
+    private String firstName;
+    private String lastName;
+    private String fatherName;
+    private Integer age;
+    private Double weight;
+    private String mobileNumber;
+    private String gender;
+    private String bloodGroup;
+    private String maritalStatus;
+    private List<PatientAddressDTO> patientAddressesList;
+}
