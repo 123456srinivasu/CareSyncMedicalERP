@@ -3,8 +3,10 @@ package com.medical.caresync.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,21 +15,20 @@ import lombok.NoArgsConstructor;
 public class VitalsLookUp extends BaseEntity {
 
     @Id
-    @Column(name = "VITAL_LOOKUP_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vitalId;
+    @Column(name = "vital_lookup_id")
+    private Long vitalLookupId;
 
-    @Column(name = "VITAL_NAME")
+    @Column(name = "vital_name")
     private String vitalName;
 
-    @Column(name = "reference_range")
+    @Column(name = "reference_range", length = 50)
     private String referenceRange;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "IS_ACTIVE")
+    @Column(name = "is_active")
     private Boolean isActive;
-
 
 }
