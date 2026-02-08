@@ -21,7 +21,7 @@ public class VitalLookUpService {
 
     private VitalLookUpDTO toDTO(VitalsLookUp entity) {
         VitalLookUpDTO dto = new VitalLookUpDTO();
-        dto.setVitalId(entity.getVitalId());
+        dto.setVitalId(entity.getVitalLookupId());
         dto.setVitalName(entity.getVitalName());
         dto.setReferenceRange(entity.getReferenceRange());
         dto.setDescription(entity.getDescription());

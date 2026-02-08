@@ -3,31 +3,38 @@ package com.medical.caresync.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PATIENT_VISIT_VITALS")
+@Table(name = "patient_visit_vitals")
 public class PatientVisitVitals extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PATIENT_VISIT_VITALS_ID")
-    private Long id;
+    @Column(name = "patient_visit_vitals_id")
+    private Long patientVisitVitalsId;
 
-    @Column(name = "PATIENT_VISIT_ID")
-    private Long patientVisitId;
+    @Column(name = "measurement_type")
+    private String measurementType;
 
-    @Column(name = "PATIENT_ID")
-    private Long patientId;
-
-    @Column(name = "VIRAL_LOOKUP_ID")
-    private Long viralLookupId;
-
-    @Column(name = "VITAL_VALUE")
+    @Column(name = "vital_value")
     private String vitalValue;
 
-    @Column(name = "MEASUREMENT_TYPE")
-    private String measurementType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_visit_id")
+    private PatientVisit patientVisit;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vital_lookup_id")
+    private VitalsLookUp vitalsLookUp;
 
 }
