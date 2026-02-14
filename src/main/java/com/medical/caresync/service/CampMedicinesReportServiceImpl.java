@@ -3,7 +3,7 @@ package com.medical.caresync.service;
 import com.medical.caresync.dto.CampMedicinesReportDTO;
 import com.medical.caresync.dto.CampMedicinesReportSummaryDTO;
 import com.medical.caresync.repository.CampMedicinesReportRepository;
-import com.medical.caresync.service.CampMedicinesReportService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

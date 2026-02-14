@@ -65,6 +65,8 @@ public class CampQuestionService {
                 question.getQuestionId(),
                 question.getQuestionText(),
                 question.getQuestionType(),
+                question.getQuestionsCategory(),
+                question.getDefaultDisplay(),
                 optionDTOs
         );
     }

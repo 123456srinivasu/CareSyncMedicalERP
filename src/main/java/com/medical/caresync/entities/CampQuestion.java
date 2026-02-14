@@ -24,6 +24,12 @@ public class CampQuestion implements Serializable {
     @Column(name = "question_type", length = 50, nullable = false)
     private String questionType;
 
+    @Column(name = "questions_category", length = 255)
+    private String questionsCategory;
+
+    @Column(name = "default_display", length = 255)
+    private String defaultDisplay;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -106,5 +112,21 @@ public class CampQuestion implements Serializable {
 
     public void setFlows(Set<CampQuestionFlow> flows) {
         this.flows = flows;
+    }
+
+    public String getQuestionsCategory() {
+        return questionsCategory;
+    }
+
+    public void setQuestionsCategory(String questionsCategory) {
+        this.questionsCategory = questionsCategory;
+    }
+
+    public String getDefaultDisplay() {
+        return defaultDisplay;
+    }
+
+    public void setDefaultDisplay(String defaultDisplay) {
+        this.defaultDisplay = defaultDisplay;
     }
 }
