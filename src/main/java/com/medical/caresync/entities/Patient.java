@@ -23,6 +23,14 @@ public class Patient extends BaseEntity {
     @Column(name = "MR_NUMBER", unique = true, nullable = false)
     private String mrNumber;
 
+    public String getMrNumber() {
+        return mrNumber;
+    }
+
+    public void setMrNumber(String mrNumber) {
+        this.mrNumber = mrNumber;
+    }
+
     @Column(name = "FIRST_NAME")
     private String firstNm;
 

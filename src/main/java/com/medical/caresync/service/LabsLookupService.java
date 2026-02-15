@@ -19,10 +19,10 @@ public class LabsLookupService {
 
     private LabsLookupDTO toDTO(LabsLookup entity) {
         LabsLookupDTO dto = new LabsLookupDTO();
-        dto.setId(entity.getId());
-        dto.setLabTestName(entity.getLabTestName());
-        dto.setDescription(entity.getDescription());
-        dto.setIsActive(entity.getIsActive());
+//        dto.setId(entity.getId());
+//        dto.setLabTestName(entity.getLabTestName());
+//        dto.setDescription(entity.getDescription());
+//        dto.setIsActive(entity.getIsActive());
         return dto;
     }
 }
