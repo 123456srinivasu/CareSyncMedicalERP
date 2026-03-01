@@ -8,18 +8,18 @@ public class CampScheduleTemplateDTO {
     private String dayOfWeek; // MONDAY, ...
     @NotNull
     private Integer weekOfMonth; // 1–5
-    private Boolean january = false;
-    private Boolean february = false;
-    private Boolean march = false;
-    private Boolean april = false;
-    private Boolean may = false;
-    private Boolean june = false;
-    private Boolean july = false;
-    private Boolean august = false;
-    private Boolean september = false;
-    private Boolean october = false;
-    private Boolean november = false;
-    private Boolean december = false;
+    private Boolean monthJanuary = false;
+    private Boolean monthFebruary = false;
+    private Boolean monthMarch = false;
+    private Boolean monthApril = false;
+    private Boolean monthMay = false;
+    private Boolean monthJune = false;
+    private Boolean monthJuly = false;
+    private Boolean monthAugust = false;
+    private Boolean monthSeptember = false;
+    private Boolean monthOctober = false;
+    private Boolean monthNovember = false;
+    private Boolean monthDecember = false;
 
     public String getDayOfWeek() {
         return dayOfWeek;
@@ -37,99 +37,99 @@ public class CampScheduleTemplateDTO {
         this.weekOfMonth = weekOfMonth;
     }
 
-    public Boolean getJanuary() {
-        return january;
+    public Boolean getMonthJanuary() {
+        return monthJanuary;
     }
 
-    public void setJanuary(Boolean january) {
-        this.january = january;
+    public void setMonthJanuary(Boolean monthJanuary) {
+        this.monthJanuary = monthJanuary;
     }
 
-    public Boolean getFebruary() {
-        return february;
+    public Boolean getMonthFebruary() {
+        return monthFebruary;
     }
 
-    public void setFebruary(Boolean february) {
-        this.february = february;
+    public void setMonthFebruary(Boolean monthFebruary) {
+        this.monthFebruary = monthFebruary;
     }
 
-    public Boolean getMarch() {
-        return march;
+    public Boolean getMonthMarch() {
+        return monthMarch;
     }
 
-    public void setMarch(Boolean march) {
-        this.march = march;
+    public void setMonthMarch(Boolean monthMarch) {
+        this.monthMarch = monthMarch;
     }
 
-    public Boolean getApril() {
-        return april;
+    public Boolean getMonthApril() {
+        return monthApril;
     }
 
-    public void setApril(Boolean april) {
-        this.april = april;
+    public void setMonthApril(Boolean monthApril) {
+        this.monthApril = monthApril;
     }
 
-    public Boolean getMay() {
-        return may;
+    public Boolean getMonthMay() {
+        return monthMay;
     }
 
-    public void setMay(Boolean may) {
-        this.may = may;
+    public void setMonthMay(Boolean monthMay) {
+        this.monthMay = monthMay;
     }
 
-    public Boolean getJune() {
-        return june;
+    public Boolean getMonthJune() {
+        return monthJune;
     }
 
-    public void setJune(Boolean june) {
-        this.june = june;
+    public void setMonthJune(Boolean monthJune) {
+        this.monthJune = monthJune;
     }
 
-    public Boolean getJuly() {
-        return july;
+    public Boolean getMonthJuly() {
+        return monthJuly;
     }
 
-    public void setJuly(Boolean july) {
-        this.july = july;
+    public void setMonthJuly(Boolean monthJuly) {
+        this.monthJuly = monthJuly;
     }
 
-    public Boolean getAugust() {
-        return august;
+    public Boolean getMonthAugust() {
+        return monthAugust;
     }
 
-    public void setAugust(Boolean august) {
-        this.august = august;
+    public void setMonthAugust(Boolean monthAugust) {
+        this.monthAugust = monthAugust;
     }
 
-    public Boolean getSeptember() {
-        return september;
+    public Boolean getMonthSeptember() {
+        return monthSeptember;
     }
 
-    public void setSeptember(Boolean september) {
-        this.september = september;
+    public void setMonthSeptember(Boolean monthSeptember) {
+        this.monthSeptember = monthSeptember;
     }
 
-    public Boolean getOctober() {
-        return october;
+    public Boolean getMonthOctober() {
+        return monthOctober;
     }
 
-    public void setOctober(Boolean october) {
-        this.october = october;
+    public void setMonthOctober(Boolean monthOctober) {
+        this.monthOctober = monthOctober;
     }
 
-    public Boolean getNovember() {
-        return november;
+    public Boolean getMonthNovember() {
+        return monthNovember;
     }
 
-    public void setNovember(Boolean november) {
-        this.november = november;
+    public void setMonthNovember(Boolean monthNovember) {
+        this.monthNovember = monthNovember;
     }
 
-    public Boolean getDecember() {
-        return december;
+    public Boolean getMonthDecember() {
+        return monthDecember;
     }
 
-    public void setDecember(Boolean december) {
-        this.december = december;
+    public void setMonthDecember(Boolean monthDecember) {
+        this.monthDecember = monthDecember;
     }
 }

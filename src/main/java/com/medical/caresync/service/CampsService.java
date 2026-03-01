@@ -74,6 +74,7 @@ public class CampsService {
         camp.setCreatedBy("ADMIN");
         camp.setUpdatedBy("ADMIN");
         camp.setCampEstablishmentYear(campsDTO.getEstablishmentYear());
+        camp.setMedicineResponsibility(campsDTO.getMedicineResponsibility());
 
         CampAddress campLocationAddress = new CampAddress();
         campLocationAddress.setAddressType(AddressType.LOCATION);
@@ -96,7 +97,7 @@ public class CampsService {
     }
 
     private void assignUsersToCamp(Camps camp, List<Users> users) {
-        Set<CampUsers> campUserList = users.stream().map(user -> {
+        Set<CampUsers> newCampUsers = users.stream().map(user -> {
             CampUsers campUsers = new CampUsers();
             campUsers.setCamps(camp);
             campUsers.setUsers(user);
@@ -106,7 +107,9 @@ public class CampsService {
             campUsers.setUpdatedBy("ADMIN");
             return campUsers;
         }).collect(Collectors.toSet());
-        camp.setCampUsers(campUserList);
+        
+        camp.getCampUsers().clear();
+        camp.getCampUsers().addAll(newCampUsers);
     }
 
     private Address getCampAddressFromDTO(AddressDTO addressDTO) {
@@ -130,18 +133,18 @@ public class CampsService {
         campScheduleTemplates.setDayOfWeek(CampScheduleTemplates.DayOfWeekEnum.valueOf(campScheduleTemplateDTO.getDayOfWeek().toUpperCase()));
         campScheduleTemplates.setWeekOfMonth(campScheduleTemplateDTO.getWeekOfMonth());
         campScheduleTemplates.setIsActive(true);
-        campScheduleTemplates.setMonthJanuary(campScheduleTemplateDTO.getJanuary());
-        campScheduleTemplates.setMonthFebruary(campScheduleTemplateDTO.getFebruary());
-        campScheduleTemplates.setMonthMarch(campScheduleTemplateDTO.getMarch());
-        campScheduleTemplates.setMonthApril(campScheduleTemplateDTO.getApril());
-        campScheduleTemplates.setMonthMay(campScheduleTemplateDTO.getMay());
-        campScheduleTemplates.setMonthJune(campScheduleTemplateDTO.getJune());
-        campScheduleTemplates.setMonthJuly(campScheduleTemplateDTO.getJuly());
-        campScheduleTemplates.setMonthAugust(campScheduleTemplateDTO.getAugust());
-        campScheduleTemplates.setMonthSeptember(campScheduleTemplateDTO.getSeptember());
-        campScheduleTemplates.setMonthOctober(campScheduleTemplateDTO.getOctober());
-        campScheduleTemplates.setMonthNovember(campScheduleTemplateDTO.getNovember());
-        campScheduleTemplates.setMonthDecember(campScheduleTemplateDTO.getDecember());
+        campScheduleTemplates.setMonthJanuary(campScheduleTemplateDTO.getMonthJanuary());
+        campScheduleTemplates.setMonthFebruary(campScheduleTemplateDTO.getMonthFebruary());
+        campScheduleTemplates.setMonthMarch(campScheduleTemplateDTO.getMonthMarch());
+        campScheduleTemplates.setMonthApril(campScheduleTemplateDTO.getMonthApril());
+        campScheduleTemplates.setMonthMay(campScheduleTemplateDTO.getMonthMay());
+        campScheduleTemplates.setMonthJune(campScheduleTemplateDTO.getMonthJune());
+        campScheduleTemplates.setMonthJuly(campScheduleTemplateDTO.getMonthJuly());
+        campScheduleTemplates.setMonthAugust(campScheduleTemplateDTO.getMonthAugust());
+        campScheduleTemplates.setMonthSeptember(campScheduleTemplateDTO.getMonthSeptember());
+        campScheduleTemplates.setMonthOctober(campScheduleTemplateDTO.getMonthOctober());
+        campScheduleTemplates.setMonthNovember(campScheduleTemplateDTO.getMonthNovember());
+        campScheduleTemplates.setMonthDecember(campScheduleTemplateDTO.getMonthDecember());
         campScheduleTemplates.setCreatedAt(LocalDateTime.now());
         campScheduleTemplates.setCreatedBy("ADMIN");
         campScheduleTemplates.setUpdatedAt(LocalDateTime.now());
@@ -151,20 +154,84 @@ public class CampsService {
     }
 
     @Transactional
-    public Camps updateCamp(Long id, Camps campDetails) {
+    public Camps updateCamp(Long id, CampsDTO campsDTO) {
+        validateCreateCampRequest(campsDTO);
+        List<Users> users = validateCampUserIds(campsDTO);
+        
         Optional<Camps> optionalCamp = repository.findById(id);
         if (optionalCamp.isPresent()) {
             Camps camp = optionalCamp.get();
-            camp.setCampName(campDetails.getCampName());
-            camp.setDescription(campDetails.getDescription());
-            camp.setIsActive(campDetails.getIsActive());
-            camp.setCampEstablishmentYear(campDetails.getCampEstablishmentYear());
-            camp.setCampCode(campDetails.getCampCode());
+            camp.setCampName(campsDTO.getCampName());
+            camp.setDescription(campsDTO.getDescription());
+            camp.setOrganizerName(campsDTO.getOrganizerName());
+            camp.setOrganizerEmail(campsDTO.getOrganizerEmail());
+            camp.setOrganizerPhone(campsDTO.getOrganizerPhone());
+            camp.setCampCode(campsDTO.getCampCode());
+            camp.setMedicineResponsibility(campsDTO.getMedicineResponsibility());
+            camp.setCampEstablishmentYear(campsDTO.getEstablishmentYear());
             camp.setUpdateAt(new Timestamp(System.currentTimeMillis()));
-            camp.setUpdatedBy(campDetails.getUpdatedBy());
+            camp.setUpdatedBy("ADMIN");
+
+            // Update Addresses
+            updateCampAddresses(camp, campsDTO);
+
+            // Update Schedule
+            updateCampSchedule(camp, campsDTO.getCampScheduleTemplate());
+
+            // Update Staff
+            assignUsersToCamp(camp, users);
+
             return repository.save(camp);
         }
         return null;
+    }
+
+    private void updateCampAddresses(Camps camp, CampsDTO campsDTO) {
+        for (CampAddress campAddress : camp.getCampAddresses()) {
+            if (AddressType.LOCATION.equals(campAddress.getAddressType())) {
+                updateAddressFromDTO(campAddress.getAddress(), campsDTO.getLocationAddress());
+            } else if (AddressType.SHIPPING.equals(campAddress.getAddressType())) {
+                updateAddressFromDTO(campAddress.getAddress(), campsDTO.getShippingAddress());
+            }
+        }
+    }
+
+    private void updateAddressFromDTO(Address address, AddressDTO addressDTO) {
+        address.setAddressLine1(addressDTO.getAddressLine1());
+        address.setAddressLine2(addressDTO.getAddressLine2());
+        address.setCity(addressDTO.getCity());
+        address.setDistrict(new DistrictLookup(addressDTO.getDistrictId()));
+        address.setMandal(new MandalLookup(addressDTO.getMandalId()));
+        address.setState(new StateLookup(addressDTO.getStateId()));
+        address.setPostalCode(addressDTO.getPostalCode());
+        address.setUpdatedAt(LocalDateTime.now());
+        address.setUpdatedBy("ADMIN");
+    }
+
+    private void updateCampSchedule(Camps camp, CampScheduleTemplateDTO dto) {
+        Optional<CampScheduleTemplates> activeScheduleOpt = camp.getSchedules().stream()
+                .filter(CampScheduleTemplates::getIsActive)
+                .findFirst();
+
+        if (activeScheduleOpt.isPresent()) {
+            CampScheduleTemplates schedule = activeScheduleOpt.get();
+            schedule.setDayOfWeek(CampScheduleTemplates.DayOfWeekEnum.valueOf(dto.getDayOfWeek().toUpperCase()));
+            schedule.setWeekOfMonth(dto.getWeekOfMonth());
+            schedule.setMonthJanuary(dto.getMonthJanuary());
+            schedule.setMonthFebruary(dto.getMonthFebruary());
+            schedule.setMonthMarch(dto.getMonthMarch());
+            schedule.setMonthApril(dto.getMonthApril());
+            schedule.setMonthMay(dto.getMonthMay());
+            schedule.setMonthJune(dto.getMonthJune());
+            schedule.setMonthJuly(dto.getMonthJuly());
+            schedule.setMonthAugust(dto.getMonthAugust());
+            schedule.setMonthSeptember(dto.getMonthSeptember());
+            schedule.setMonthOctober(dto.getMonthOctober());
+            schedule.setMonthNovember(dto.getMonthNovember());
+            schedule.setMonthDecember(dto.getMonthDecember());
+            schedule.setUpdatedAt(LocalDateTime.now());
+            schedule.setUpdatedBy("ADMIN");
+        }
     }
 
     @Transactional
@@ -211,6 +278,24 @@ public class CampsService {
         campsListDTO.setShippingAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
                 , AddressType.SHIPPING));
         campsListDTO.setCampRunning(camps.getCampRuns().stream().anyMatch(campRuns -> CampRunStatus.STARTED.equals(campRuns.getStatus())));
+
+        campsListDTO.setDoctors(camps.getCampUsers().stream()
+                .filter(CampUsers::isDoctor)
+                .map(campUser -> UsersUtil.mapToUserResponse(campUser.getUsers()))
+                .collect(Collectors.toList()));
+
+        campsListDTO.setVolunteers(camps.getCampUsers().stream()
+                .filter(CampUsers::isVolunteer)
+                .map(campUser -> UsersUtil.mapToUserResponse(campUser.getUsers()))
+                .collect(Collectors.toList()));
+
+        camps.getSchedules().stream()
+                .filter(CampScheduleTemplates::getIsActive)
+                .findFirst()
+                .ifPresent(schedule -> campsListDTO.setCampScheduleTemplate(mapToCampScheduleDTO(schedule)));
+
+        campsListDTO.setMedicineResponsibility(camps.getMedicineResponsibility());
+
         return campsListDTO;
     }
 
@@ -279,6 +364,25 @@ public class CampsService {
         if(CollectionUtils.isEmpty(campMedicineStockSummary))
             return false;
         return true;
+    }
+
+    private CampScheduleTemplateDTO mapToCampScheduleDTO(CampScheduleTemplates schedule) {
+        CampScheduleTemplateDTO dto = new CampScheduleTemplateDTO();
+        dto.setDayOfWeek(schedule.getDayOfWeek().name());
+        dto.setWeekOfMonth(schedule.getWeekOfMonth());
+        dto.setMonthJanuary(schedule.getMonthJanuary());
+        dto.setMonthFebruary(schedule.getMonthFebruary());
+        dto.setMonthMarch(schedule.getMonthMarch());
+        dto.setMonthApril(schedule.getMonthApril());
+        dto.setMonthMay(schedule.getMonthMay());
+        dto.setMonthJune(schedule.getMonthJune());
+        dto.setMonthJuly(schedule.getMonthJuly());
+        dto.setMonthAugust(schedule.getMonthAugust());
+        dto.setMonthSeptember(schedule.getMonthSeptember());
+        dto.setMonthOctober(schedule.getMonthOctober());
+        dto.setMonthNovember(schedule.getMonthNovember());
+        dto.setMonthDecember(schedule.getMonthDecember());
+        return dto;
     }
 
 

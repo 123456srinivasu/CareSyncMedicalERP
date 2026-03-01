@@ -71,8 +71,8 @@ public class CampsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Camps> updateCamp(@PathVariable Long id, @RequestBody Camps campDetails) {
-        Camps updatedCamp = service.updateCamp(id, campDetails);
+    public ResponseEntity<Camps> updateCamp(@PathVariable Long id, @RequestBody CampsDTO campsDTO) {
+        Camps updatedCamp = service.updateCamp(id, campsDTO);
         if (updatedCamp != null) {
             return ResponseEntity.ok(updatedCamp);
         }

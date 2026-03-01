@@ -2,6 +2,7 @@ package com.medical.caresync.dto;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class CampsListDTO {
 
@@ -19,6 +20,10 @@ public class CampsListDTO {
     private AddressResponseDTO shippingAddress;
     private boolean isCampRunning;
     private boolean isCampReadyToStart;
+    private List<UsersResponseDTO> doctors;
+    private List<UsersResponseDTO> volunteers;
+    private CampScheduleTemplateDTO campScheduleTemplate;
+    private String medicineResponsibility;
 
 
     public CampsListDTO() {
@@ -134,5 +139,37 @@ public class CampsListDTO {
 
     public void setCampRunId(Long campRunId) {
         this.campRunId = campRunId;
+    }
+
+    public List<UsersResponseDTO> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<UsersResponseDTO> doctors) {
+        this.doctors = doctors;
+    }
+
+    public List<UsersResponseDTO> getVolunteers() {
+        return volunteers;
+    }
+
+    public void setVolunteers(List<UsersResponseDTO> volunteers) {
+        this.volunteers = volunteers;
+    }
+
+    public CampScheduleTemplateDTO getCampScheduleTemplate() {
+        return campScheduleTemplate;
+    }
+
+    public void setCampScheduleTemplate(CampScheduleTemplateDTO campScheduleTemplate) {
+        this.campScheduleTemplate = campScheduleTemplate;
+    }
+
+    public String getMedicineResponsibility() {
+        return medicineResponsibility;
+    }
+
+    public void setMedicineResponsibility(String medicineResponsibility) {
+        this.medicineResponsibility = medicineResponsibility;
     }
 }
