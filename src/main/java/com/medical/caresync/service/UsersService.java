@@ -2,6 +2,7 @@ package com.medical.caresync.service;
 
 import com.medical.caresync.dto.PageResponse;
 import com.medical.caresync.dto.UsersResponseDTO;
+import com.medical.caresync.entities.UserRoles;
 import com.medical.caresync.entities.Users;
 import com.medical.caresync.repository.UserSpecification;
 import com.medical.caresync.repository.UsersRepository;
@@ -29,6 +30,11 @@ public class UsersService {
     }
 
     public Users createUsers(Users users) {
+        if (users.getUserRoles() != null) {
+            for (UserRoles userRole : users.getUserRoles()) {
+                userRole.setUser(users); // Set back-reference so user_id FK is populated
+            }
+        }
         return usersRepository.save(users);
     }
 

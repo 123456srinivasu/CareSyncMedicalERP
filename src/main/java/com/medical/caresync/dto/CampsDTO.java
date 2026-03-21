@@ -23,6 +23,7 @@ public class CampsDTO {
     private AddressDTO shippingAddress;
     @NotNull
     private CampScheduleTemplateDTO campScheduleTemplate;
+    private Boolean isActive;
 
     private List<Long> campUserIds;
 
@@ -120,5 +121,13 @@ public class CampsDTO {
 
     public void setCampUserIds(List<Long> campUserIds) {
         this.campUserIds = campUserIds;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 }

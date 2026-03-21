@@ -4,20 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21841ac4-f0d2-473d-a7ba-3dedddfc879c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/PatientLabTestAndVitalsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/PatientLabTestAndVitalsRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/PatientLabTestAndVitalsResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/PatientLabTestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/PatientVitalDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/PatientLabTestsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/repository/PatientVisitVitalsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientLabTestAndVitalsService.java" afterDir="false" />
+    <list default="true" id="98e64a12-08e0-4354-8a86-a44812c164fd" name="Changes" comment="camp changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/PatientLabTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/PatientLabTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/PatientVisitVitals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/PatientVisitVitals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/VitalsLookUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/VitalsLookUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/VitalLookUpService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/VitalLookUpService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/MedicinesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/MedicinesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/RoleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/RoleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/CampsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/CampsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/MedicinesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/dto/MedicinesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/Medicines.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/Medicines.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/entities/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/CampsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/MedicinesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/MedicinesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medical/caresync/service/UsersService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,42 +37,83 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
-  <component name="ProjectId" id="39NQDYJHINTrHmmuHWAc44CdIAu" />
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;manohar922&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/123456srinivasu/CareSyncMedicalERP.git&quot;,
+    &quot;accountId&quot;: &quot;78216910-2b72-42d4-a749-b39af45f2ba1&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="37naBjEMEQbppnbJVd16Ncqf0fX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.care-sync-medical-erp [clean,install].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.CareSyncMedicalERPApplication.executor": "Run",
-    "git-widget-placeholder": "Merging feature/ReportAPI",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/RIT-Projects-Work/Srinu/CareSyncMedicalERP"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.CareSyncMedicalERPApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.care-sync-medical-erp [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.care-sync-medical-erp [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.care-sync-medical-erp [install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CareSyncMedicalERPApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/ReportAPI&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/RailnfoTech_projects/CareSyncMedicalERP&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="CareSyncMedicalERP" />
+}</component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.CareSyncMedicalERPApplication">
+    <configuration name="CareSyncMedicalERPApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.medical.caresync.CareSyncMedicalERPApplication" />
+      <module name="care-sync-medical-erp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.medical.caresync.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="CareSyncMedicalERP" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-    <configuration name="CareSyncMedicalERPApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+    <configuration name="CareSyncMedicalERPApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="care-sync-medical-erp" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.medical.caresync.CareSyncMedicalERPApplication" />
       <extension name="coverage">
@@ -87,25 +128,107 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.CareSyncMedicalERPApplication" />
+        <item itemvalue="Application.CareSyncMedicalERPApplication" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-cffe25b9f5b3-intellij.indexing.shared.core-IU-253.28294.334" />
-      </set>
-    </attachedChunks>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="21841ac4-f0d2-473d-a7ba-3dedddfc879c" name="Changes" comment="" />
+      <changelist id="98e64a12-08e0-4354-8a86-a44812c164fd" name="Changes" comment="latest changes on 9jan" />
       <created>1770533931661</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1770533931661</updated>
     </task>
+    <task id="LOCAL-00001" summary="camp changes">
+      <option name="closed" value="true" />
+      <created>1772354049232</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1772354049232</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="latest changes" />
+    <MESSAGE value="latest changes on 9jan" />
+    <MESSAGE value="camp changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="camp changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/PatientVisitController.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/PatientVisitController.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/controller/PatientVisitController.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/medical/caresync/service/PatientVisitService.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

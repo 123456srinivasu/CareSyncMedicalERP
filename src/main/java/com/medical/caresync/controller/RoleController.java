@@ -1,7 +1,9 @@
 package com.medical.caresync.controller;
 
+import com.medical.caresync.dto.RoleDTO;
 import com.medical.caresync.entities.Role;
 import com.medical.caresync.service.RoleService;
+import com.medical.caresync.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +27,17 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
-        return ResponseEntity.ok(service.getAllRoles());
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+        List<RoleDTO> roles = service.getAllRoles().stream()
+                .map(RoleUtil::mapToRoleDTO)
+                .toList();
+        return ResponseEntity.ok(roles);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable Integer id) {
+    public ResponseEntity<RoleDTO> getRoleById(@PathVariable Integer id) {
         return service.getRoleById(id)
+                .map(RoleUtil::mapToRoleDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

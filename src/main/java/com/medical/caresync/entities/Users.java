@@ -1,6 +1,6 @@
 package com.medical.caresync.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -45,7 +45,7 @@ public class Users implements Serializable {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<UserRoles> userRoles = new HashSet<>();
 
 

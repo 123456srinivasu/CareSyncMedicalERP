@@ -171,6 +171,9 @@ public class CampsService {
             camp.setCampEstablishmentYear(campsDTO.getEstablishmentYear());
             camp.setUpdateAt(new Timestamp(System.currentTimeMillis()));
             camp.setUpdatedBy("ADMIN");
+            if (campsDTO.getIsActive() != null) {
+                camp.setIsActive(campsDTO.getIsActive());
+            }
 
             // Update Addresses
             updateCampAddresses(camp, campsDTO);
