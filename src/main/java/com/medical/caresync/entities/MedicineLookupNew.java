@@ -28,12 +28,6 @@ public class MedicineLookupNew implements Serializable {
     @Column(name = "medicine_type", length = 50, nullable = false)
     private String medicineType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pharmacy_supplier_id", nullable = false, 
-                foreignKey = @ForeignKey(name = "fk_medicine_lookup_supplier"))
-    @JsonBackReference("supplier-medications")
-    private PharmacySupplier pharmacySupplier;
-
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -48,7 +42,6 @@ public class MedicineLookupNew implements Serializable {
 
     @Column(name = "updated_by", length = 150)
     private String updatedBy;
-
 
     @OneToMany(mappedBy = "medication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("medication-stocks")
@@ -87,14 +80,6 @@ public class MedicineLookupNew implements Serializable {
 
     public void setMedicineType(String medicineType) {
         this.medicineType = medicineType;
-    }
-
-    public PharmacySupplier getPharmacySupplier() {
-        return pharmacySupplier;
-    }
-
-    public void setPharmacySupplier(PharmacySupplier pharmacySupplier) {
-        this.pharmacySupplier = pharmacySupplier;
     }
 
     public Boolean getIsActive() {

@@ -6,10 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class UserRegistrationDTO {
 
-    @NotBlank(message = "User name is required")
-    private String userName;
-
-    @NotBlank(message = "Phone is required")
     private String phone;
 
     @NotBlank(message = "Email is required")
@@ -19,19 +15,11 @@ public class UserRegistrationDTO {
     @NotNull(message = "Is active status is required")
     private Boolean isActive;
 
-    @NotBlank(message = "Login ID is required")
-    private String loginId;
-
-    @NotBlank(message = "Password is required")
-    private String password;
-
     @NotNull(message = "Is temporary status is required")
     private Boolean isTemporary;
 
-    @NotBlank(message = "Created by is required")
     private String createdBy;
 
-    @NotBlank(message = "Updated by is required")
     private String updatedBy;
 
     @NotBlank(message = "First name is required")
@@ -42,17 +30,26 @@ public class UserRegistrationDTO {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @NotBlank(message = "Role name is required")
     private String roleName;
+
+    private String city;
+
+    private Integer stateLookupId;
+
+    private Integer districtLookupId;
+
+    private Integer mandalLookupId;
+
+    private java.util.List<Object> userRoles;
 
     // Getters and Setters
 
-    public String getUserName() {
-        return userName;
+    public java.util.List<Object> getUserRoles() {
+        return userRoles;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserRoles(java.util.List<Object> userRoles) {
+        this.userRoles = userRoles;
     }
 
     public String getPhone() {
@@ -77,22 +74,6 @@ public class UserRegistrationDTO {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
-    }
-
-    public String getLoginId() {
-        return loginId;
-    }
-
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Boolean getIsTemporary() {
@@ -149,5 +130,37 @@ public class UserRegistrationDTO {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getStateLookupId() {
+        return stateLookupId;
+    }
+
+    public void setStateLookupId(Integer stateLookupId) {
+        this.stateLookupId = stateLookupId;
+    }
+
+    public Integer getDistrictLookupId() {
+        return districtLookupId;
+    }
+
+    public void setDistrictLookupId(Integer districtLookupId) {
+        this.districtLookupId = districtLookupId;
+    }
+
+    public Integer getMandalLookupId() {
+        return mandalLookupId;
+    }
+
+    public void setMandalLookupId(Integer mandalLookupId) {
+        this.mandalLookupId = mandalLookupId;
     }
 }

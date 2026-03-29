@@ -1,9 +1,11 @@
 package com.medical.caresync.controller;
 
+import com.medical.caresync.dto.LoginRequestDTO;
 import com.medical.caresync.dto.PageResponse;
 import com.medical.caresync.dto.UsersResponseDTO;
 import com.medical.caresync.entities.Users;
 import com.medical.caresync.service.UsersService;
+import com.medical.caresync.util.UsersUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +98,20 @@ public class UsersController {
             LOGGER.error("Exception while getting users", e);
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsersResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+        Users user = usersService.login(loginRequest.getUserName(), loginRequest.getPassword());
+        return ResponseEntity.ok(UsersUtil.mapToUserResponse(user));
+    }
+
+    @GetMapping("/allowed-users-by-role/{roleId}")
+    public ResponseEntity<List<UsersResponseDTO>> getAllowedUsersByRole(@PathVariable Integer roleId) {
+        List<Users> users = usersService.getAllowedUsersByRoleId(roleId);
+        List<UsersResponseDTO> response = users.stream()
+                .map(UsersUtil::mapToUserResponse)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 }

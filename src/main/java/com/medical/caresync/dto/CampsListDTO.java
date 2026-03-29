@@ -10,20 +10,23 @@ public class CampsListDTO {
     private Long campRunId;
     private String campName;
     private String campCode;
+    private String description;
     private String organizerName;
     private String organizerPhone;
     private String organizerEmail;
     private String location;
     private boolean active;
     private LocalDate plannedDate;
-    private AddressResponseDTO locationAddress;
-    private AddressResponseDTO shippingAddress;
     private boolean isCampRunning;
     private boolean isCampReadyToStart;
-    private List<UsersResponseDTO> doctors;
-    private List<UsersResponseDTO> volunteers;
-    private CampScheduleTemplateDTO campScheduleTemplate;
-    private String medicineResponsibility;
+    private String medicineWarehouse;
+    private Long medicineWarehouseId;
+    private String medicineWarehouseNameLink;
+    private WarehouseMasterDTO medicineWarehouseDetails;
+    private UsersResponseDTO organizerUserDetails;
+    private AddressDTO locationAddress;
+    private AddressDTO shippingAddress;
+    private List<CampScheduleTemplateDTO> schedules;
 
 
     public CampsListDTO() {
@@ -93,22 +96,6 @@ public class CampsListDTO {
         this.plannedDate = plannedDate;
     }
 
-    public AddressResponseDTO getLocationAddress() {
-        return locationAddress;
-    }
-
-    public void setLocationAddress(AddressResponseDTO locationAddress) {
-        this.locationAddress = locationAddress;
-    }
-
-    public AddressResponseDTO getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(AddressResponseDTO shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
     public boolean isCampRunning() {
         return isCampRunning;
     }
@@ -141,35 +128,75 @@ public class CampsListDTO {
         this.campRunId = campRunId;
     }
 
-    public List<UsersResponseDTO> getDoctors() {
-        return doctors;
+    public String getMedicineWarehouse() {
+        return medicineWarehouse;
     }
 
-    public void setDoctors(List<UsersResponseDTO> doctors) {
-        this.doctors = doctors;
+    public void setMedicineWarehouse(String medicineWarehouse) {
+        this.medicineWarehouse = medicineWarehouse;
     }
 
-    public List<UsersResponseDTO> getVolunteers() {
-        return volunteers;
+    public Long getMedicineWarehouseId() {
+        return medicineWarehouseId;
     }
 
-    public void setVolunteers(List<UsersResponseDTO> volunteers) {
-        this.volunteers = volunteers;
+    public void setMedicineWarehouseId(Long medicineWarehouseId) {
+        this.medicineWarehouseId = medicineWarehouseId;
     }
 
-    public CampScheduleTemplateDTO getCampScheduleTemplate() {
-        return campScheduleTemplate;
+    public String getMedicineWarehouseNameLink() {
+        return medicineWarehouseNameLink;
     }
 
-    public void setCampScheduleTemplate(CampScheduleTemplateDTO campScheduleTemplate) {
-        this.campScheduleTemplate = campScheduleTemplate;
+    public void setMedicineWarehouseNameLink(String medicineWarehouseNameLink) {
+        this.medicineWarehouseNameLink = medicineWarehouseNameLink;
     }
 
-    public String getMedicineResponsibility() {
-        return medicineResponsibility;
+    public WarehouseMasterDTO getMedicineWarehouseDetails() {
+        return medicineWarehouseDetails;
     }
 
-    public void setMedicineResponsibility(String medicineResponsibility) {
-        this.medicineResponsibility = medicineResponsibility;
+    public void setMedicineWarehouseDetails(WarehouseMasterDTO medicineWarehouseDetails) {
+        this.medicineWarehouseDetails = medicineWarehouseDetails;
+    }
+
+    public UsersResponseDTO getOrganizerUserDetails() {
+        return organizerUserDetails;
+    }
+
+    public void setOrganizerUserDetails(UsersResponseDTO organizerUserDetails) {
+        this.organizerUserDetails = organizerUserDetails;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public AddressDTO getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(AddressDTO locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public AddressDTO getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(AddressDTO shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public List<CampScheduleTemplateDTO> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<CampScheduleTemplateDTO> schedules) {
+        this.schedules = schedules;
     }
 }

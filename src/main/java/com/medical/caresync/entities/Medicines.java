@@ -21,9 +21,6 @@ public class Medicines {
     @Column(name = "medicine_type")
     private String medicineType;
 
-    @Column(name = "pharmacy_supplier_id")
-    private Long pharmacySupplierId;
-    
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -57,14 +54,6 @@ public class Medicines {
 
     public void setMedicineType(String medicineType) {
         this.medicineType = medicineType;
-    }
-
-    public Long getPharmacySupplierId() {
-        return pharmacySupplierId;
-    }
-
-    public void setPharmacySupplierId(Long pharmacySupplierId) {
-        this.pharmacySupplierId = pharmacySupplierId;
     }
 
     public Boolean getIsActive() {

@@ -49,34 +49,55 @@ public class CampsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Camps> getCampById(@PathVariable Long id) {
-        Optional<Camps> camp = service.getCampById(id);
-        return camp.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<CampBasicDTO> getCampById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getCampBasicById(id));
+        } catch (BadRequestException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Camps> createCamp(@Valid @RequestBody CampsDTO camp) {
+    public ResponseEntity<CampBasicDTO> createCamp(@Valid @RequestBody CampBasicDTO camp) {
         try {
             Camps createdCamp = service.createCamp(camp);
-            return ResponseEntity.ok(createdCamp);
-        }catch (BadRequestException ex) {
+            return ResponseEntity.ok(service.getCampBasicById(createdCamp.getCampId()));
+        } catch (BadRequestException ex) {
             LOGGER.error("Invalid request", ex);
             return ResponseEntity.badRequest().build();
-        }
-        catch (Exception e) {
-            LOGGER.error("Exception while creatig=ng a camp", e);
+        } catch (Exception e) {
+            LOGGER.error("Exception while creating a camp", e);
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Camps> updateCamp(@PathVariable Long id, @RequestBody CampsDTO campsDTO) {
-        Camps updatedCamp = service.updateCamp(id, campsDTO);
-        if (updatedCamp != null) {
-            return ResponseEntity.ok(updatedCamp);
+    public ResponseEntity<CampBasicDTO> updateCamp(@PathVariable Long id, @RequestBody CampBasicDTO campsDTO) {
+        try {
+            service.updateCampBasic(id, campsDTO);
+            return ResponseEntity.ok(service.getCampBasicById(id));
+        } catch (BadRequestException ex) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<CampAdditionalDetailsDTO> getCampDetails(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getAdditionalDetails(id));
+        } catch (BadRequestException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{id}/details")
+    public ResponseEntity<Void> updateCampDetails(@PathVariable Long id, @Valid @RequestBody CampAdditionalDetailsDTO details) {
+        try {
+            service.saveAdditionalDetails(id, details);
+            return ResponseEntity.ok().build();
+        } catch (BadRequestException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

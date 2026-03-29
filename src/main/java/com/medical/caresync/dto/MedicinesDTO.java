@@ -6,7 +6,6 @@ public class MedicinesDTO {
     private String medicationName;
     private String medicationCode;
     private String medicineType;
-    private Long pharmacySupplierId;
     private Boolean isActive;
 
     public Long getId() {
@@ -39,14 +38,6 @@ public class MedicinesDTO {
 
     public void setMedicineType(String medicineType) {
         this.medicineType = medicineType;
-    }
-
-    public Long getPharmacySupplierId() {
-        return pharmacySupplierId;
-    }
-
-    public void setPharmacySupplierId(Long pharmacySupplierId) {
-        this.pharmacySupplierId = pharmacySupplierId;
     }
 
     public Boolean getIsActive() {

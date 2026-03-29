@@ -47,4 +47,12 @@ public class RoleController {
         service.deleteRole(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/allowed-roles")
+    public ResponseEntity<List<RoleDTO>> getAllowedRoles(@PathVariable Integer id) {
+        List<RoleDTO> roles = service.getAllowedRolesByRoleId(id).stream()
+                .map(RoleUtil::mapToRoleDTO)
+                .toList();
+        return ResponseEntity.ok(roles);
+    }
 }

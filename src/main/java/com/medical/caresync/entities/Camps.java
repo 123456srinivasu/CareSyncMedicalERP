@@ -56,8 +56,16 @@ public class Camps implements Serializable {
     @Column(name = "organizer_phone")
     private String organizerPhone;
 
-    @Column(name = "medicine_responsibility")
-    private String medicineResponsibility;
+    @Column(name = "medicine_warehouse")
+    private String medicineWarehouse;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicine_warehouse_id")
+    private WarehouseMaster medicineWarehouseLink;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_user_id")
+    private Users organizerUser;
 
     @OneToMany(mappedBy = "camps", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("camp-summaries")
@@ -82,7 +90,7 @@ public class Camps implements Serializable {
     private List<CampAddress> campAddresses;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "camps", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "camps", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<CampScheduleTemplates> schedules;
 
     @JsonManagedReference
@@ -196,12 +204,28 @@ public class Camps implements Serializable {
         this.organizerPhone = organizerPhone;
     }
 
-    public String getMedicineResponsibility() {
-        return medicineResponsibility;
+    public String getMedicineWarehouse() {
+        return medicineWarehouse;
     }
 
-    public void setMedicineResponsibility(String medicineResponsibility) {
-        this.medicineResponsibility = medicineResponsibility;
+    public void setMedicineWarehouse(String medicineWarehouse) {
+        this.medicineWarehouse = medicineWarehouse;
+    }
+
+    public WarehouseMaster getMedicineWarehouseLink() {
+        return medicineWarehouseLink;
+    }
+
+    public void setMedicineWarehouseLink(WarehouseMaster medicineWarehouseLink) {
+        this.medicineWarehouseLink = medicineWarehouseLink;
+    }
+
+    public Users getOrganizerUser() {
+        return organizerUser;
+    }
+
+    public void setOrganizerUser(Users organizerUser) {
+        this.organizerUser = organizerUser;
     }
 
     public List<CampMedicineStockSummary> getCampMedicineStockSummaries() {

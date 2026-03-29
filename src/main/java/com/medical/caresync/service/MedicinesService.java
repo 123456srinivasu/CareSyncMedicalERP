@@ -50,7 +50,6 @@ public class MedicinesService {
         dto.setMedicationName(medicines.getMedicationName());
         dto.setMedicationCode(medicines.getMedicationCode());
         dto.setMedicineType(medicines.getMedicineType());
-        dto.setPharmacySupplierId(medicines.getPharmacySupplierId());
         dto.setIsActive(medicines.getIsActive());
         return dto;
     }
@@ -62,7 +61,6 @@ public class MedicinesService {
         medicines.setMedicationName(dto.getMedicationName());
         medicines.setMedicationCode(dto.getMedicationCode());
         medicines.setMedicineType(dto.getMedicineType());
-        medicines.setPharmacySupplierId(dto.getPharmacySupplierId());
         medicines.setIsActive(dto.getIsActive());
         return medicines;
     }

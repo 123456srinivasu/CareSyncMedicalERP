@@ -1,6 +1,7 @@
 package com.medical.caresync.service;
 
 import com.medical.caresync.entities.Role;
+import com.medical.caresync.repository.RolePermissionRepository;
 import com.medical.caresync.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class RoleService {
 
     private final RoleRepository repository;
+    private final RolePermissionRepository rolePermissionRepository;
 
     @Autowired
-    public RoleService(RoleRepository repository) {
+    public RoleService(RoleRepository repository, RolePermissionRepository rolePermissionRepository) {
         this.repository = repository;
+        this.rolePermissionRepository = rolePermissionRepository;
     }
 
     public Role createRole(Role role) {
@@ -36,5 +39,10 @@ public class RoleService {
 
     public void deleteRole(Integer id) {
         repository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Role> getAllowedRolesByRoleId(Integer roleId) {
+        return rolePermissionRepository.findAllowedRoles(roleId);
     }
 }

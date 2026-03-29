@@ -27,11 +27,6 @@ public class MedicineLookupNewController {
         return ResponseEntity.ok(service.getActiveMedications());
     }
 
-    @GetMapping("/supplier/{supplierId}")
-    public ResponseEntity<List<MedicineLookupNew>> getMedicationsBySupplier(@PathVariable Long supplierId) {
-        return ResponseEntity.ok(service.getMedicationsBySupplier(supplierId));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<MedicineLookupNew> getMedicationById(@PathVariable Long id) {
         Optional<MedicineLookupNew> medication = service.getMedicationById(id);

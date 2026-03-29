@@ -1,32 +1,57 @@
 package com.medical.caresync.dto;
 
 import jakarta.validation.constraints.NotNull;
-
+import java.io.Serializable;
 import java.util.List;
 
-public class CampsDTO {
+public class CampBasicDTO implements Serializable {
+
+    private Long campId;
+
     @NotNull
     private String campName;
-    private String description;
-    private int establishmentYear;
-    private String campCode;
-    @NotNull
-    private String organizerName;
-    @NotNull
-    private String organizerEmail;
-    @NotNull
-    private String organizerPhone;
-    private String medicineWarehouse;
-    private Long medicineWarehouseId;
-    @NotNull
-    private AddressDTO locationAddress;
-    @NotNull
-    private AddressDTO shippingAddress;
-    @NotNull
-    private CampScheduleTemplateDTO campScheduleTemplate;
-    private Boolean isActive;
 
-    private List<Long> campUserIds;
+    private String description;
+
+    private int establishmentYear;
+
+    private String campCode;
+
+    private Long organizerUserId;
+
+    private String organizerName;
+
+    private String organizerEmail;
+
+    private String organizerPhone;
+
+    private String medicineWarehouse;
+
+    private Long medicineWarehouseId;
+
+    private WarehouseMasterDTO medicineWarehouseDetails;
+
+    private Boolean active;
+
+    @jakarta.validation.Valid
+    private AddressDTO locationAddress;
+    @jakarta.validation.Valid
+    private AddressDTO shippingAddress;
+
+    private UsersResponseDTO organizerUserDetails;
+
+    @jakarta.validation.Valid
+    private List<CampScheduleTemplateDTO> schedules;
+
+    // Getters and Setters
+
+    public Long getCampId() {
+        return campId;
+    }
+
+    public void setCampId(Long campId) {
+        this.campId = campId;
+    }
 
     public String getCampName() {
         return campName;
@@ -58,6 +83,14 @@ public class CampsDTO {
 
     public void setCampCode(String campCode) {
         this.campCode = campCode;
+    }
+
+    public Long getOrganizerUserId() {
+        return organizerUserId;
+    }
+
+    public void setOrganizerUserId(Long organizerUserId) {
+        this.organizerUserId = organizerUserId;
     }
 
     public String getOrganizerName() {
@@ -100,6 +133,30 @@ public class CampsDTO {
         this.medicineWarehouseId = medicineWarehouseId;
     }
 
+    public WarehouseMasterDTO getMedicineWarehouseDetails() {
+        return medicineWarehouseDetails;
+    }
+
+    public void setMedicineWarehouseDetails(WarehouseMasterDTO medicineWarehouseDetails) {
+        this.medicineWarehouseDetails = medicineWarehouseDetails;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public UsersResponseDTO getOrganizerUserDetails() {
+        return organizerUserDetails;
+    }
+
+    public void setOrganizerUserDetails(UsersResponseDTO organizerUserDetails) {
+        this.organizerUserDetails = organizerUserDetails;
+    }
+
     public AddressDTO getLocationAddress() {
         return locationAddress;
     }
@@ -116,27 +173,11 @@ public class CampsDTO {
         this.shippingAddress = shippingAddress;
     }
 
-    public CampScheduleTemplateDTO getCampScheduleTemplate() {
-        return campScheduleTemplate;
+    public List<CampScheduleTemplateDTO> getSchedules() {
+        return schedules;
     }
 
-    public void setCampScheduleTemplate(CampScheduleTemplateDTO campScheduleTemplate) {
-        this.campScheduleTemplate = campScheduleTemplate;
-    }
-
-    public List<Long> getCampUserIds() {
-        return campUserIds;
-    }
-
-    public void setCampUserIds(List<Long> campUserIds) {
-        this.campUserIds = campUserIds;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setSchedules(List<CampScheduleTemplateDTO> schedules) {
+        this.schedules = schedules;
     }
 }

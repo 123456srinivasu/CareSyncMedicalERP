@@ -19,9 +19,6 @@ public class MedicineLookupNewService {
     @Autowired
     private MedicineLookupNewRepository repository;
 
-    @Autowired
-    private PharmacySupplierRepository pharmacySupplierRepository;
-
     public List<MedicineLookupNew> getAllMedications() {
         return repository.findAll();
     }
@@ -36,19 +33,6 @@ public class MedicineLookupNewService {
 
     @Transactional
     public MedicineLookupNew createMedication(MedicineLookupNew medication) {
-        // Validate that pharmacy supplier exists
-        if (medication.getPharmacySupplier() == null || 
-            medication.getPharmacySupplier().getPharmacySupplierId() == null) {
-            throw new IllegalArgumentException("Pharmacy supplier is required");
-        }
-
-        Optional<PharmacySupplier> supplier = pharmacySupplierRepository
-            .findById(medication.getPharmacySupplier().getPharmacySupplierId());
-        if (supplier.isEmpty()) {
-            throw new IllegalArgumentException("Pharmacy supplier not found with id: " 
-                + medication.getPharmacySupplier().getPharmacySupplierId());
-        }
-
         // Check if medication code already exists
         if (medication.getMedicationCode() != null) {
             Optional<MedicineLookupNew> existing = repository.findByMedicationCode(medication.getMedicationCode());
@@ -67,9 +51,6 @@ public class MedicineLookupNewService {
         if (medication.getUpdatedAt() == null) {
             medication.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         }
-
-        // Set the supplier entity
-        medication.setPharmacySupplier(supplier.get());
 
         return repository.save(medication);
     }
@@ -97,19 +78,6 @@ public class MedicineLookupNewService {
             medication.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             medication.setUpdatedBy(medicationDetails.getUpdatedBy());
 
-            // Update pharmacy supplier if provided
-            if (medicationDetails.getPharmacySupplier() != null && 
-                medicationDetails.getPharmacySupplier().getPharmacySupplierId() != null) {
-                Optional<PharmacySupplier> supplier = pharmacySupplierRepository
-                    .findById(medicationDetails.getPharmacySupplier().getPharmacySupplierId());
-                if (supplier.isPresent()) {
-                    medication.setPharmacySupplier(supplier.get());
-                } else {
-                    throw new IllegalArgumentException("Pharmacy supplier not found with id: " 
-                        + medicationDetails.getPharmacySupplier().getPharmacySupplierId());
-                }
-            }
-
             return repository.save(medication);
         }
         return null;
@@ -123,13 +91,6 @@ public class MedicineLookupNewService {
     public List<MedicineLookupNew> getActiveMedications() {
         return repository.findAll().stream()
                 .filter(medication -> Boolean.TRUE.equals(medication.getIsActive()))
-                .toList();
-    }
-
-    public List<MedicineLookupNew> getMedicationsBySupplier(Long supplierId) {
-        return repository.findAll().stream()
-                .filter(medication -> medication.getPharmacySupplier() != null &&
-                        medication.getPharmacySupplier().getPharmacySupplierId().equals(supplierId))
                 .toList();
     }
 }

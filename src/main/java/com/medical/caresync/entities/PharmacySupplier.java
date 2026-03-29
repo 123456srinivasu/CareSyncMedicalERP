@@ -57,10 +57,6 @@ public class PharmacySupplier implements Serializable {
     private String updatedBy;
 
     @OneToMany(mappedBy = "pharmacySupplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("supplier-medications")
-    private List<MedicineLookupNew> medications;
-
-    @OneToMany(mappedBy = "pharmacySupplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("supplier-invoices")
     private List<Invoice> invoices;
 
@@ -177,14 +173,6 @@ public class PharmacySupplier implements Serializable {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public List<MedicineLookupNew> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(List<MedicineLookupNew> medications) {
-        this.medications = medications;
     }
 
     public List<Invoice> getInvoices() {

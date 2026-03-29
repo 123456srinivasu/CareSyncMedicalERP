@@ -18,11 +18,9 @@ public class Users implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "user_name", nullable = false, length = 150)
-    private String userName;
-
     @Column(name = "phone", length = 20)
     private String phone;
+
 
     @Column(name = "email", length = 150, unique = true)
     private String email;
@@ -30,11 +28,22 @@ public class Users implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive = true;
 
-    @Column(name = "login_id", length = 50, unique = true)
-    private String loginId;
+    @Column(name = "city", length = 100)
+    private String city;
 
-    @Column(name = "password", length = 200)
-    private String password;
+    @Column(name = "state_lookup_id")
+    private Integer stateLookupId;
+
+    @Column(name = "district_lookup_id")
+    private Integer districtLookupId;
+
+    @Column(name = "mandal_lookup_id")
+    private Integer mandalLookupId;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+
 
     @Column(name = "is_temporary")
     private Boolean isTemporary = false;
@@ -43,19 +52,18 @@ public class Users implements Serializable {
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<UserRoles> userRoles = new HashSet<>();
 
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "created_by", length = 150)
     private String createdBy;
 
-    @Column(name = "update_at", insertable = false, updatable = false)
+    @Column(name = "update_at")
     private LocalDateTime updateAt;
 
     @Column(name = "updated_by", length = 150)
@@ -98,14 +106,6 @@ public class Users implements Serializable {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -130,21 +130,46 @@ public class Users implements Serializable {
         this.isActive = isActive;
     }
 
-    public String getLoginId() {
-        return loginId;
+    public String getCity() {
+        return city;
     }
 
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getPassword() {
-        return password;
+    public Integer getStateLookupId() {
+        return stateLookupId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setStateLookupId(Integer stateLookupId) {
+        this.stateLookupId = stateLookupId;
     }
+
+    public Integer getDistrictLookupId() {
+        return districtLookupId;
+    }
+
+    public void setDistrictLookupId(Integer districtLookupId) {
+        this.districtLookupId = districtLookupId;
+    }
+
+    public Integer getMandalLookupId() {
+        return mandalLookupId;
+    }
+
+    public void setMandalLookupId(Integer mandalLookupId) {
+        this.mandalLookupId = mandalLookupId;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
 
     public Boolean getIsTemporary() {
         return isTemporary;

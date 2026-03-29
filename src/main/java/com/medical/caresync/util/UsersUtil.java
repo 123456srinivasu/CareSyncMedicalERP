@@ -13,7 +13,15 @@ public class UsersUtil {
         dto.setMiddleName(user.getMiddleName());
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setPhone(user.getPhone());
         dto.setActive(user.getIsActive());
+        dto.setTemporary(user.getIsTemporary());
+        dto.setDeleted(user.getIsDeleted());
+        dto.setCity(user.getCity());
+        dto.setStateLookupId(user.getStateLookupId());
+        dto.setDistrictLookupId(user.getDistrictLookupId());
+        dto.setMandalLookupId(user.getMandalLookupId());
 
         // example: first role (adjust as needed)
         dto.setRoles(

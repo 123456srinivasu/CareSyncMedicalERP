@@ -6,6 +6,7 @@ import com.medical.caresync.exceptions.BadRequestException;
 import com.medical.caresync.repository.CampSpecification;
 import com.medical.caresync.repository.CampsRepository;
 import com.medical.caresync.repository.UsersRepository;
+import com.medical.caresync.repository.WarehouseMasterRepository;
 import com.medical.caresync.util.CampRunStatus;
 import com.medical.caresync.util.CampScheduleUtil;
 import com.medical.caresync.util.PageMapper;
@@ -34,6 +35,8 @@ public class CampsService {
     private CampsRepository repository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private WarehouseMasterRepository warehouseMasterRepository;
 
     public PageResponse<CampsListDTO> getAllCamps(String status, Long stateId, Long districtId
             , Long mandalId, String campName, String cityName, Pageable pageable) {
@@ -57,43 +60,105 @@ public class CampsService {
     }
 
     @Transactional
-    public Camps createCamp(CampsDTO campsDTO) {
-        validateCreateCampRequest(campsDTO);
-        List<Users> users = validateCampUserIds(campsDTO);
-
+    public Camps createCamp(CampBasicDTO basicDTO) {
         Camps camp = new Camps();
-        camp.setCampName(campsDTO.getCampName());
-        camp.setCampCode(campsDTO.getCampCode());
-        camp.setDescription(campsDTO.getDescription());
+        mapBasicDtoToEntity(basicDTO, camp);
         camp.setIsActive(true);
         camp.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        camp.setUpdateAt(new Timestamp(System.currentTimeMillis()));
-        camp.setOrganizerEmail(campsDTO.getOrganizerEmail());
-        camp.setOrganizerName(campsDTO.getOrganizerName());
-        camp.setOrganizerPhone(campsDTO.getOrganizerPhone());
         camp.setCreatedBy("ADMIN");
-        camp.setUpdatedBy("ADMIN");
-        camp.setCampEstablishmentYear(campsDTO.getEstablishmentYear());
-        camp.setMedicineResponsibility(campsDTO.getMedicineResponsibility());
-
-        CampAddress campLocationAddress = new CampAddress();
-        campLocationAddress.setAddressType(AddressType.LOCATION);
-        campLocationAddress.setAddress(getCampAddressFromDTO(campsDTO.getLocationAddress()));
-        campLocationAddress.setValidFrom(LocalDate.now());
-        campLocationAddress.setCamp(camp);
-
-        CampAddress campShippingAddress = new CampAddress();
-        campShippingAddress.setAddressType(AddressType.SHIPPING);
-        campShippingAddress.setAddress(getCampAddressFromDTO(campsDTO.getShippingAddress()));
-        campShippingAddress.setValidFrom(LocalDate.now());
-        campShippingAddress.setCamp(camp);
-        camp.setCampAddresses(List.of(campLocationAddress, campShippingAddress));
-
-        CampScheduleTemplates campScheduleTemplates = getCampScheduleTemplatesFromDTO(campsDTO.getCampScheduleTemplate(), camp);
-        campScheduleTemplates.setCamps(camp);
-        camp.setSchedules(List.of(campScheduleTemplates));
-        assignUsersToCamp(camp, users);
         return repository.save(camp);
+    }
+
+    private void mapBasicDtoToEntity(CampBasicDTO basicDTO, Camps camp) {
+        camp.setCampName(basicDTO.getCampName());
+        camp.setCampCode(basicDTO.getCampCode());
+        camp.setDescription(basicDTO.getDescription());
+        camp.setOrganizerEmail(basicDTO.getOrganizerEmail());
+        camp.setOrganizerName(basicDTO.getOrganizerName());
+        camp.setOrganizerPhone(basicDTO.getOrganizerPhone());
+        camp.setCampEstablishmentYear(basicDTO.getEstablishmentYear());
+        camp.setMedicineWarehouse(basicDTO.getMedicineWarehouse());
+        camp.setUpdateAt(new Timestamp(System.currentTimeMillis()));
+        camp.setUpdatedBy("ADMIN");
+        if (basicDTO.getActive() != null) {
+            camp.setIsActive(basicDTO.getActive());
+        }
+
+        if (basicDTO.getOrganizerUserId() != null) {
+            usersRepository.findById(basicDTO.getOrganizerUserId()).ifPresent(camp::setOrganizerUser);
+        }
+
+        if (basicDTO.getMedicineWarehouseId() != null) {
+            warehouseMasterRepository.findById(basicDTO.getMedicineWarehouseId()).ifPresent(camp::setMedicineWarehouseLink);
+        }
+
+        // Update addresses from basic DTO
+        updateCampAddresses(camp, basicDTO.getLocationAddress(), basicDTO.getShippingAddress());
+
+        // Update schedule templates
+        if (basicDTO.getSchedules() != null) {
+            updateCampSchedules(camp, basicDTO.getSchedules());
+        }
+    }
+
+    private void updateCampSchedules(Camps camp, List<CampScheduleTemplateDTO> scheduleDtos) {
+        if (camp.getSchedules() == null) {
+            camp.setSchedules(new ArrayList<>());
+        } else {
+            camp.getSchedules().clear();
+        }
+
+        for (CampScheduleTemplateDTO dto : scheduleDtos) {
+            camp.getSchedules().add(getCampScheduleTemplatesFromDTO(dto, camp));
+        }
+    }
+
+    private void updateCampAddresses(Camps camp, AddressDTO locationAddress, AddressDTO shippingAddress) {
+        if (camp.getCampAddresses() == null) {
+            camp.setCampAddresses(new ArrayList<>());
+        }
+
+        boolean locationUpdated = false;
+        boolean shippingUpdated = false;
+
+        for (CampAddress campAddress : camp.getCampAddresses()) {
+            if (AddressType.LOCATION.equals(campAddress.getAddressType()) && locationAddress != null) {
+                updateAddressFromDTO(campAddress.getAddress(), locationAddress);
+                locationUpdated = true;
+            } else if (AddressType.SHIPPING.equals(campAddress.getAddressType()) && shippingAddress != null) {
+                updateAddressFromDTO(campAddress.getAddress(), shippingAddress);
+                shippingUpdated = true;
+            }
+        }
+
+        if (!locationUpdated && locationAddress != null) {
+            CampAddress location = new CampAddress();
+            location.setAddressType(AddressType.LOCATION);
+            location.setAddress(getCampAddressFromDTO(locationAddress));
+            location.setValidFrom(LocalDate.now());
+            location.setCamp(camp);
+            camp.getCampAddresses().add(location);
+        }
+
+        if (!shippingUpdated && shippingAddress != null) {
+            CampAddress shipping = new CampAddress();
+            shipping.setAddressType(AddressType.SHIPPING);
+            shipping.setAddress(getCampAddressFromDTO(shippingAddress));
+            shipping.setValidFrom(LocalDate.now());
+            shipping.setCamp(camp);
+            camp.getCampAddresses().add(shipping);
+        }
+    }
+
+    @Transactional
+    public Camps updateCampBasic(Long id, CampBasicDTO basicDTO) {
+        Optional<Camps> optionalCamp = repository.findById(id);
+        if (optionalCamp.isPresent()) {
+            Camps camp = optionalCamp.get();
+            mapBasicDtoToEntity(basicDTO, camp);
+            return repository.save(camp);
+        }
+        throw new BadRequestException("Camp not found with ID: " + id);
     }
 
     private void assignUsersToCamp(Camps camp, List<Users> users) {
@@ -154,39 +219,136 @@ public class CampsService {
     }
 
     @Transactional
-    public Camps updateCamp(Long id, CampsDTO campsDTO) {
-        validateCreateCampRequest(campsDTO);
-        List<Users> users = validateCampUserIds(campsDTO);
-        
-        Optional<Camps> optionalCamp = repository.findById(id);
-        if (optionalCamp.isPresent()) {
-            Camps camp = optionalCamp.get();
-            camp.setCampName(campsDTO.getCampName());
-            camp.setDescription(campsDTO.getDescription());
-            camp.setOrganizerName(campsDTO.getOrganizerName());
-            camp.setOrganizerEmail(campsDTO.getOrganizerEmail());
-            camp.setOrganizerPhone(campsDTO.getOrganizerPhone());
-            camp.setCampCode(campsDTO.getCampCode());
-            camp.setMedicineResponsibility(campsDTO.getMedicineResponsibility());
-            camp.setCampEstablishmentYear(campsDTO.getEstablishmentYear());
-            camp.setUpdateAt(new Timestamp(System.currentTimeMillis()));
-            camp.setUpdatedBy("ADMIN");
-            if (campsDTO.getIsActive() != null) {
-                camp.setIsActive(campsDTO.getIsActive());
-            }
-
-            // Update Addresses
-            updateCampAddresses(camp, campsDTO);
-
-            // Update Schedule
-            updateCampSchedule(camp, campsDTO.getCampScheduleTemplate());
-
-            // Update Staff
-            assignUsersToCamp(camp, users);
-
-            return repository.save(camp);
+    public void saveAdditionalDetails(Long campId, CampAdditionalDetailsDTO detailsDTO) {
+        Optional<Camps> optionalCamp = repository.findById(campId);
+        if (optionalCamp.isEmpty()) {
+            throw new BadRequestException("Camp not found with ID: " + campId);
         }
-        return null;
+        Camps camp = optionalCamp.get();
+
+        // Update Addresses
+        updateCampAddresses(camp, detailsDTO.getLocationAddress(), detailsDTO.getShippingAddress());
+
+        // Update Schedule
+        if (detailsDTO.getCampScheduleTemplate() != null) {
+            updateCampSchedule(camp, detailsDTO.getCampScheduleTemplate());
+            if (camp.getSchedules() == null || camp.getSchedules().isEmpty()) {
+                CampScheduleTemplates template = getCampScheduleTemplatesFromDTO(detailsDTO.getCampScheduleTemplate(), camp);
+                camp.setSchedules(new ArrayList<>(List.of(template)));
+            }
+        }
+
+        // Update Staff
+        if (detailsDTO.getCampUserIds() != null) {
+            List<Users> users = usersRepository.findAllById(detailsDTO.getCampUserIds());
+            assignUsersToCamp(camp, users);
+        }
+
+        repository.save(camp);
+    }
+
+    private void updateCampAddressesFromAdditionalDetails(Camps camp, CampAdditionalDetailsDTO detailsDTO) {
+        updateCampAddresses(camp, detailsDTO.getLocationAddress(), detailsDTO.getShippingAddress());
+    }
+
+    public CampBasicDTO getCampBasicById(Long id) {
+        Camps camp = repository.findById(id).orElseThrow(() -> new BadRequestException("Camp not found"));
+        return mapToCampBasicDTO(camp);
+    }
+
+    public CampAdditionalDetailsDTO getAdditionalDetails(Long id) {
+        Camps camp = repository.findById(id).orElseThrow(() -> new BadRequestException("Camp not found"));
+        CampAdditionalDetailsDTO dto = new CampAdditionalDetailsDTO();
+        
+        // Map Addresses
+        if (camp.getCampAddresses() != null) {
+            camp.getCampAddresses().stream()
+                .filter(a -> AddressType.LOCATION.equals(a.getAddressType()))
+                .findFirst().ifPresent(a -> dto.setLocationAddress(mapAddressToDTO(a.getAddress())));
+            
+            camp.getCampAddresses().stream()
+                .filter(a -> AddressType.SHIPPING.equals(a.getAddressType()))
+                .findFirst().ifPresent(a -> dto.setShippingAddress(mapAddressToDTO(a.getAddress())));
+        }
+
+        // Map Schedule
+        if (camp.getSchedules() != null) {
+            camp.getSchedules().stream()
+                .filter(CampScheduleTemplates::getIsActive)
+                .findFirst().ifPresent(s -> dto.setCampScheduleTemplate(mapToCampScheduleDTO(s)));
+        }
+
+        // Map Staff
+        if (camp.getCampUsers() != null) {
+            dto.setCampUserIds(camp.getCampUsers().stream()
+                .map(cu -> cu.getUsers().getUserId())
+                .collect(Collectors.toList()));
+        }
+
+        return dto;
+    }
+
+    private AddressDTO mapAddressToDTO(Address address) {
+        if (address == null) return null;
+        AddressDTO dto = new AddressDTO();
+        dto.setAddressLine1(address.getAddressLine1());
+        dto.setAddressLine2(address.getAddressLine2());
+        dto.setCity(address.getCity());
+        if (address.getDistrict() != null) {
+            dto.setDistrictId(address.getDistrict().getDistrictLookupId());
+        }
+        if (address.getMandal() != null) {
+            dto.setMandalId(address.getMandal().getMandalLookupId());
+        }
+        if (address.getState() != null) {
+            dto.setStateId(address.getState().getStateLookupId());
+        }
+        dto.setPostalCode(address.getPostalCode());
+        return dto;
+    }
+
+    private CampBasicDTO mapToCampBasicDTO(Camps camp) {
+        CampBasicDTO dto = new CampBasicDTO();
+        dto.setCampId(camp.getCampId());
+        dto.setCampName(camp.getCampName());
+        dto.setCampCode(camp.getCampCode());
+        dto.setDescription(camp.getDescription());
+        dto.setOrganizerName(camp.getOrganizerName());
+        dto.setOrganizerEmail(camp.getOrganizerEmail());
+        dto.setOrganizerPhone(camp.getOrganizerPhone());
+        dto.setEstablishmentYear(camp.getCampEstablishmentYear());
+        dto.setMedicineWarehouse(camp.getMedicineWarehouse());
+        if (camp.getMedicineWarehouseLink() != null) {
+            dto.setMedicineWarehouseId(camp.getMedicineWarehouseLink().getId());
+            dto.setMedicineWarehouseDetails(mapToWarehouseDTO(camp.getMedicineWarehouseLink()));
+        }
+        dto.setActive(camp.getIsActive());
+
+        if (camp.getOrganizerUser() != null) {
+            dto.setOrganizerUserId(camp.getOrganizerUser().getUserId());
+            dto.setOrganizerUserDetails(UsersUtil.mapToUserResponse(camp.getOrganizerUser()));
+        }
+
+        // Map addresses for basic DTO
+        if (camp.getCampAddresses() != null) {
+            camp.getCampAddresses().stream()
+                .filter(a -> AddressType.LOCATION.equals(a.getAddressType()))
+                .findFirst().ifPresent(a -> dto.setLocationAddress(mapAddressToDTO(a.getAddress())));
+            
+            camp.getCampAddresses().stream()
+                .filter(a -> AddressType.SHIPPING.equals(a.getAddressType()))
+                .findFirst().ifPresent(a -> dto.setShippingAddress(mapAddressToDTO(a.getAddress())));
+        }
+
+        // Map schedules
+        if (camp.getSchedules() != null) {
+            dto.setSchedules(camp.getSchedules().stream()
+                    .filter(s -> s.getIsActive() != null && s.getIsActive())
+                    .map(this::mapToCampScheduleDTO)
+                    .collect(Collectors.toList()));
+        }
+
+        return dto;
     }
 
     private void updateCampAddresses(Camps camp, CampsDTO campsDTO) {
@@ -271,44 +433,75 @@ public class CampsService {
         campsListDTO.setCampId(camps.getCampId());
         campsListDTO.setCampName(camps.getCampName());
         campsListDTO.setCampCode(camps.getCampCode());
+        campsListDTO.setDescription(camps.getDescription());
+        
+        // Use basic fields if present
         campsListDTO.setOrganizerName(camps.getOrganizerName());
         campsListDTO.setOrganizerPhone(camps.getOrganizerPhone());
         campsListDTO.setOrganizerEmail(camps.getOrganizerEmail());
+        
+        // Override with User details if linked
+        if (camps.getOrganizerUser() != null) {
+            UsersResponseDTO userDto = UsersUtil.mapToUserResponse(camps.getOrganizerUser());
+            campsListDTO.setOrganizerUserDetails(userDto);
+            // Also update the top-level fields for convenience
+            campsListDTO.setOrganizerName(userDto.getFirstName() + " " + (userDto.getLastName() != null ? userDto.getLastName() : ""));
+            campsListDTO.setOrganizerEmail(userDto.getEmail());
+            campsListDTO.setOrganizerPhone(userDto.getPhone());
+        }
+
         setCampRunData(camps, campsListDTO);
-        campsListDTO.setActive(camps.getIsActive());
-        campsListDTO.setLocationAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
-                , AddressType.LOCATION));
-        campsListDTO.setShippingAddress(getAddressResponseDTOByAddressType(camps.getCampAddresses()
-                , AddressType.SHIPPING));
-        campsListDTO.setCampRunning(camps.getCampRuns().stream().anyMatch(campRuns -> CampRunStatus.STARTED.equals(campRuns.getStatus())));
+        campsListDTO.setActive(camps.getIsActive() != null ? camps.getIsActive() : false);
+        
+        if (camps.getCampRuns() != null) {
+            campsListDTO.setCampRunning(camps.getCampRuns().stream().anyMatch(run -> CampRunStatus.STARTED.equals(run.getStatus())));
+        } else {
+            campsListDTO.setCampRunning(false);
+        }
 
-        campsListDTO.setDoctors(camps.getCampUsers().stream()
-                .filter(CampUsers::isDoctor)
-                .map(campUser -> UsersUtil.mapToUserResponse(campUser.getUsers()))
-                .collect(Collectors.toList()));
+        campsListDTO.setMedicineWarehouse(camps.getMedicineWarehouse());
+        if (camps.getMedicineWarehouseLink() != null) {
+            campsListDTO.setMedicineWarehouseId(camps.getMedicineWarehouseLink().getId());
+            campsListDTO.setMedicineWarehouseNameLink(camps.getMedicineWarehouseLink().getWarehouseName());
+            campsListDTO.setMedicineWarehouseDetails(mapToWarehouseDTO(camps.getMedicineWarehouseLink()));
+        }
 
-        campsListDTO.setVolunteers(camps.getCampUsers().stream()
-                .filter(CampUsers::isVolunteer)
-                .map(campUser -> UsersUtil.mapToUserResponse(campUser.getUsers()))
-                .collect(Collectors.toList()));
+        // Map addresses for list DTO
+        if (camps.getCampAddresses() != null) {
+            camps.getCampAddresses().stream()
+                .filter(a -> AddressType.LOCATION.equals(a.getAddressType()))
+                .findFirst().ifPresent(a -> campsListDTO.setLocationAddress(mapAddressToDTO(a.getAddress())));
+            
+            camps.getCampAddresses().stream()
+                .filter(a -> AddressType.SHIPPING.equals(a.getAddressType()))
+                .findFirst().ifPresent(a -> campsListDTO.setShippingAddress(mapAddressToDTO(a.getAddress())));
+        }
 
-        camps.getSchedules().stream()
-                .filter(CampScheduleTemplates::getIsActive)
-                .findFirst()
-                .ifPresent(schedule -> campsListDTO.setCampScheduleTemplate(mapToCampScheduleDTO(schedule)));
-
-        campsListDTO.setMedicineResponsibility(camps.getMedicineResponsibility());
+        // Map schedules
+        if (camps.getSchedules() != null) {
+            campsListDTO.setSchedules(camps.getSchedules().stream()
+                    .filter(s -> s.getIsActive() != null && s.getIsActive())
+                    .map(this::mapToCampScheduleDTO)
+                    .collect(Collectors.toList()));
+        }
 
         return campsListDTO;
     }
 
     private AddressResponseDTO getAddressResponseDTOByAddressType(List<CampAddress> campAddresses, AddressType addressType) {
+        if (campAddresses == null) return null;
         Optional<CampAddress> addressOptional = campAddresses.stream().filter(campAddress -> addressType.equals(campAddress.getAddressType()))
                 .findFirst();
         return addressOptional.map(campAddress -> mapToAddressResponseDTO(campAddress.getAddress())).orElse(null);
     }
 
     private void setCampRunData(Camps camp, CampsListDTO campsListDTO) {
+        if (camp.getCampRuns() == null) {
+            campsListDTO.setCampReadyToStart(false);
+            setPlannedDateFromSchedule(camp, campsListDTO);
+            return;
+        }
+
         Optional<CampRuns> activeRunOpt = camp.getCampRuns()
                 .stream()
                 .filter(cr -> cr.getStatus() == CampRunStatus.PLANNED
@@ -329,10 +522,22 @@ public class CampsService {
             campsListDTO.setOrganizerName(run.getOrganizerName());
             campsListDTO.setOrganizerEmail(run.getOrganizerEmail());
         } else {
-            Optional<CampScheduleTemplates> campScheduleOpt = camp.getSchedules().stream().filter(CampScheduleTemplates::getIsActive).findFirst();
-            campScheduleOpt.ifPresentOrElse(campScheduleTemplates -> campsListDTO.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleTemplates
-                    , LocalDate.now())), () -> campsListDTO.setPlannedDate(LocalDate.now()));
+            setPlannedDateFromSchedule(camp, campsListDTO);
             campsListDTO.setCampReadyToStart(false);
+        }
+    }
+
+    private void setPlannedDateFromSchedule(Camps camp, CampsListDTO campsListDTO) {
+        if (camp.getSchedules() != null) {
+            Optional<CampScheduleTemplates> campScheduleOpt = camp.getSchedules().stream()
+                    .filter(s -> s.getIsActive() != null && s.getIsActive())
+                    .findFirst();
+            campScheduleOpt.ifPresentOrElse(
+                    campScheduleTemplates -> campsListDTO.setPlannedDate(CampScheduleUtil.deriveNextDateForSchedule(campScheduleTemplates, LocalDate.now())),
+                    () -> campsListDTO.setPlannedDate(LocalDate.now())
+            );
+        } else {
+            campsListDTO.setPlannedDate(LocalDate.now());
         }
     }
 
@@ -341,13 +546,19 @@ public class CampsService {
         addressResponseDTO.setCity(address.getCity());
         addressResponseDTO.setAddressLine1(address.getAddressLine1());
         addressResponseDTO.setAddressLine2(address.getAddressLine2());
-        addressResponseDTO.setDistrictId(address.getDistrict().getDistrictLookupId());
-        addressResponseDTO.setDistrictName(address.getDistrict().getDistrictName());
+        if (address.getDistrict() != null) {
+            addressResponseDTO.setDistrictId(address.getDistrict().getDistrictLookupId());
+            addressResponseDTO.setDistrictName(address.getDistrict().getDistrictName());
+        }
         addressResponseDTO.setPostalCode(address.getPostalCode());
-        addressResponseDTO.setMandalId(address.getMandal().getMandalLookupId());
-        addressResponseDTO.setMandalName(address.getMandal().getMandalName());
-        addressResponseDTO.setStateId(address.getState().getStateLookupId());
-        addressResponseDTO.setStateName(address.getState().getStateName());
+        if (address.getMandal() != null) {
+            addressResponseDTO.setMandalId(address.getMandal().getMandalLookupId());
+            addressResponseDTO.setMandalName(address.getMandal().getMandalName());
+        }
+        if (address.getState() != null) {
+            addressResponseDTO.setStateId(address.getState().getStateLookupId());
+            addressResponseDTO.setStateName(address.getState().getStateName());
+        }
         return addressResponseDTO;
     }
 
@@ -385,6 +596,37 @@ public class CampsService {
         dto.setMonthOctober(schedule.getMonthOctober());
         dto.setMonthNovember(schedule.getMonthNovember());
         dto.setMonthDecember(schedule.getMonthDecember());
+        return dto;
+    }
+
+    private WarehouseMasterDTO mapToWarehouseDTO(WarehouseMaster entity) {
+        if (entity == null) return null;
+        WarehouseMasterDTO dto = new WarehouseMasterDTO();
+        dto.setId(entity.getId());
+        dto.setWarehouseCode(entity.getWarehouseCode());
+        dto.setWarehouseName(entity.getWarehouseName());
+        dto.setAddress(entity.getAddress());
+        dto.setCity(entity.getCity());
+        dto.setPostalCode(entity.getPostalCode());
+        
+        if (entity.getState() != null && entity.getState().getStateLookupId() != null) {
+            dto.setStateId((long) entity.getState().getStateLookupId());
+            dto.setStateName(entity.getState().getStateName());
+        }
+        if (entity.getDistrict() != null && entity.getDistrict().getDistrictLookupId() != null) {
+            dto.setDistrictId((long) entity.getDistrict().getDistrictLookupId());
+            dto.setDistrictName(entity.getDistrict().getDistrictName());
+        }
+        if (entity.getMandal() != null && entity.getMandal().getMandalLookupId() != null) {
+            dto.setMandalId((long) entity.getMandal().getMandalLookupId());
+            dto.setMandalName(entity.getMandal().getMandalName());
+        }
+        
+        dto.setContactPerson(entity.getContactPerson());
+        dto.setContactNumber(entity.getContactNumber());
+        dto.setEmailAddress(entity.getEmailAddress());
+        dto.setIsActive(entity.getIsActive());
+        
         return dto;
     }
 
