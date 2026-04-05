@@ -1,5 +1,6 @@
 package com.medical.caresync.service;
 
+import com.medical.caresync.dto.WarehouseMedicineBatchStockDTO;
 import com.medical.caresync.dto.WarehouseMedicineStockSummaryDTO;
 import com.medical.caresync.entities.WarehouseMedicineStock;
 import com.medical.caresync.repository.*;
@@ -73,5 +74,45 @@ public class WarehouseMedicineStockService {
                     return builder.build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<WarehouseMedicineBatchStockDTO> getBatchStockByWarehouseId(Long warehouseId) {
+        List<WarehouseMedicineStock> stocks = stockRepository.findByWarehouseId(warehouseId);
+        return stocks.stream()
+                .map(this::mapToBatchStockDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<WarehouseMedicineBatchStockDTO> getBatchStockByWarehouseIdAndMedicationId(Long warehouseId, Long medicationId) {
+        List<WarehouseMedicineStock> stocks = stockRepository.findByWarehouseId(warehouseId).stream()
+                .filter(s -> s.getMedicationId().equals(medicationId))
+                .collect(Collectors.toList());
+        return stocks.stream()
+                .map(this::mapToBatchStockDTO)
+                .collect(Collectors.toList());
+    }
+
+    private WarehouseMedicineBatchStockDTO mapToBatchStockDTO(WarehouseMedicineStock stock) {
+        WarehouseMedicineBatchStockDTO dto = WarehouseMedicineBatchStockDTO.builder()
+                .medicationId(stock.getMedicationId())
+                .batchNumber(stock.getBatchNumber())
+                .mfgDate(stock.getMfgDate())
+                .expiryDate(stock.getExpiryDate())
+                .quantity(stock.getQuantity())
+                .unitPrice(stock.getUnitPrice())
+                .mrp(stock.getMrp())
+                .build();
+
+        medicineRepository.findById(stock.getMedicationId()).ifPresent(med -> {
+            dto.setMedicationName(med.getMedicationName());
+        });
+
+        if (stock.getPharmacySupplierId() != null) {
+            supplierRepository.findById(stock.getPharmacySupplierId()).ifPresent(s -> {
+                dto.setSupplierName(s.getSupplierName());
+            });
+        }
+
+        return dto;
     }
 }
