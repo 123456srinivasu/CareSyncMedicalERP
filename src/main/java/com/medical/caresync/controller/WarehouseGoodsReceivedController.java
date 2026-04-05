@@ -65,6 +65,14 @@ public class WarehouseGoodsReceivedController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity<WarehouseGoodsReceivedDTO> updateGRNRoot(@RequestBody WarehouseGoodsReceivedDTO grnDTO) {
+        if (grnDTO.getWarehouseGoodsReceivedId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return updateGRN(grnDTO.getWarehouseGoodsReceivedId(), grnDTO);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGRN(@PathVariable Long id) {
         try {
